@@ -87,7 +87,8 @@ namespace CoupleWidgets
         //Close event
         private void CloseClick(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            //this.Hide();
+            Close();
         }
 
         //First image event
@@ -134,6 +135,8 @@ namespace CoupleWidgets
             helper.updateFirstName(FirstName.Text);
             helper.updateSecondName(SecondName.Text);
             helper.updateShow(true);
+
+            this.Hide();
 
             CoupleWidget coupleWidget = new CoupleWidget();
             coupleWidget.WindowStartupLocation = WindowStartupLocation.Manual;

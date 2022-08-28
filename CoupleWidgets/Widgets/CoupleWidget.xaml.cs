@@ -62,7 +62,7 @@ namespace CoupleWidgets.Widgets
         void OpenMainWindow(object sender, RoutedEventArgs e)
         {
             helper.updateShow(false);
-            
+            this.Hide();
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
