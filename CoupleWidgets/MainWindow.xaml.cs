@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,62 @@ namespace CoupleWidgets
         {
             InitializeComponent();
         }
+
+        //Drag event
+        private void DragMove(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        //Close event
+        private void CloseClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        //First image event
+        private void FirstImageClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image files|*.bmp;*.jpg;*.jpeg;*.png";
+            dialog.FilterIndex = 1;
+
+            if (dialog.ShowDialog() == true)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(dialog.FileName);
+                //bitmap.DecodePixelHeight = 200;
+                bitmap.EndInit();
+
+                
+                FirstImage.Source = bitmap;
+            }
+        }
+
+        //Second image event
+        private void SecondImageClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image files|*.bmp;*.jpg;*.jpeg;*.png";
+            dialog.FilterIndex = 1;
+
+            if (dialog.ShowDialog() == true)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(dialog.FileName);
+                //bitmap.DecodePixelHeight = 200;
+                bitmap.EndInit();
+
+                SecondImage.Source = bitmap;
+            }
+        }
+
+
+
     }
 }

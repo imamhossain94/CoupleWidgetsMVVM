@@ -1,0 +1,99 @@
+﻿<Window x:Class="CoupleWidgets.Widgets.CoupleWidget"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoupleWidgets.Widgets"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        Title="CoupleWidget" Height="235" Width="500" 
+        Icon="/Images/Logo/logo.png">
+
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border
+            CornerRadius="105"
+            Background="White"
+            Margin="15">
+
+                <Image Source="/Images/Couple/boy.jpg" >
+                    <Image.Clip>
+                        <EllipseGeometry RadiusX="85" RadiusY="85"
+                                 Center="90 90"/>
+                    </Image.Clip>
+                </Image>
+            </Border>
+
+            <Image 
+            Source="/Images/Logo/heart.png" 
+            Grid.Column="1"
+            Margin="10"/>
+
+            <Border
+            Grid.Column="2"
+            CornerRadius="105"
+            Background="White"
+            Margin="15">
+
+                <Image Source="/Images/Couple/girl.jpg" >
+                    <Image.Clip>
+                        <EllipseGeometry RadiusX="85" RadiusY="85"
+                                 Center="90 90"/>
+                    </Image.Clip>
+                </Image>
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <TextBlock
+                Text="Name"
+                Margin="20,0,20,0"
+                Grid.Column="0"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                FontSize="14"/>
+
+            <TextBlock
+                Text="Name"
+                Margin="20,0,20,0"
+                Grid.Column="2"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                FontSize="14"/>
+
+        </Grid>
+
+
+    </Grid>
+    
+
+
+
+
+
+</Window>
