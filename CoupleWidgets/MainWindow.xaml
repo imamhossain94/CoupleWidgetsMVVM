@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CoupleWidgets"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         WindowStyle="None"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
@@ -52,13 +53,13 @@
                         HorizontalAlignment="Left"
                         Foreground="#636465"
                         FontSize="22"
-                        Margin="10,0,0,10"/>
+                        Margin="10,0,0,0"/>
 
                     <Button 
                         Grid.Column="2"
                         Click="CloseClick"
                         Style="{StaticResource SystemIconButton}">
-                        <Image Margin="5" Source="/Images/Logo/close.png" />
+                        <Image Margin="5" Source="/Images/Logo/close.png"/>
                     </Button>
 
                 </Grid>
@@ -138,17 +139,42 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox
-                    Height="40"
+                <TextBox 
+                    x:Name="FirstName"
                     Margin="20,0,20,0"
+                    Padding="10"
                     Grid.Column="0"
-                    Style="{StaticResource ModernTextBox}"/>
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    TextAlignment="Center"
+                    FontSize="14"
+                    Background="#FFF2F2F2"
+                    Text="Name">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
 
-                <TextBox
-                    Height="40"
+
+                <TextBox 
+                    x:Name="SecondName"
                     Margin="20,0,20,0"
+                    Padding="10"
                     Grid.Column="2"
-                    Style="{StaticResource ModernTextBox}"/>
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    TextAlignment="Center"
+                    FontSize="14"
+                    Background="#FFF2F2F2"
+                    Text="Name">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
 
             </Grid>
 
@@ -159,6 +185,8 @@
                 Background="#35AAA3">
 
                 <Button
+                    x:Name="ShowWidgetButton"
+                    Click="ShowWidgetClick"
                     Content="Show Widget"
                     Height="40"
                     Background="Transparent"

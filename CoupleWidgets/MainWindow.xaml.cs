@@ -1,18 +1,11 @@
-﻿using Microsoft.Win32;
+﻿using CoupleWidgets.Utils;
+using CoupleWidgets.Widgets;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CoupleWidgets
 {
@@ -21,11 +14,67 @@ namespace CoupleWidgets
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private DBHelper helper;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        void InstallMeOnStartUp()
+        {
+            try
+            {
+                RegistryKey rkApp = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                rkApp.SetValue("CoupleWidgets", Assembly.GetExecutingAssembly().Location);
+            }catch(Exception ex)
+            {
+
+            }
+        }
+
+
+        //From load event
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            InstallMeOnStartUp();
+            helper = new DBHelper();
+
+            if (helper.show == true)
+            {
+                this.Hide();
+
+                CoupleWidget coupleWidget = new CoupleWidget();
+                coupleWidget.WindowStartupLocation = WindowStartupLocation.Manual;
+                coupleWidget.Left = helper.positionX;
+                coupleWidget.Top = helper.positionY;
+                coupleWidget.Show();
+            }
+
+
+            FirstName.Text = helper.firstName;
+            SecondName.Text = helper.secondName;
+
+            if(helper.firstImage != "")
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(helper.firstImage);
+                bitmap.EndInit();
+                FirstImage.Source = bitmap;
+            }
+
+            if(helper.secondImage != "")
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(helper.secondImage);
+                bitmap.EndInit();
+                SecondImage.Source = bitmap;
+            }
+        }
+        
         //Drag event
         private void DragMove(object sender, MouseButtonEventArgs e)
         {
@@ -38,7 +87,7 @@ namespace CoupleWidgets
         //Close event
         private void CloseClick(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.Hide();
         }
 
         //First image event
@@ -53,11 +102,10 @@ namespace CoupleWidgets
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(dialog.FileName);
-                //bitmap.DecodePixelHeight = 200;
                 bitmap.EndInit();
-
-                
                 FirstImage.Source = bitmap;
+
+                helper.updateFirstImage(dialog.FileName.ToString());
             }
         }
 
@@ -73,13 +121,26 @@ namespace CoupleWidgets
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(dialog.FileName);
-                //bitmap.DecodePixelHeight = 200;
                 bitmap.EndInit();
-
                 SecondImage.Source = bitmap;
+
+                helper.updateSecondImage(dialog.FileName.ToString());
             }
         }
 
+
+        private void ShowWidgetClick(object sender, RoutedEventArgs e)
+        {
+            helper.updateFirstName(FirstName.Text);
+            helper.updateSecondName(SecondName.Text);
+            helper.updateShow(true);
+
+            CoupleWidget coupleWidget = new CoupleWidget();
+            coupleWidget.WindowStartupLocation = WindowStartupLocation.Manual;
+            coupleWidget.Left = helper.positionX;
+            coupleWidget.Top = helper.positionY;
+            coupleWidget.Show();
+        }
 
 
     }
