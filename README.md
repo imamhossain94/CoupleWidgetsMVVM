@@ -1,15 +1,23 @@
 # CoupleWidgets
 
 <p align="center">
-    <img src="screenshots/widget.jpg" width="100%" title="Widgets">
+    <img src="screenshots/widget.png" width="100%" title="Widgets">
 </p>
 
 ### Falling in love?
 Keep your lover always with you!
 
+### Download Setup file
+<a href="https://drive.google.com/file/d/1abDRg9OrvwCGj8jo4e0p7Sv1Qcl-x64Z/view?usp=sharing">CoupleWidget.msi</a>
+
+
 ### Feature
+- ✅ Create desktop shortcut.
+- ✅ Create startup shortcut.
 - ✅ Start on windows boot.
-- ✅ Keep widget window position.
+- ✅ Copy image file from source to application directory.
+- ✅ Store widget window position.
+- ✅ CRUD operations in data.json file.
 
 ### Screenshots
 <p align="center">
@@ -22,7 +30,8 @@ Keep your lover always with you!
 ### Project Installation Prerequisite
 - You must have a girlfriend or boyfriend.
 - Visual Studio.
-- Knowlege of C#, Xaml
+- Visual Studio Project Installer.
+- Knowlege of C#, Xaml, Json.
 
 ## 🧑 Author
 
