@@ -15,8 +15,6 @@
         Icon="/Images/Logo/logo.png"
         ShowInTaskbar="False">
 
-
-
     <Button
         Background="Transparent"
         BorderBrush="Transparent"
