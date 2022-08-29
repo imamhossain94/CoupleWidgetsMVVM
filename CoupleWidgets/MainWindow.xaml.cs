@@ -1,4 +1,5 @@
-﻿using CoupleWidgets.Utils;
+﻿using CoupleWidgets.Model;
+using CoupleWidgets.Utils;
 using CoupleWidgets.Widgets;
 using Microsoft.Win32;
 using System;
@@ -14,67 +15,64 @@ namespace CoupleWidgets
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private DBHelper helper;
+        private CoupleData coupleData;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        void InstallMeOnStartUp()
-        {
-            try
-            {
-                RegistryKey rkApp = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                rkApp.SetValue("CoupleWidgets", Assembly.GetExecutingAssembly().Location);
-            }catch(Exception ex)
-            {
-
-            }
-        }
-
 
         //From load event
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            InstallMeOnStartUp();
             helper = new DBHelper();
+            coupleData = helper.coupleData;
 
-            if (helper.show == true)
+            if (coupleData.visibility == true)
             {
-                this.Hide();
+                Hide();
+                // Create shortcut int startup folder
+                // Extension.AddShortcutToStartupGroup(Constants.productName, Constants.publisherName);
 
                 CoupleWidget coupleWidget = new CoupleWidget();
                 coupleWidget.WindowStartupLocation = WindowStartupLocation.Manual;
-                coupleWidget.Left = helper.positionX;
-                coupleWidget.Top = helper.positionY;
+                coupleWidget.Left = coupleData.windowPositionX;
+                coupleWidget.Top = coupleData.windowPositionY;
                 coupleWidget.Show();
             }
 
+            FirstName.Text = coupleData.firstCoupleName;
+            SecondName.Text = coupleData.secondCoupleName;
 
-            FirstName.Text = helper.firstName;
-            SecondName.Text = helper.secondName;
-
-            if(helper.firstImage != "")
+            if(coupleData.firstCoupleImage != "")
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(helper.firstImage);
-                bitmap.EndInit();
-                FirstImage.Source = bitmap;
+                loadCoupleImage(coupleData.firstCoupleImage, FirstImage);
             }
 
-            if(helper.secondImage != "")
+            if(coupleData.secondCoupleImage != "")
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(helper.secondImage);
-                bitmap.EndInit();
-                SecondImage.Source = bitmap;
+                loadCoupleImage(coupleData.secondCoupleImage, SecondImage);
             }
         }
-        
+
+        private void loadCoupleImage(string path, System.Windows.Controls.Image ImageView)
+        {
+            try
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(path);
+                bitmap.EndInit();
+                ImageView.Source = bitmap;
+            }catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+
         //Drag event
         private void DragMove(object sender, MouseButtonEventArgs e)
         {
@@ -100,13 +98,8 @@ namespace CoupleWidgets
 
             if (dialog.ShowDialog() == true)
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(dialog.FileName);
-                bitmap.EndInit();
-                FirstImage.Source = bitmap;
-
-                helper.updateFirstImage(dialog.FileName.ToString());
+                loadCoupleImage(dialog.FileName, FirstImage);
+                helper.updateFirstImage(dialog.FileName);
             }
         }
 
@@ -119,12 +112,7 @@ namespace CoupleWidgets
 
             if (dialog.ShowDialog() == true)
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(dialog.FileName);
-                bitmap.EndInit();
-                SecondImage.Source = bitmap;
-
+                loadCoupleImage(dialog.FileName, SecondImage);
                 helper.updateSecondImage(dialog.FileName.ToString());
             }
         }
@@ -134,14 +122,19 @@ namespace CoupleWidgets
         {
             helper.updateFirstName(FirstName.Text);
             helper.updateSecondName(SecondName.Text);
-            helper.updateShow(true);
+            helper.updateVisivility(true);
 
-            this.Hide();
+            // Hide current window
+            Hide();
 
+            // Create shortcut int startup folder
+            // Extension.AddShortcutToStartupGroup(Constants.productName, Constants.publisherName);
+
+            // Show couple widget
             CoupleWidget coupleWidget = new CoupleWidget();
             coupleWidget.WindowStartupLocation = WindowStartupLocation.Manual;
-            coupleWidget.Left = helper.positionX;
-            coupleWidget.Top = helper.positionY;
+            coupleWidget.Left = coupleData.windowPositionX;
+            coupleWidget.Top = coupleData.windowPositionY;
             coupleWidget.Show();
         }
 

@@ -1,4 +1,5 @@
-﻿using CoupleWidgets.Utils;
+﻿using CoupleWidgets.Model;
+using CoupleWidgets.Utils;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ namespace CoupleWidgets.Widgets
     {
 
         private DBHelper helper;
+        private CoupleData coupleData;
 
         public CoupleWidget()
         {
@@ -35,34 +37,43 @@ namespace CoupleWidgets.Widgets
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             helper = new DBHelper();
-            FirstName.Text = helper.firstName;
-            SecondName.Text = helper.secondName;
+            coupleData = helper.coupleData;
 
-            if (helper.firstImage != "")
+            FirstName.Text = coupleData.firstCoupleName;
+            SecondName.Text = coupleData.secondCoupleName;
+
+            if (coupleData.firstCoupleImage != "")
+            {
+                loadCoupleImage(coupleData.firstCoupleImage, FirstImage);
+            }
+
+            if (coupleData.secondCoupleImage != "")
+            {
+                loadCoupleImage(coupleData.secondCoupleImage, SecondImage);
+            }
+
+        }
+
+        private void loadCoupleImage(string path, System.Windows.Controls.Image ImageView)
+        {
+            try
             {
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(helper.firstImage);
+                bitmap.UriSource = new Uri(path);
                 bitmap.EndInit();
-                FirstImage.Source = bitmap;
+                ImageView.Source = bitmap;
             }
-
-            if (helper.secondImage != "")
+            catch (Exception ex)
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(helper.secondImage);
-                bitmap.EndInit();
-                SecondImage.Source = bitmap;
+                throw;
             }
-
-
         }
 
         void OpenMainWindow(object sender, RoutedEventArgs e)
         {
-            helper.updateShow(false);
-            this.Hide();
+            helper.updateVisivility(false);
+            Hide();
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }

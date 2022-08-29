@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoupleWidgets.Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 
@@ -6,162 +7,127 @@ namespace CoupleWidgets.Utils
 {
     class DBHelper
     {
-        public string firstName { get; set; }
-        public string secondName { get; set; }
-        public string firstImage { get; set; }
-        public string secondImage { get; set; }
-        public double positionX { get; set; }
-        public double positionY { get; set; }
-        public bool show { get; set; }
+
+        public CoupleData coupleData { get; set; }
 
         public DBHelper()
         {
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
+            readData();
+        }
+
+        // Ceate file if not exist
+        private string getFilePath()
+        {
+            string baseDirectoryPath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = baseDirectoryPath + "data.json";
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Dispose();
+
+                var data = new CoupleData()
+                {
+                    firstCoupleName = "Name",
+                    secondCoupleName = "Name",
+                    firstCoupleImage = "",
+                    secondCoupleImage = "",
+                    windowPositionX = 0.0,
+                    windowPositionY = 0.0,
+                    visibility = false
+                };
+
+                writeFile(filePath, data);
+            }
+            
+            return filePath;
+        }
+
+        // Read all data
+        public void readData()
+        {
             try
             {
-                var jObject = JObject.Parse(json);
-                if (jObject != null)
-                {
-                    firstName = jObject["firstName"].ToString();
-                    secondName = jObject["secondName"].ToString();
-                    firstImage = jObject["firstImage"].ToString();
-                    secondImage = jObject["secondImage"].ToString();
-                    positionX = double.Parse(jObject["positionX"].ToString());
-                    positionY = double.Parse(jObject["positionY"].ToString());
-                    show = bool.Parse(jObject["show"].ToString());
-                }
+                string jsonFile = getFilePath();
+                var json = File.ReadAllText(jsonFile);
+
+                coupleData = new CoupleData(json);
             }
             catch (Exception)
             {
                 throw;
             }
+
         }
 
-        public void updateFirstName(string name)
+        // Write file
+        private void writeFile(string jsonFile, object data)
         {
-            firstName = name;
-
-            Console.WriteLine("--------------------");
-            Console.WriteLine(firstName);
-            Console.WriteLine("--------------------");
-
-
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-
             try
             {
-                var jObject = JObject.Parse(json);
-                jObject["firstName"] = firstName;
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(jsonFile, output);
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+
+        public void updateFirstName(string name)
+        {
+            readData();
+            coupleData.firstCoupleName = name;
+            writeFile(getFilePath(), coupleData);
         }
 
         public void updateSecondName(string name)
         {
-            secondName = name;
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-
-            try
-            {
-                var jObject = JObject.Parse(json);
-                jObject["secondName"] = secondName;
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(jsonFile, output);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            readData();
+            coupleData.secondCoupleName = name;
+            writeFile(getFilePath(), coupleData);
         }
 
         public void updateFirstImage(string imagePath)
         {
-            firstImage = imagePath;
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-
-            try
-            {
-                var jObject = JObject.Parse(json);
-                jObject["firstImage"] = firstImage;
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(jsonFile, output);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            readData();
+            coupleData.firstCoupleImage = copyFileToApplicationDirectory(imagePath);
+            writeFile(getFilePath(), coupleData);
         }
 
-        public void updateSecondImage(string imageString)
+        public void updateSecondImage(string imagePath)
         {
-            secondImage = imageString;
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-
-            try
-            {
-                var jObject = JObject.Parse(json);
-                jObject["secondImage"] = secondImage;
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(jsonFile, output);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            readData();
+            coupleData.secondCoupleImage = copyFileToApplicationDirectory(imagePath);
+            writeFile(getFilePath(), coupleData);
         }
 
-        public void updateShow(bool value)
+        public void updateVisivility(bool value)
         {
-            show = value;
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-
-            try
-            {
-                var jObject = JObject.Parse(json);
-                jObject["show"] = show;
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(jsonFile, output);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            readData();
+            coupleData.visibility = value;
+            writeFile(getFilePath(), coupleData);
         }
 
         public void updateWidgetPosition(double x, double y)
         {
-            positionX = x;
-            positionY = y;
-
-            string jsonFile = "../../../CoupleWidgets/Data/data.json";
-            var json = File.ReadAllText(jsonFile);
-  
-            try  
-            {  
-                var jObject = JObject.Parse(json);
-                jObject["positionX"] = positionX;
-                jObject["positionY"] = positionY;
-
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(jsonFile, output);
-            }  
-            catch (Exception ex)  
-            {
-                throw;
-            }  
+            readData();
+            coupleData.windowPositionX = x;
+            coupleData.windowPositionY = y;
+            writeFile(getFilePath(), coupleData);
         }
 
+
+        private string copyFileToApplicationDirectory(string sourceFilePath)
+        {
+            string destFilePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, 
+                Path.GetFileName(sourceFilePath));
+
+            File.Copy(sourceFilePath, destFilePath, true);
+
+            return destFilePath;
+        }
 
 
     }
