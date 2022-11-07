@@ -19,10 +19,6 @@ Keep your lover always with you!
 - ✅ Store widget window position.
 - ✅ CRUD operations in data.json file.
 
-### Screenshots
-<p align="center">
-    <img src="screenshots/window.png" width="100%" title="Widgets">
-</p>
 
 ### Package Used
 - Newtonsoft
