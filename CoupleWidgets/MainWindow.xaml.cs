@@ -70,6 +70,7 @@ namespace CoupleWidgets
                 ImageView.Source = bitmap;
             }catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 throw;
             }
         }

@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
+using System.Windows;
 
 namespace CoupleWidgets.Utils
 {
@@ -54,8 +55,9 @@ namespace CoupleWidgets.Utils
 
                 coupleData = new CoupleData(json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 throw;
             }
 
@@ -71,6 +73,7 @@ namespace CoupleWidgets.Utils
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 throw;
             }
         }
@@ -134,10 +137,7 @@ namespace CoupleWidgets.Utils
                 Path.GetFileName(sourceFilePath));
 
             File.Copy(sourceFilePath, destFilePath, true);
-
             return destFilePath;
         }
-
-
     }
 }

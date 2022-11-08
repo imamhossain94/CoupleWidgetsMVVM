@@ -10,8 +10,8 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
-        BorderBrush="Transparent"
-        Title="CoupleWidget" Height="235" Width="Auto" 
+        BorderBrush="White"
+        Title="CoupleWidget" Height="235" Width="Auto" MaxWidth="500" 
         Icon="/Images/Logo/logo.png"
         ShowInTaskbar="False">
     <Button
@@ -22,7 +22,6 @@
         <Grid MouseLeftButtonDown="DragMove">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -1,7 +1,7 @@
 # CoupleWidgets
 
 <p align="center">
-    <img src="screenshots/widget.png" width="100%" title="Widgets">
+    <img src="screenshots/widget.gif" width="100%" title="Widgets">
 </p>
 
 ### Falling in love?
