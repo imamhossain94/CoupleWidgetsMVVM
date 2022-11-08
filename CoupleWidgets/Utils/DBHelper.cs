@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace CoupleWidgets.Utils
 {
@@ -31,6 +32,7 @@ namespace CoupleWidgets.Utils
                     secondCoupleName = "Name",
                     firstCoupleImage = "",
                     secondCoupleImage = "",
+                    startDate = DateTime.Now.ToString(),
                     windowPositionX = 0.0,
                     windowPositionY = 0.0,
                     visibility = false
@@ -85,6 +87,13 @@ namespace CoupleWidgets.Utils
         {
             readData();
             coupleData.secondCoupleName = name;
+            writeFile(getFilePath(), coupleData);
+        }
+
+        public void updateStartDate(string date)
+        {
+            readData();
+            coupleData.startDate = date;
             writeFile(getFilePath(), coupleData);
         }
 

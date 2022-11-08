@@ -31,7 +31,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
@@ -55,10 +55,32 @@
                     </Image>
                 </Border>
 
-                <Image 
-            Source="/Images/Logo/heart.png" 
-            Grid.Column="1"
-            Margin="10"/>
+
+                <Grid  Grid.Column="1"  VerticalAlignment="Center">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Image 
+                    Source="/Images/Logo/heart.png" 
+                    Width="60"
+                    Margin="10"/>
+
+                    <TextBlock
+                        x:Name="DayCount"
+                        Text="days"
+                        Margin="20,0,20,0"
+                        Grid.Row="1"
+                        Foreground="White"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="14"/>
+
+                </Grid>
+
+
 
                 <Border
                 Grid.Column="2"

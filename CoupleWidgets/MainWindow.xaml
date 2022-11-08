@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CoupleWidgets"
+        
+  
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         WindowStyle="None"
@@ -11,7 +12,7 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         Icon="Images/Logo/logo.png"
-        Title="MainWindow" Height="380" Width="500">
+        Title="MainWindow" Height="425" Width="500">
 
 
     <Border Background="#D5DCDD"
@@ -21,6 +22,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
@@ -178,8 +180,72 @@
 
             </Grid>
 
-            <Border
+
+            <DatePicker
+                x:Name="StartDate"
                 Grid.Row="3"
+                Text="Select" 
+                Margin="20,10,20,0"
+                Padding="10"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                FontSize="14"
+                Foreground="Black"
+                Background="#FFF2F2F2">
+                
+                <DatePicker.Resources>
+
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="White" Opacity="0"/>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate 
+                                    x:Name="dptext" 
+                                    TargetType="{x:Type DatePickerTextBox}">
+                                    <Grid>
+                                        <Grid 
+                                            x:Name="WatermarkContent" 
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                            <ScrollViewer 
+                                                x:Name="PART_ContentHost" 
+                                                Margin="0" 
+                                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="Name" Value="PART_Watermark">
+                                <Setter Property="Text" Value="Hello World" />
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+
+                </DatePicker.Resources>
+
+
+            </DatePicker>
+
+
+
+            <Border
+                Grid.Row="4"
                 Margin="20,20,20,20"
                 CornerRadius="10"
                 Background="#35AAA3">

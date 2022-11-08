@@ -42,6 +42,11 @@ namespace CoupleWidgets.Widgets
             FirstName.Text = coupleData.firstCoupleName;
             SecondName.Text = coupleData.secondCoupleName;
 
+            DateTime parsedDate = DateTime.Parse(coupleData.startDate);
+            DateTime currentDate = DateTime.Now;
+
+            DayCount.Text = currentDate.Subtract(parsedDate).Days.ToString() + " days";
+
             if (coupleData.firstCoupleImage != "")
             {
                 loadCoupleImage(coupleData.firstCoupleImage, FirstImage);

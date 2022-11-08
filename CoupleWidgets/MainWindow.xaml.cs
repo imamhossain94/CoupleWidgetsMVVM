@@ -45,8 +45,10 @@ namespace CoupleWidgets
 
             FirstName.Text = coupleData.firstCoupleName;
             SecondName.Text = coupleData.secondCoupleName;
+            StartDate.Text = coupleData.startDate;
 
-            if(coupleData.firstCoupleImage != "")
+
+            if (coupleData.firstCoupleImage != "")
             {
                 loadCoupleImage(coupleData.firstCoupleImage, FirstImage);
             }
@@ -123,6 +125,12 @@ namespace CoupleWidgets
             helper.updateFirstName(FirstName.Text);
             helper.updateSecondName(SecondName.Text);
             helper.updateVisivility(true);
+
+            DateTime? selectedDate = StartDate.SelectedDate;
+            if (selectedDate.HasValue)
+            {
+                helper.updateStartDate(selectedDate.Value.ToString());
+            }
 
             // Hide current window
             Hide();

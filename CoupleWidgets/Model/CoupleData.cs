@@ -6,6 +6,7 @@ namespace CoupleWidgets.Model
     {
         public string firstCoupleName { get; set; }
         public string secondCoupleName { get; set; }
+        public string startDate { get; set; }
         public string firstCoupleImage { get; set; }
         public string secondCoupleImage { get; set; }
         public double windowPositionX { get; set; }
@@ -20,6 +21,7 @@ namespace CoupleWidgets.Model
 
                 firstCoupleName = (string)jObject["firstCoupleName"];
                 secondCoupleName = (string)jObject["secondCoupleName"];
+                startDate = (string)jObject["startDate"];
                 firstCoupleImage = (string)jObject["firstCoupleImage"];
                 secondCoupleImage = (string)jObject["secondCoupleImage"];
                 windowPositionX = (double)jObject["windowPositionX"];
