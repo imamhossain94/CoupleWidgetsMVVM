@@ -18,7 +18,7 @@ Keep your lover always with you!
 - ✅ Copy image file from source to application directory.
 - ✅ Store widget window position.
 - ✅ CRUD operations in data.json file.
-- ✅ Update desktop widget.
+- ✅ Update desktop widget frequently.
 
 
 ### Package Used
