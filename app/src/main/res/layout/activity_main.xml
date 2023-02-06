@@ -107,6 +107,11 @@
                 android:orientation="vertical">
 
                 <include
+                    layout="@layout/item_widget_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
                     layout="@layout/item_couple_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
