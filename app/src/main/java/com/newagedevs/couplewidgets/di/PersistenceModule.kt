@@ -20,7 +20,6 @@ val persistenceModule = module {
       .build()
   }
 
-  single { get<AppDatabase>().imageShapeDao() }
-  single { get<AppDatabase>().heartSymbolDao() }
+  single { get<AppDatabase>().coupleDao() }
 
 }

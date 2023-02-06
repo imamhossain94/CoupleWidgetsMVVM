@@ -25,8 +25,8 @@
             android:layout_height="36dp"
             android:layout_gravity="center"
             android:contentDescription="@string/frame"
-            android:src="@{shape.resID}"
-            app:tint="@color/white" />
+            app:imageSrc="@{shape.resID}"
+            app:tint="@color/white"/>
 
     </com.google.android.material.card.MaterialCardView>
 

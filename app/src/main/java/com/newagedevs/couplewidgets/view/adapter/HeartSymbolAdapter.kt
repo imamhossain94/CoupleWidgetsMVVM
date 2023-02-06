@@ -37,7 +37,7 @@ class HeartSymbolAdapter : RecyclerView.Adapter<HeartSymbolAdapter.HeartSymbolVi
 
     override fun onBindViewHolder(holder: HeartSymbolViewHolder, position: Int) {
         holder.binding.apply {
-            shape = items[position]
+            symbol = items[position]
             executePendingBindings()
         }
     }

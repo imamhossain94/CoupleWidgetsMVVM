@@ -5,9 +5,17 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="horse"-->
-        <!--            type="org.hisausapps.lasix.model.horse.Horse" />-->
+        <variable
+            name="vm"
+            type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
+
+        <variable
+            name="shape"
+            type="com.newagedevs.couplewidgets.view.adapter.ImageShapeAdapter" />
+
+        <variable
+            name="symbol"
+            type="com.newagedevs.couplewidgets.view.adapter.HeartSymbolAdapter" />
 
     </data>
 
@@ -57,6 +65,8 @@
                         android:padding="10dp"
                         android:background="@drawable/bg_rounded_light"
                         android:orientation="horizontal"
+                        app:adapter="@{shape}"
+                        app:adapterImageShapeList="@{vm.imageShapeList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_shape" />
 
@@ -80,6 +90,8 @@
                         android:padding="10dp"
                         android:background="@drawable/bg_rounded_light"
                         android:orientation="horizontal"
+                        app:adapter="@{symbol}"
+                        app:adapterHeartSymbolList="@{vm.heartSymbolList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_symbol" />
 

@@ -109,7 +109,10 @@
                 <include
                     layout="@layout/item_widget_setting"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:vm="@{vm}"
+                    app:shape="@{shape}"
+                    app:symbol="@{symbol}"/>
 
                 <include
                     layout="@layout/item_couple_details"

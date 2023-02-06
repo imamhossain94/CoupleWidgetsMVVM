@@ -1,13 +1,11 @@
 package com.newagedevs.couplewidgets.repository
 
-import com.newagedevs.couplewidgets.persistence.HeartSymbolDao
-import com.newagedevs.couplewidgets.persistence.ImageShapeDao
+import com.newagedevs.couplewidgets.persistence.CoupleDao
 import timber.log.Timber
 
 
 class MainRepository constructor(
-    private val imageShapeDao: ImageShapeDao,
-    private val heartSymbolDao: HeartSymbolDao
+    private val coupleDao: CoupleDao
 ) : Repository {
 
     init {
