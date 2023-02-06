@@ -80,4 +80,8 @@ dependencies {
     // debugging
     implementation "com.jakewharton.timber:timber:$versions.timberVersion"
 
+    // sheets
+    implementation "com.maxkeppeler.sheets:color:$versions.color"
+    implementation "com.maxkeppeler.sheets:calendar:$versions.calendar"
+
 }

@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="vm"
+            name="viewModel"
             type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
 
         <variable
@@ -32,7 +32,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="0dp"
-            android:text="WIDGET SETTINGS"
+            android:text="@string/widget_settings"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -56,17 +56,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Image frame shape"
-                        android:maxLines="1"/>
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:maxLines="1"
+                        android:text="@string/image_frame_shape" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
                         android:background="@drawable/bg_rounded_light"
                         android:orientation="horizontal"
+                        android:padding="10dp"
                         app:adapter="@{shape}"
-                        app:adapterImageShapeList="@{vm.imageShapeList}"
+                        app:adapterImageShapeList="@{viewModel.imageShapeList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_shape" />
 
@@ -81,17 +83,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Heart symbol"
-                        android:maxLines="1"/>
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:maxLines="1"
+                        android:text="@string/heart_symbol" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
                         android:background="@drawable/bg_rounded_light"
                         android:orientation="horizontal"
+                        android:padding="10dp"
                         app:adapter="@{symbol}"
-                        app:adapterHeartSymbolList="@{vm.heartSymbolList}"
+                        app:adapterHeartSymbolList="@{viewModel.heartSymbolList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_symbol" />
 
@@ -100,6 +104,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -112,23 +117,25 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Image shape border color"
-                            android:maxLines="1"/>
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="@string/image_shape_border_color" />
 
-                        <EditText
-                            android:id="@+id/et_your_name"
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_dark"
-                            android:drawableStart="@drawable/ic_circle"
                             android:drawablePadding="15dp"
-                            android:hint="#FFFFFF"
-                            android:inputType="textVisiblePassword"
+                            android:gravity="center|start"
+                            android:onClick="@{viewModel.colorPicker}"
                             android:padding="15dp"
+                            android:text="@string/white_color"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            app:drawableStartCompat="@drawable/ic_circle" />
 
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -140,19 +147,21 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Heart symbol color"
-                            android:maxLines="1"/>
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="@string/heart_symbol_color" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_dark"
-                            app:drawableStartCompat="@drawable/ic_circle"
                             android:drawablePadding="15dp"
-                            android:hint="#FFFFFF"
+                            android:gravity="center|start"
                             android:padding="15dp"
+                            android:text="@string/white_color"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            app:drawableStartCompat="@drawable/ic_circle" />
 
                     </LinearLayout>
 
@@ -161,6 +170,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -173,20 +183,21 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Couple name color"
-                            android:maxLines="1"/>
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="@string/couple_name_color" />
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_dark"
-                            android:drawableStart="@drawable/ic_circle"
                             android:drawablePadding="15dp"
-                            android:hint="#FFFFFF"
-                            android:inputType="text"
+                            android:gravity="center|start"
                             android:padding="15dp"
+                            android:text="@string/white_color"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            app:drawableStartCompat="@drawable/ic_circle" />
 
                     </LinearLayout>
 
@@ -200,20 +211,21 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Counter clock text color"
-                            android:maxLines="1"/>
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="@string/counter_clock_text_color" />
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_dark"
-                            app:drawableStartCompat="@drawable/ic_circle"
                             android:drawablePadding="15dp"
-                            android:hint="#FFFFFF"
-                            android:inputType="text"
+                            android:gravity="center|start"
                             android:padding="15dp"
+                            android:text="@string/white_color"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            app:drawableStartCompat="@drawable/ic_circle" />
 
                     </LinearLayout>
 

@@ -1,6 +1,6 @@
 ext.versions = [
     minSdk              : 23,
-    compileSdk          : 32,
+    compileSdk          : 33,
     targetSdk           : 32,
     versionCode         : 1,
     versionName         : '1.0.0',
@@ -42,4 +42,10 @@ ext.versions = [
 
     // debugging
     timberVersion       : '4.7.1',
+
+    // sheets
+    color              : '2.3.1',
+    calendar              : '2.3.1',
+
+
 ]

@@ -4,9 +4,9 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="horse"-->
-        <!--            type="org.hisausapps.lasix.model.horse.Horse" />-->
+        <variable
+            name="viewModel"
+            type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
 
     </data>
 
@@ -23,7 +23,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="0dp"
-            android:text="DATE AND TIME"
+            android:text="@string/date_and_time"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -47,19 +47,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Relationship start date" />
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/relationship_start_date" />
 
-                    <EditText
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_rounded_dark"
-                        android:drawableStart="@drawable/ic_calender"
                         android:drawablePadding="15dp"
-                        android:hint="@string/_1997_12_07"
-                        android:inputType="text"
+                        android:gravity="center|start"
                         android:padding="15dp"
+                        android:text="@string/_1997_12_07"
                         android:textColor="#FFFFFF"
-                        android:textColorHint="#D4D4D4" />
+                        android:onClick="@{viewModel.datePicker}"
+                        app:drawableStartCompat="@drawable/ic_calender" />
 
                 </LinearLayout>
 
@@ -72,19 +74,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Your birthday" />
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/your_birthday" />
 
-                    <EditText
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_rounded_dark"
-                        android:drawableStart="@drawable/ic_birthday"
                         android:drawablePadding="15dp"
+                        android:gravity="center|start"
                         android:hint="@string/_1997_12_07"
-                        android:inputType="text"
                         android:padding="15dp"
+                        android:text="@string/_1997_12_07"
                         android:textColor="#FFFFFF"
-                        android:textColorHint="#D4D4D4" />
+                        app:drawableStartCompat="@drawable/ic_birthday" />
 
                 </LinearLayout>
 
@@ -97,19 +101,20 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="5dp"
                         android:text="Your partner's birthday" />
 
-                    <EditText
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_rounded_dark"
-                        android:drawableStart="@drawable/ic_birthday"
                         android:drawablePadding="15dp"
-                        android:hint="@string/_1997_12_07"
-                        android:inputType="text"
+                        android:gravity="center|start"
                         android:padding="15dp"
+                        android:text="@string/_1997_12_07"
                         android:textColor="#FFFFFF"
-                        android:textColorHint="#D4D4D4" />
+                        app:drawableStartCompat="@drawable/ic_birthday" />
 
                 </LinearLayout>
 

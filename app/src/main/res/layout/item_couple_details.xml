@@ -23,7 +23,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="0dp"
-            android:text="COUPLE DETAILS"
+            android:text="@string/couple_details"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -41,7 +41,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -53,7 +54,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Your name" />
+                            android:text="@string/your_name"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"/>
 
                         <EditText
                             android:id="@+id/et_your_name"
@@ -62,11 +65,12 @@
                             android:background="@drawable/bg_rounded_dark"
                             android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:hint="Imam"
+                            android:hint="@string/imam"
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            android:textColorHint="#D4D4D4"
+                            android:autofillHints="name" />
 
                     </LinearLayout>
 
@@ -80,7 +84,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Your image" />
+                            android:text="@string/your_image"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -88,7 +94,8 @@
                             android:background="@drawable/bg_rounded_dark"
                             app:drawableStartCompat="@drawable/ic_picture"
                             android:drawablePadding="15dp"
-                            android:text="Choose image"
+                            android:text="@string/choose_image"
+                            android:gravity="center|start"
                             android:padding="15dp"
                             android:textColor="#FFFFFF"
                             android:textColorHint="#D4D4D4" />
@@ -100,7 +107,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -112,7 +120,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Partner name" />
+                            android:text="@string/partner_name"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"/>
 
                         <EditText
                             android:layout_width="match_parent"
@@ -120,11 +130,12 @@
                             android:background="@drawable/bg_rounded_dark"
                             android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:hint="Single"
+                            android:hint="@string/single"
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            android:textColorHint="#D4D4D4"
+                            android:autofillHints="name" />
 
                     </LinearLayout>
 
@@ -138,7 +149,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Partner image" />
+                            android:text="@string/partner_image"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -146,7 +159,8 @@
                             android:background="@drawable/bg_rounded_dark"
                             app:drawableStartCompat="@drawable/ic_picture"
                             android:drawablePadding="15dp"
-                            android:text="Choose image"
+                            android:text="@string/choose_image"
+                            android:gravity="center|start"
                             android:padding="15dp"
                             android:textColor="#FFFFFF"
                             android:textColorHint="#D4D4D4" />
