@@ -1,0 +1,12 @@
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="200dp"
+    android:minHeight="80dp"
+    android:updatePeriodMillis="0"
+    android:previewImage="@drawable/preview"
+    android:resizeMode="horizontal|vertical"
+    android:initialLayout="@layout/couple_widget_layout"
+    android:configure="com.newagedevs.couplewidgets.view.ui.MainActivity"
+    android:widgetFeatures="reconfigurable"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

@@ -2,10 +2,13 @@ package com.newagedevs.couplewidgets.view.ui
 
 import android.view.View
 import androidx.databinding.Bindable
-import com.maxkeppeler.sheets.calendar.CalendarMode
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.maxkeppeler.sheets.option.OptionSheet
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
 import com.maxkeppeler.sheets.color.ColorSheet
+import com.maxkeppeler.sheets.option.Option
+import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.model.HeartSymbol
 import com.newagedevs.couplewidgets.model.ImageShape
 import com.newagedevs.couplewidgets.repository.MainRepository
@@ -55,6 +58,33 @@ class MainViewModel constructor(
             }
 
 
+        }
+
+    }
+
+    fun imagePicker(view: View) {
+
+        OptionSheet().show(view.context) {
+            title("Choose")
+            with(
+                Option(R.drawable.ic_camera, "Camera"),
+                Option(R.drawable.ic_picture, "Gallery")
+            )
+            onPositive { index: Int, _: Option ->
+                if(index == 0) {
+                    ImagePicker.with(this)
+                        .cameraOnly()
+                        .cropSquare()
+                        .compress(1024)
+                        .start()
+                }else if(index == 1) {
+                    ImagePicker.with(this)
+                        .galleryOnly()
+                        .cropSquare()
+                        .compress(1024)
+                        .start()
+                }
+            }
         }
 
     }

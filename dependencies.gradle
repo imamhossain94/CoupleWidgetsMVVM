@@ -44,8 +44,12 @@ ext.versions = [
     timberVersion       : '4.7.1',
 
     // sheets
-    color              : '2.3.1',
-    calendar              : '2.3.1',
+    color               : '2.3.1',
+    calendar            : '2.3.1',
+    option              : '2.3.1',
+
+    // imagepicker
+    imagepicker         : '2.1',
 
 
 ]

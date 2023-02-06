@@ -83,5 +83,9 @@ dependencies {
     // sheets
     implementation "com.maxkeppeler.sheets:color:$versions.color"
     implementation "com.maxkeppeler.sheets:calendar:$versions.calendar"
+    implementation "com.maxkeppeler.sheets:option:$versions.option"
+
+    // image picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
 }

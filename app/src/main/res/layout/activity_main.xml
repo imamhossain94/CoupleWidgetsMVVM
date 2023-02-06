@@ -117,7 +117,8 @@
                 <include
                     layout="@layout/item_couple_details"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:viewModel="@{vm}"/>
 
                 <include
                     layout="@layout/item_date_and_time"

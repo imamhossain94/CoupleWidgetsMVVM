@@ -4,9 +4,9 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="horse"-->
-        <!--            type="org.hisausapps.lasix.model.horse.Horse" />-->
+        <variable
+            name="viewModel"
+            type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
 
     </data>
 
@@ -98,7 +98,7 @@
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:textColor="#FFFFFF"
-                            android:textColorHint="#D4D4D4" />
+                            android:onClick="@{viewModel.imagePicker}"/>
 
                     </LinearLayout>
 
