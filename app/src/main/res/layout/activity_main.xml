@@ -97,47 +97,29 @@
         </LinearLayout>
 
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="0dp"
-                android:text="WIDGET SETTINGS"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="15dp">
-
-                <LinearLayout
+                <include
+                    layout="@layout/item_couple_details"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
+                    android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Image frame shape" />
+                <include
+                    layout="@layout/item_date_and_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
+        </ScrollView>
 
 
     </LinearLayout>
