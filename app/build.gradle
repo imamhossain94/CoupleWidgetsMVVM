@@ -86,6 +86,9 @@ dependencies {
     implementation "com.maxkeppeler.sheets:option:$versions.option"
 
     // image picker
-    implementation 'com.github.dhaval2404:imagepicker:2.1'
+    implementation "com.github.dhaval2404:imagepicker:$versions.imagepicker"
+
+    // gson
+    implementation "com.google.code.gson:gson:$versions.gson"
 
 }

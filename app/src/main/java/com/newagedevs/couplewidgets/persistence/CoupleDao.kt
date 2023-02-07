@@ -12,6 +12,9 @@ interface CoupleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCouple(shape: Couple)
 
+    @Query("SELECT * FROM Couple WHERE id = :id_")
+    fun getCouple(id_: Long): Couple
+
     @Query("SELECT * FROM Couple")
     fun getCouples(): List<Couple>
 

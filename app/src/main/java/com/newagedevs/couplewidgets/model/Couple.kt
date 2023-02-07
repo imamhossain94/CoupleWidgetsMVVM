@@ -9,6 +9,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Couple (
     @PrimaryKey
-    val id       : Long?,
-    var name    : String
+    val id              : Long?,
+    var frame           : Decorator?,
+    var heart           : Decorator?,
+    val nameColor       : Int?,
+    val counterColor    : Int?,
+    val you             : Person?,
+    val partner         : Person?,
 ) : Parcelable
+
+
+
+

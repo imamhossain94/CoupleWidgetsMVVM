@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.newagedevs.couplewidgets.model.Couple
 
 @Database(entities = [Couple::class], version = 1, exportSchema = true)
-@TypeConverters(value = [])
+@TypeConverters(value = [DecoratorConverter::class, PersonConverter::class])
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun coupleDao(): CoupleDao
