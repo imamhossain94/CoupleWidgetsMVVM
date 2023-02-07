@@ -54,4 +54,7 @@ ext.versions = [
     // gson
     gson                : '2.9.0',
 
+    // svg path kotlin
+    svgPathKotlin       : '0.3.0',
+
 ]

@@ -91,4 +91,7 @@ dependencies {
     // gson
     implementation "com.google.code.gson:gson:$versions.gson"
 
+    // svg path kotlin
+    implementation "com.github.slaviboy:SVGPathKotlin:$versions.svgPathKotlin"
+
 }
