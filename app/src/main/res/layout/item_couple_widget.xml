@@ -27,17 +27,12 @@
             android:layout_gravity="center|end"
             android:gravity="center|end">
 
-<!--            <ImageView-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:src="@drawable/ic_circle"/>-->
-
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                app:bitmap="@{viewModel.yourImage}"/>
+                app:bitmap="@{viewModel.yourImage}"
+                app:shape="@{viewModel.shape}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +40,7 @@
                 android:text="@={viewModel.yourName}"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColor="#989898"/>
+                android:textColor="@{viewModel.nameColor}"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,8 +52,8 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/symbol_1"
-                app:tint="@color/white"/>
+                app:resource="@{viewModel.symbol}"
+                app:tint="@{viewModel.symbolColor}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,7 +62,7 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textSize="24sp"
-                android:textColor="#FFFFFF"/>
+                android:textColor="@{viewModel.counterColor}"/>
 
             <android.widget.TextClock
                 android:id="@+id/clock"
@@ -77,7 +72,8 @@
                 android:gravity="center"
                 android:format12Hour="k'h' mm'm' ss's'"
                 android:format24Hour="k'h' mm'm' ss's'"
-                android:textColor="#989898" />
+                android:textColor="@{viewModel.counterColor}"
+                android:alpha="0.7"/>
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +88,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                app:bitmap="@{viewModel.partnerImage}"/>
+                app:bitmap="@{viewModel.partnerImage}"
+                app:shape="@{viewModel.shape}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -100,7 +97,7 @@
                 android:layout_gravity="center"
                 android:text="@={viewModel.partnerName}"
                 android:gravity="center"
-                android:textColor="#989898"/>
+                android:textColor="@{viewModel.nameColor}"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -8,7 +8,7 @@ import com.slaviboy.svgpath.SvgPath
 
 object VectorDrawableMasker {
 
-    private fun maskImage(
+    fun maskImage(
         context: Context,
         image: Bitmap,
         mask: Int,

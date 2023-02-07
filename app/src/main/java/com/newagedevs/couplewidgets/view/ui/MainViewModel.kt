@@ -3,6 +3,7 @@ package com.newagedevs.couplewidgets.view.ui
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -49,6 +50,23 @@ class MainViewModel constructor(
     @get:Bindable
     var partnerImage: Bitmap? by bindingProperty(null)
 
+    @get:Bindable
+    var shape: Int? by bindingProperty(R.drawable.shape_1)
+
+    @get:Bindable
+    var shapeColor: Int? by bindingProperty(Color.WHITE)
+
+    @get:Bindable
+    var symbol: Int? by bindingProperty(R.drawable.symbol_1)
+
+    @get:Bindable
+    var symbolColor: Int? by bindingProperty(Color.WHITE)
+
+    @get:Bindable
+    var nameColor: Int? by bindingProperty(Color.WHITE)
+
+    @get:Bindable
+    var counterColor: Int? by bindingProperty(Color.WHITE)
 
     // Widget settings
     fun shapePicker(view: View) {
@@ -80,6 +98,7 @@ class MainViewModel constructor(
                 textView.text = shapeTitles[index]
                 textView.setCompoundDrawables(image, null, null, null)
 
+                shape = shapes[index]
             }
         }
 
@@ -115,6 +134,7 @@ class MainViewModel constructor(
                 textView.text = symbolTitles[index]
                 textView.setCompoundDrawables(image, null, null, null)
 
+                symbol = symbols[index]
             }
         }
 
@@ -123,18 +143,34 @@ class MainViewModel constructor(
 
     fun colorPicker(view: View) {
 
+        val textView = view as TextView
+        val tag = textView.tag
+
         ColorSheet().show(view.context) {
             title("Select color")
             onPositive { color ->
                 // Use color
                 val hexColor = "#${Integer.toHexString(color).uppercase()}"
 
-                val textView = view as TextView
                 textView.text = hexColor
                 textView.setTextColor(color)
                 textView.compoundDrawables[0].setTint(color)
 
-                textView.tag
+                when (tag) {
+                    "Shape Color" -> {
+                        shapeColor = color
+                    }
+                    "Symbol Color" -> {
+                        symbolColor = color
+                    }
+                    "Counter Color" -> {
+                        counterColor = color
+                    }
+                    "Name Color" -> {
+                        nameColor = color
+                    }
+                }
+
 
             }
         }
@@ -147,7 +183,7 @@ class MainViewModel constructor(
 
         val textView = view as TextView
 
-        val requestCode = if (textView.tag == "Your image")  1094 else 1095
+        val requestCode = if (textView.tag == "Your image") 1094 else 1095
 
         OptionSheet().show(view.context) {
             title("Choose")
@@ -156,12 +192,12 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_picture, "Gallery")
             )
             onPositive { index: Int, _: Option ->
-                if(index == 0) {
+                if (index == 0) {
                     ImagePicker.with(view.context as Activity)
                         .cameraOnly()
                         .cropSquare()
                         .start(requestCode)
-                }else if(index == 1) {
+                } else if (index == 1) {
                     ImagePicker.with(view.context as Activity)
                         .galleryOnly()
                         .cropSquare()

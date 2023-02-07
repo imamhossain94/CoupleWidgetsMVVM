@@ -7,8 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -17,9 +17,6 @@ import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
 import com.skydoves.bindables.BindingActivity
 import org.koin.android.viewmodel.ext.android.getViewModel
-import android.net.Uri
-import android.view.View
-import androidx.lifecycle.Observer
 import java.io.InputStream
 
 
