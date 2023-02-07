@@ -1,5 +1,11 @@
 package com.newagedevs.couplewidgets.view.ui
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -30,6 +36,18 @@ class MainViewModel constructor(
     @get:Bindable
     var toast: String? by bindingProperty(null)
         private set
+
+    @get:Bindable
+    var yourName: String? by bindingProperty(null)
+
+    @get:Bindable
+    var partnerName: String? by bindingProperty(null)
+
+    @get:Bindable
+    var yourImage: Bitmap? by bindingProperty(null)
+
+    @get:Bindable
+    var partnerImage: Bitmap? by bindingProperty(null)
 
 
     // Widget settings
@@ -127,6 +145,10 @@ class MainViewModel constructor(
     // Couple details
     fun imagePicker(view: View) {
 
+        val textView = view as TextView
+
+        val requestCode = if (textView.tag == "Your image")  1094 else 1095
+
         OptionSheet().show(view.context) {
             title("Choose")
             with(
@@ -135,17 +157,15 @@ class MainViewModel constructor(
             )
             onPositive { index: Int, _: Option ->
                 if(index == 0) {
-                    ImagePicker.with(this)
+                    ImagePicker.with(view.context as Activity)
                         .cameraOnly()
                         .cropSquare()
-                        .compress(1024)
-                        .start()
+                        .start(requestCode)
                 }else if(index == 1) {
-                    ImagePicker.with(this)
+                    ImagePicker.with(view.context as Activity)
                         .galleryOnly()
                         .cropSquare()
-                        .compress(1024)
-                        .start()
+                        .start(requestCode)
                 }
             }
         }

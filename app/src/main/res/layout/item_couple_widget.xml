@@ -27,16 +27,22 @@
             android:layout_gravity="center|end"
             android:gravity="center|end">
 
+<!--            <ImageView-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_circle"/>-->
+
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_circle"/>
+                app:bitmap="@{viewModel.yourImage}"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="imam"
+                android:text="@={viewModel.yourName}"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textColor="#989898"/>
@@ -86,13 +92,13 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_circle"/>
+                app:bitmap="@{viewModel.partnerImage}"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="imam"
+                android:text="@={viewModel.partnerName}"
                 android:gravity="center"
                 android:textColor="#989898"/>
         </LinearLayout>

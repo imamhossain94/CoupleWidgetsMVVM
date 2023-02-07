@@ -71,7 +71,7 @@
                             android:padding="15dp"
                             android:textColor="#000000"
                             android:textColorHint="#717171"
-                            android:autofillHints="name"
+                            android:text="@={viewModel.yourName}"
                             android:drawableTint="@color/black"/>
 
                     </LinearLayout>
@@ -139,7 +139,7 @@
                             android:padding="15dp"
                             android:textColor="#000000"
                             android:textColorHint="#717171"
-                            android:autofillHints="name"
+                            android:text="@={viewModel.partnerName}"
                             android:drawableTint="@color/black"/>
 
                     </LinearLayout>
