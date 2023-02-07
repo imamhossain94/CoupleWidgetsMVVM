@@ -11,14 +11,6 @@
             name="vm"
             type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
 
-        <variable
-            name="shape"
-            type="com.newagedevs.couplewidgets.view.adapter.ImageShapeAdapter" />
-
-        <variable
-            name="symbol"
-            type="com.newagedevs.couplewidgets.view.adapter.HeartSymbolAdapter" />
-
     </data>
 
 

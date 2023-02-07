@@ -34,12 +34,6 @@ class MainViewModel constructor(
     var toast: String? by bindingProperty(null)
         private set
 
-    @get:Bindable
-    var imageShapeList: List<ImageShape> by bindingProperty(listOf())
-
-    @get:Bindable
-    var heartSymbolList: List<HeartSymbol>? by bindingProperty(listOf())
-
 
     // Widget settings
     fun shapePicker(view: View) {

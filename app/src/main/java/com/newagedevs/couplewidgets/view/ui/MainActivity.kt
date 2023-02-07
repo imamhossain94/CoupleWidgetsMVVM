@@ -8,10 +8,6 @@ import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
-import com.newagedevs.couplewidgets.model.HeartSymbol
-import com.newagedevs.couplewidgets.model.ImageShape
-import com.newagedevs.couplewidgets.view.adapter.HeartSymbolAdapter
-import com.newagedevs.couplewidgets.view.adapter.ImageShapeAdapter
 import com.skydoves.bindables.BindingActivity
 import org.koin.android.viewmodel.ext.android.getViewModel
 
@@ -27,32 +23,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding {
             vm = viewModel
-            shape = ImageShapeAdapter()
-            symbol = HeartSymbolAdapter()
         }
-
-        val shapes = ArrayList<ImageShape>()
-        val symbols = ArrayList<HeartSymbol>()
-
-        for (i in 1..8) {
-            if (i <= 6) {
-                shapes.add(
-                    ImageShape(
-                        resID = resources.getIdentifier("shape_$i", "drawable", packageName),
-                        active = false
-                    )
-                )
-            }
-            symbols.add(
-                HeartSymbol(
-                    resID = resources.getIdentifier("symbol_$i", "drawable", packageName),
-                    active = false
-                )
-            )
-        }
-
-        viewModel.imageShapeList = shapes
-        viewModel.heartSymbolList = symbols
 
         setupPreviewFrame()
     }
