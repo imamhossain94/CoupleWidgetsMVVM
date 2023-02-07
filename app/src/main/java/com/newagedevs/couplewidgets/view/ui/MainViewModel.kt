@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Bindable
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.color.MaterialColors
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
 import com.maxkeppeler.sheets.calendar.utils.toLocalDate
@@ -14,8 +13,6 @@ import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.px
-import com.newagedevs.couplewidgets.model.HeartSymbol
-import com.newagedevs.couplewidgets.model.ImageShape
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty

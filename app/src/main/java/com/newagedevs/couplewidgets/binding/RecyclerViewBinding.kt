@@ -5,9 +5,6 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.newagedevs.couplewidgets.model.HeartSymbol
-import com.newagedevs.couplewidgets.model.ImageShape
-import com.skydoves.whatif.whatIfNotNullAs
 import com.skydoves.whatif.whatIfNotNullOrEmpty
 
 object RecyclerViewBinding {
