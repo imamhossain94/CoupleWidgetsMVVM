@@ -20,6 +20,7 @@ class MainRepository constructor(
     }
 
     fun setCouple(couple:Couple) {
+        coupleDao.deleteCouples()
         coupleDao.insertCouple(couple)
     }
 

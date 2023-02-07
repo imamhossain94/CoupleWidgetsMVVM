@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:background="#F2F2F2"
         android:orientation="vertical"
+        app:toast="@{vm.toast}"
         tools:context=".view.ui.DashboardActivity">
 
         <LinearLayout
@@ -57,7 +58,10 @@
                     android:background="@drawable/bg_icon"
                     android:contentDescription="@string/menu"
                     android:padding="15dp"
-                    android:src="@drawable/ic_check" />
+                    android:src="@drawable/ic_check"
+                    android:onClick="@{vm.submitData}"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
             </LinearLayout>
 

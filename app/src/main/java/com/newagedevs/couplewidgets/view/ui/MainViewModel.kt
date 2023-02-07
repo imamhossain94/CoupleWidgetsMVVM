@@ -16,13 +16,15 @@ import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.px
+import com.newagedevs.couplewidgets.model.Couple
+import com.newagedevs.couplewidgets.model.Decorator
+import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
 
 
 class MainViewModel constructor(
@@ -30,6 +32,9 @@ class MainViewModel constructor(
 ) : BindingViewModel() {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+    @get:Bindable
+    var toast: String? by bindingProperty(null)
 
     @get:Bindable
     var yourName: String? by bindingProperty("nickname")
@@ -154,12 +159,11 @@ class MainViewModel constructor(
         ColorSheet().show(view.context) {
             title("Select ${tag.toString().lowercase()}")
             onPositive { color ->
-                // Use color
-                val hexColor = "#${Integer.toHexString(color).uppercase()}"
-
-                textView.text = hexColor
-                textView.setTextColor(color)
-                textView.compoundDrawables[0].setTint(color)
+//              Use color
+//              val hexColor = "#${Integer.toHexString(color).uppercase()}"
+//              textView.text = hexColor
+//              textView.setTextColor(color)
+//              textView.compoundDrawables[0].setTint(color)
 
                 when (tag) {
                     "Shape Color" -> {
@@ -188,7 +192,8 @@ class MainViewModel constructor(
         val textView = view as TextView
 
         val requestCode = if (textView.tag == "Your image") 1094 else 1095
-        val title = if (textView.tag == "Your image") "Choose your image" else "Choose your partner image"
+        val title =
+            if (textView.tag == "Your image") "Choose your image" else "Choose your partner image"
 
         OptionSheet().show(view.context) {
             title(title)
@@ -262,6 +267,24 @@ class MainViewModel constructor(
 
     }
 
+    fun submitData(view: View) {
+
+        val couple = Couple(
+            id = 0,
+            frame = Decorator(shape, shapeColor),
+            heart = Decorator(symbol, symbolColor),
+            nameColor = nameColor,
+            counterColor = counterColor,
+            you = Person(yourName, yourBirthday, yourImage),
+            partner = Person(partnerName, partnerBirthday, partnerImage),
+            fallInLove = fallInLove,
+            inRelation = inRelation
+        )
+
+        mainRepository.setCouple(couple)
+
+        toast = "Updated..."
+    }
 
     private fun initializeData() {
 
@@ -284,6 +307,9 @@ class MainViewModel constructor(
 
             nameColor = couple.nameColor
             counterColor = couple.counterColor
+
+            fallInLove = couple.fallInLove
+            inRelation = couple.inRelation
         }
 
     }

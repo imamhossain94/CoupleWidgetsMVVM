@@ -3,12 +3,14 @@ package com.newagedevs.couplewidgets.persistence
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import androidx.room.TypeConverter
+import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
+import org.json.JSONObject
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
 
@@ -39,8 +41,12 @@ class PersonConverter {
         val image = obj.get("image").asString
 
         // Base64 string to bitmap
-        val base64 = Base64.decode(image, Base64.DEFAULT)
-        val bitmap = BitmapFactory.decodeByteArray(base64, 0, base64.size)
+        var bitmap:Bitmap? = null
+        try{
+            val base64 = Base64.decode(image, Base64.DEFAULT)
+            bitmap = BitmapFactory.decodeByteArray(base64, 0, base64.size)
+
+        }catch(_: Exception){}
 
         return Person(name, birthday, bitmap)
     }
@@ -49,11 +55,16 @@ class PersonConverter {
     fun fromObject(obj: Person): String {
 
         // Bitmap to base64 string
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        obj.image?.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-        val byte = byteArrayOutputStream.toByteArray()
-        val base64 = Base64.encodeToString(byte, Base64.DEFAULT)
+        var base64:String? = null
+        try{
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            obj.image?.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byte = byteArrayOutputStream.toByteArray()
+            base64 = Base64.encodeToString(byte, Base64.DEFAULT)
+        }catch(_: Exception){}
 
-        return "{ 'name': ${obj.name}, 'birthday': ${obj.birthday}, 'image': $base64 }"
+        val jsonObject = JSONObject("{\"name\":\"${obj.name}\", \"birthday\":\"${obj.birthday}\", \"image\":\"$base64\"}")
+
+        return jsonObject.toString()
     }
 }

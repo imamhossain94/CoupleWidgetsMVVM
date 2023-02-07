@@ -94,10 +94,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 }
             }
             ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                viewModel.toast = ImagePicker.getError(data)
             }
             else -> {
-                Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                viewModel.toast = "Task Cancelled"
             }
         }
     }

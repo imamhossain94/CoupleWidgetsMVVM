@@ -42,8 +42,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -55,9 +55,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="@string/your_name"
                             android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"/>
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/your_name" />
 
                         <EditText
                             android:id="@+id/et_your_name"
@@ -66,15 +66,16 @@
                             android:background="@drawable/bg_rounded_light"
                             android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
+                            android:drawableTint="@color/black"
                             android:hint="@string/imam"
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
-                            android:textColor="#000000"
-                            android:textColorHint="#717171"
                             android:text="@={viewModel.yourName}"
-                            android:drawableTint="@color/black"/>
+                            android:textColor="#000000"
+                            android:textColorHint="#717171" />
 
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -86,23 +87,23 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="@string/your_image"
                             android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"/>
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/partner_name" />
 
-                        <TextView
+                        <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_light"
-                            app:drawableStartCompat="@drawable/ic_picture"
+                            android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:text="@string/choose_image"
-                            android:gravity="center|start"
+                            android:drawableTint="@color/black"
+                            android:hint="@string/single"
+                            android:inputType="textVisiblePassword"
                             android:padding="15dp"
+                            android:text="@={viewModel.partnerName}"
                             android:textColor="#000000"
-                            android:onClick="@{viewModel.imagePicker}"
-                            android:tag="@string/your_image"
-                            app:drawableTint="@color/black"/>
+                            android:textColorHint="#717171" />
 
                     </LinearLayout>
 
@@ -111,8 +112,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -124,26 +125,27 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="@string/partner_name"
                             android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"/>
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/your_image" />
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_light"
-                            android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:hint="@string/single"
-                            android:inputType="textVisiblePassword"
+                            android:gravity="center|start"
+                            android:onClick="@{viewModel.imagePicker}"
                             android:padding="15dp"
+                            android:tag="@string/your_image"
+                            android:text="@string/choose_image"
                             android:textColor="#000000"
-                            android:textColorHint="#717171"
-                            android:text="@={viewModel.partnerName}"
-                            android:drawableTint="@color/black"/>
+                            app:drawableStartCompat="@drawable/ic_picture"
+                            app:drawableTint="@color/black" />
 
                     </LinearLayout>
 
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -154,24 +156,24 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="@string/partner_image"
                             android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"/>
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/partner_image" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_light"
-                            app:drawableStartCompat="@drawable/ic_picture"
                             android:drawablePadding="15dp"
-                            android:text="@string/choose_image"
                             android:gravity="center|start"
+                            android:onClick="@{viewModel.imagePicker}"
                             android:padding="15dp"
+                            android:tag="partner_image"
+                            android:text="@string/choose_image"
                             android:textColor="#000000"
                             android:textColorHint="#D4D4D4"
-                            app:drawableTint="@color/black"
-                            android:onClick="@{viewModel.imagePicker}"
-                            android:tag="partner_image"/>
+                            app:drawableStartCompat="@drawable/ic_picture"
+                            app:drawableTint="@color/black" />
 
                     </LinearLayout>
 

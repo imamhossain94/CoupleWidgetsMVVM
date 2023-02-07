@@ -19,5 +19,5 @@ interface CoupleDao {
     fun getCouples(): List<Couple>
 
     @Query("DELETE FROM Couple")
-    fun deleteCouple()
+    fun deleteCouples()
 }
