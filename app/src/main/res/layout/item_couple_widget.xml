@@ -42,35 +42,36 @@
                 android:textColor="#989898"/>
         </LinearLayout>
 
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/symbol_1"/>
+                android:src="@drawable/symbol_1"
+                app:tint="@color/white"/>
 
-            <android.widget.TextClock
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:singleLine="true"
-                android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1y 8m 11d"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"/>
 
             <android.widget.TextClock
                 android:id="@+id/clock"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:singleLine="true"
                 android:gravity="center"
-                android:format24Hour="k'h' mm'm' s's'"
-                android:visibility="visible" />
-
+                android:format12Hour="k'h' mm'm' ss's'"
+                android:format24Hour="k'h' mm'm' ss's'"
+                android:textColor="#989898" />
         </LinearLayout>
 
         <LinearLayout
