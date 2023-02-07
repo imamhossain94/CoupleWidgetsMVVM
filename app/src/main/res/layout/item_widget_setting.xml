@@ -9,14 +9,6 @@
             name="viewModel"
             type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
 
-        <variable
-            name="shape"
-            type="com.newagedevs.couplewidgets.view.adapter.ImageShapeAdapter" />
-
-        <variable
-            name="symbol"
-            type="com.newagedevs.couplewidgets.view.adapter.HeartSymbolAdapter" />
-
     </data>
 
     <LinearLayout
@@ -40,7 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:cardCornerRadius="15dp">
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,60 +43,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="5dp"
-                        android:maxLines="1"
-                        android:text="@string/image_frame_shape" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_rounded_light"
-                        android:orientation="horizontal"
-                        android:padding="10dp"
-                        app:adapter="@{shape}"
-                        app:adapterImageShapeList="@{viewModel.imageShapeList}"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_shape" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="5dp"
-                        android:maxLines="1"
-                        android:text="@string/heart_symbol" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_rounded_light"
-                        android:orientation="horizontal"
-                        android:padding="10dp"
-                        app:adapter="@{symbol}"
-                        app:adapterHeartSymbolList="@{viewModel.heartSymbolList}"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_symbol" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
 
@@ -120,48 +59,54 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginBottom="5dp"
                             android:maxLines="1"
-                            android:text="@string/image_shape_border_color" />
+                            android:text="Image Shape" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_dark"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:onClick="@{viewModel.shapePicker}"
+                            android:padding="15dp"
+                            android:text="Select shape"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_circle"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:drawableTint="@color/black"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Shape Color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.colorPicker}"
+                            android:tag="shape_color"
                             android:padding="15dp"
-                            android:text="@string/white_color"
-                            android:textColor="#FFFFFF"
-                            app:drawableStartCompat="@drawable/ic_circle" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="@string/heart_symbol_color" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_dark"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@string/white_color"
-                            android:textColor="#FFFFFF"
-                            app:drawableStartCompat="@drawable/ic_circle" />
+                            android:text="#000000"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="@color/black"/>
 
                     </LinearLayout>
 
@@ -186,18 +131,91 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginBottom="5dp"
                             android:maxLines="1"
-                            android:text="@string/couple_name_color" />
+                            android:text="Symbol Shape" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_dark"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:onClick="@{viewModel.symbolPicker}"
+                            android:padding="15dp"
+                            android:text="Select shape"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/symbol_1"
+                            app:drawableTint="@color/black"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Symbol Color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="@string/white_color"
-                            android:textColor="#FFFFFF"
-                            app:drawableStartCompat="@drawable/ic_circle" />
+                            android:onClick="@{viewModel.colorPicker}"
+                            android:tag="symbol_color"
+                            android:text="#000000"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="@color/black"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Name Color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:padding="15dp"
+                            android:text="#000000"
+                            android:onClick="@{viewModel.colorPicker}"
+                            android:tag="name_color"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="@color/black"/>
 
                     </LinearLayout>
 
@@ -214,18 +232,21 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginBottom="5dp"
                             android:maxLines="1"
-                            android:text="@string/counter_clock_text_color" />
+                            android:text="Counter Color" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_dark"
+                            android:background="@drawable/bg_rounded_light"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="@string/white_color"
-                            android:textColor="#FFFFFF"
-                            app:drawableStartCompat="@drawable/ic_circle" />
+                            android:text="#000000"
+                            android:onClick="@{viewModel.colorPicker}"
+                            android:tag="counter_color"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="@color/black"/>
 
                     </LinearLayout>
 

@@ -31,92 +31,155 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            app:cardCornerRadius="15dp">
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/relationship_start_date" />
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_dark"
-                        android:drawablePadding="15dp"
-                        android:gravity="center|start"
-                        android:padding="15dp"
-                        android:text="@string/_1997_12_07"
-                        android:textColor="#FFFFFF"
-                        android:onClick="@{viewModel.datePicker}"
-                        app:drawableStartCompat="@drawable/ic_calender" />
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Fall in Love" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:padding="15dp"
+                            android:text="2000-01-01"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_calender"
+                            app:drawableTint="@color/black"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="fall_in_love"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="In a Relationship" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:padding="15dp"
+                            android:text="2000-01-01"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_calender"
+                            app:drawableTint="@color/black"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="in_a_relationship"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/your_birthday" />
-
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_dark"
-                        android:drawablePadding="15dp"
-                        android:gravity="center|start"
-                        android:hint="@string/_1997_12_07"
-                        android:padding="15dp"
-                        android:text="@string/_1997_12_07"
-                        android:textColor="#FFFFFF"
-                        app:drawableStartCompat="@drawable/ic_birthday" />
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Your Birthday" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:padding="15dp"
+                            android:text="2000-12-07"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_birthday"
+                            app:drawableTint="@color/black"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="your_birthday"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="1"
+                            android:text="Partner Birthday" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_light"
+                            android:drawablePadding="15dp"
+                            android:gravity="center|start"
+                            android:padding="15dp"
+                            android:text="2000-10-21"
+                            android:textColor="@color/black"
+                            app:drawableStartCompat="@drawable/ic_birthday"
+                            app:drawableTint="@color/black"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="partner_birthday"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="Your partner's birthday" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rounded_dark"
-                        android:drawablePadding="15dp"
-                        android:gravity="center|start"
-                        android:padding="15dp"
-                        android:text="@string/_1997_12_07"
-                        android:textColor="#FFFFFF"
-                        app:drawableStartCompat="@drawable/ic_birthday" />
-
-                </LinearLayout>
 
             </LinearLayout>
 

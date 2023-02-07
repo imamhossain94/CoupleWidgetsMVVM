@@ -73,7 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:cardCornerRadius="15dp">
+                app:cardCornerRadius="15dp"
+                app:cardBackgroundColor="#EBEBEB">
 
                 <FrameLayout
                     android:id="@+id/previewFrame"
@@ -87,10 +88,12 @@
                         android:contentDescription="@string/system_wallpaper"
                         android:scaleType="centerCrop" />
 
-                    <FrameLayout
-                        android:id="@+id/preview_view"
+                    <include
+                        layout="@layout/item_couple_widget"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        app:viewModel="@{vm}"/>
+
                 </FrameLayout>
             </androidx.cardview.widget.CardView>
 
@@ -110,9 +113,7 @@
                     layout="@layout/item_widget_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:viewModel="@{vm}"
-                    app:shape="@{shape}"
-                    app:symbol="@{symbol}"/>
+                    app:viewModel="@{vm}"/>
 
                 <include
                     layout="@layout/item_couple_details"
