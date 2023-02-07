@@ -68,12 +68,12 @@
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="2000-01-01"
+                            android:text="@{viewModel.fallInLove}"
                             android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_calender"
                             app:drawableTint="@color/black"
                             android:onClick="@{viewModel.datePicker}"
-                            android:tag="fall_in_love"/>
+                            android:tag="Fall in Love"/>
 
                     </LinearLayout>
 
@@ -90,7 +90,7 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginBottom="5dp"
                             android:maxLines="1"
-                            android:text="In a Relationship" />
+                            android:text="In Relation" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -99,12 +99,12 @@
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="2000-01-01"
+                            android:text="@{viewModel.inRelation}"
                             android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_calender"
                             app:drawableTint="@color/black"
                             android:onClick="@{viewModel.datePicker}"
-                            android:tag="in_a_relationship"/>
+                            android:tag="In Relation"/>
 
                     </LinearLayout>
 
@@ -138,12 +138,12 @@
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="2000-12-07"
+                            android:text="@{viewModel.yourBirthday}"
                             android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_birthday"
                             app:drawableTint="@color/black"
                             android:onClick="@{viewModel.datePicker}"
-                            android:tag="your_birthday"/>
+                            android:tag="Your Birthday"/>
 
                     </LinearLayout>
 
@@ -169,12 +169,12 @@
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
-                            android:text="2000-10-21"
+                            android:text="@{viewModel.partnerBirthday}"
                             android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_birthday"
                             app:drawableTint="@color/black"
                             android:onClick="@{viewModel.datePicker}"
-                            android:tag="partner_birthday"/>
+                            android:tag="Partner Birthday"/>
 
                     </LinearLayout>
 

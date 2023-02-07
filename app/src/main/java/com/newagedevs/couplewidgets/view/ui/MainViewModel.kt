@@ -1,12 +1,8 @@
 package com.newagedevs.couplewidgets.view.ui
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -24,25 +20,22 @@ import com.newagedevs.couplewidgets.repository.MainRepository
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class MainViewModel constructor(
     private val mainRepository: MainRepository
 ) : BindingViewModel() {
 
-    @get:Bindable
-    var isLoading: Boolean by bindingProperty(false)
-        private set
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     @get:Bindable
-    var toast: String? by bindingProperty(null)
-        private set
+    var yourName: String? by bindingProperty("nickname")
 
     @get:Bindable
-    var yourName: String? by bindingProperty(null)
-
-    @get:Bindable
-    var partnerName: String? by bindingProperty(null)
+    var partnerName: String? by bindingProperty("nickname")
 
     @get:Bindable
     var yourImage: Bitmap? by bindingProperty(null)
@@ -67,6 +60,18 @@ class MainViewModel constructor(
 
     @get:Bindable
     var counterColor: Int? by bindingProperty(Color.WHITE)
+
+    @get:Bindable
+    var fallInLove: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+
+    @get:Bindable
+    var inRelation: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+
+    @get:Bindable
+    var yourBirthday: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+
+    @get:Bindable
+    var partnerBirthday: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
 
     // Widget settings
     fun shapePicker(view: View) {
@@ -147,7 +152,7 @@ class MainViewModel constructor(
         val tag = textView.tag
 
         ColorSheet().show(view.context) {
-            title("Select color")
+            title("Select ${tag.toString().lowercase()}")
             onPositive { color ->
                 // Use color
                 val hexColor = "#${Integer.toHexString(color).uppercase()}"
@@ -171,7 +176,6 @@ class MainViewModel constructor(
                     }
                 }
 
-
             }
         }
 
@@ -184,9 +188,10 @@ class MainViewModel constructor(
         val textView = view as TextView
 
         val requestCode = if (textView.tag == "Your image") 1094 else 1095
+        val title = if (textView.tag == "Your image") "Choose your image" else "Choose your partner image"
 
         OptionSheet().show(view.context) {
-            title("Choose")
+            title(title)
             with(
                 Option(R.drawable.ic_camera, "Camera"),
                 Option(R.drawable.ic_picture, "Gallery")
@@ -211,21 +216,82 @@ class MainViewModel constructor(
     // Date and time
     fun datePicker(view: View) {
 
+        val textView = view as TextView
+        val tag = textView.tag
+
+        var title = ""
+        when (tag) {
+            "Fall in Love" -> {
+                title = "What's the date you fell in love?"
+            }
+            "In Relation" -> {
+                title = "When did your relationship start?"
+            }
+            "Your Birthday" -> {
+                title = "What's your date of birth?"
+            }
+            "Partner Birthday" -> {
+                title = "What's your partner's birthday?"
+            }
+        }
+
         CalendarSheet().show(view.context) {
-            title("What's your date of birth?")
+            title(title)
             selectionMode(SelectionMode.DATE)
             onPositive { dateStart, _ ->
-                // Handle date or range
-                val textView = view as TextView
-                textView.text = dateStart.toLocalDate().toString()
-            }
 
+                val date = dateStart.toLocalDate().toString()
+
+                when (tag) {
+                    "Fall in Love" -> {
+                        fallInLove = date
+                    }
+                    "In Relation" -> {
+                        inRelation = date
+                    }
+                    "Your Birthday" -> {
+                        yourBirthday = date
+                    }
+                    "Partner Birthday" -> {
+                        partnerBirthday = date
+                    }
+                }
+
+            }
         }
 
     }
 
+
+    private fun initializeData() {
+
+        val couple = mainRepository.getCouple()
+
+        if (couple != null) {
+            yourName = couple.you?.name
+            yourImage = couple.you?.image
+            yourBirthday = couple.you?.birthday
+
+            partnerName = couple.partner?.name
+            partnerImage = couple.partner?.image
+            partnerBirthday = couple.partner?.birthday
+
+            shape = couple.frame?.vector
+            shapeColor = couple.frame?.color
+
+            symbol = couple.heart?.vector
+            symbolColor = couple.heart?.color
+
+            nameColor = couple.nameColor
+            counterColor = couple.counterColor
+        }
+
+    }
+
+
     init {
         Timber.d("injection DashboardViewModel")
+        initializeData()
     }
 
 }
