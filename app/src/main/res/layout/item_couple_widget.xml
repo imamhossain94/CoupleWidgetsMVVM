@@ -68,6 +68,7 @@
                 android:layout_height="match_parent"
                 android:singleLine="true"
                 android:gravity="center"
+                android:format24Hour="k'h' mm'm' s's'"
                 android:visibility="visible" />
 
         </LinearLayout>
