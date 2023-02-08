@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/couple_widget"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,18 +18,17 @@
         android:gravity="center|end">
 
         <ImageView
+            android:id="@+id/your_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_circle"/>
+            android:layout_gravity="center"/>
 
         <TextView
+            android:id="@+id/your_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="imam"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="#989898"/>
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -39,29 +38,27 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/heart_symbol"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/symbol_1"
-            app:tint="@color/white"/>
+            android:layout_height="30dp"/>
 
         <TextView
+            android:id="@+id/counter_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1y 8m 11d"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="24sp"
-            android:textColor="#FFFFFF"/>
+            android:textSize="24sp"/>
 
         <android.widget.TextClock
-            android:id="@+id/clock"
+            android:id="@+id/counter_clock"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:singleLine="true"
             android:gravity="center"
             android:format12Hour="k'h' mm'm' ss's'"
             android:format24Hour="k'h' mm'm' ss's'"
-            android:textColor="#989898" />
+            android:alpha="0.7"/>
     </LinearLayout>
 
     <LinearLayout
@@ -73,18 +70,17 @@
         android:gravity="center|start">
 
         <ImageView
+            android:id="@+id/partner_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_circle"/>
+            android:layout_gravity="center"/>
 
         <TextView
+            android:id="@+id/partner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="imam"
-            android:gravity="center"
-            android:textColor="#989898"/>
+            android:gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

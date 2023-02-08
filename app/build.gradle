@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleVersion"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     implementation "androidx.room:room-runtime:$versions.roomVersion"
+    implementation "androidx.room:room-ktx:$versions.roomVersion"
     implementation 'androidx.appcompat:appcompat:1.5.1'
     kapt "androidx.room:room-compiler:$versions.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"

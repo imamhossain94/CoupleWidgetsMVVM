@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.newagedevs.couplewidgets.model.Couple
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CoupleDao {
@@ -20,4 +21,7 @@ interface CoupleDao {
 
     @Query("DELETE FROM Couple")
     fun deleteCouples()
+
+    @Query("SELECT * FROM Couple")
+    fun getAllCouples(): Flow<List<Couple>>
 }

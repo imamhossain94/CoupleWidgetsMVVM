@@ -28,6 +28,26 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+
+
+        <receiver android:name=".widgets.CoupleWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter android:priority="1" >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/couplewidgetinfo" />
+        </receiver>
+
     </application>
 
 </manifest>
