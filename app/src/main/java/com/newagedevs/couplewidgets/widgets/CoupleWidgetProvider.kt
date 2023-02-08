@@ -11,6 +11,7 @@ import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.dateDifference
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.repository.CoupleRepository
+import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
 import com.newagedevs.couplewidgets.view.ui.MainActivity
 import kotlinx.coroutines.*
 import org.koin.core.KoinComponent
@@ -47,8 +48,27 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
                         views.setCharSequence(R.id.counter_clock, "setFormat24Hour", "k'h' mm'm' ss's'")
                         views.setCharSequence(R.id.counter_clock, "setFormat12Hour", "k'h' mm'm' ss's'")
 
-                        views.setBitmap(R.id.your_image, "app:bitmap", couple.you?.image)
-                        views.setBitmap(R.id.partner_image, "app:bitmap", couple.partner?.image)
+
+                        val yourImage = VectorDrawableMasker.maskImage(
+                            context,
+                            couple.you?.image!!,
+                            couple.frame?.vector!!,
+                            100,
+                            5
+                        )
+
+                        val partnerImage = VectorDrawableMasker.maskImage(
+                            context,
+                            couple.partner?.image!!,
+                            couple.frame?.vector!!,
+                            100,
+                            5
+                        )
+
+                        views.setImageViewBitmap(R.id.your_image,  yourImage)
+                        views.setImageViewBitmap(R.id.partner_image, partnerImage)
+
+                        views.setImageViewResource(R.id.heart_symbol, couple.heart?.vector!!)
 
                         appWidgetManager.updateAppWidget(appWidgetId, views)
                     }
