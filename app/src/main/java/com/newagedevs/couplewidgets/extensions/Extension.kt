@@ -39,15 +39,19 @@ fun openMailApp(context: Context, subject: String, mail: Array<String>) {
     }
 }
 
-fun openAppStore(context: Context, link: String) {
+fun openAppStore(context: Context, link: String, error: (String?) -> Unit) {
     try {
         startActivity(context, Intent(Intent.ACTION_VIEW, Uri.parse(link)), null)
-    } catch (e: ActivityNotFoundException) {
-        startActivity(context, Intent(Intent.ACTION_VIEW, Uri.parse(link)), null)
+    } catch (e:Exception) {
+        error(e.message)
     }
 }
 
-fun openWebPage(context: Context, url: String?) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    startActivity(context, browserIntent, null)
+fun openWebPage(context: Context, url: String?, error: (String?) -> Unit) {
+    try {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(context, browserIntent, null)
+    } catch (e:Exception) {
+        error(e.message)
+    }
 }

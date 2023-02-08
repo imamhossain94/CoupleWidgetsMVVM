@@ -94,4 +94,6 @@ dependencies {
     // svg path kotlin
     implementation "com.github.slaviboy:SVGPathKotlin:$versions.svgPathKotlin"
 
+    // joda-time
+    implementation "joda-time:joda-time:$versions.jodaTime"
 }

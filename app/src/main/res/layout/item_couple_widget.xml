@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1y 8m 11d"
+                android:text="@{viewModel.counterDate}"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:textSize="24sp"

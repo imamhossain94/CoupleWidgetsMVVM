@@ -34,7 +34,8 @@ class MainViewModel constructor(
     private val mainRepository: MainRepository
 ) : BindingViewModel() {
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val defaultDate =
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
 
     @get:Bindable
     var toast: String? by bindingProperty(null)
@@ -70,16 +71,19 @@ class MainViewModel constructor(
     var counterColor: Int? by bindingProperty(Color.WHITE)
 
     @get:Bindable
-    var fallInLove: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+    var fallInLove: String? by bindingProperty(defaultDate)
 
     @get:Bindable
-    var inRelation: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+    var inRelation: String? by bindingProperty(defaultDate)
 
     @get:Bindable
-    var yourBirthday: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+    var yourBirthday: String? by bindingProperty(defaultDate)
 
     @get:Bindable
-    var partnerBirthday: String? by bindingProperty(dateFormat.format(Calendar.getInstance().time))
+    var partnerBirthday: String? by bindingProperty(defaultDate)
+
+    @get:Bindable
+    var counterDate: String? by bindingProperty(defaultDate)
 
     // Widget settings
     fun shapePicker(view: View) {
@@ -230,24 +234,30 @@ class MainViewModel constructor(
         val tag = textView.tag
 
         var title = ""
+        var calendar:Calendar = Calendar.getInstance()
         when (tag) {
             "Fall in Love" -> {
                 title = "What's the date you fell in love?"
+                calendar = parseCalendarFromString(fallInLove!!)
             }
             "In Relation" -> {
                 title = "When did your relationship start?"
+                calendar = parseCalendarFromString(inRelation!!)
             }
             "Your Birthday" -> {
                 title = "What's your date of birth?"
+                calendar = parseCalendarFromString(yourBirthday!!)
             }
             "Partner Birthday" -> {
                 title = "What's your partner's birthday?"
+                calendar = parseCalendarFromString(partnerBirthday!!)
             }
         }
 
         CalendarSheet().show(view.context) {
             title(title)
             selectionMode(SelectionMode.DATE)
+            setSelectedDate(calendar)
             onPositive { dateStart, _ ->
 
                 val date = dateStart.toLocalDate().toString()
@@ -258,6 +268,7 @@ class MainViewModel constructor(
                     }
                     "In Relation" -> {
                         inRelation = date
+                        counterDate = dateDifference(inRelation, defaultDate)
                     }
                     "Your Birthday" -> {
                         yourBirthday = date
@@ -274,7 +285,7 @@ class MainViewModel constructor(
 
     fun openMenu(view: View) {
 
-        val appVersion  = getApplicationVersion()
+        val appVersion = getApplicationVersion()
 
         OptionSheet().show(view.context) {
             title("Menu")
@@ -294,20 +305,40 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_plugin, "V:$appVersion"),
             )
             onPositive { index: Int, _: Option ->
-
-
                 when (index) {
-                    0 -> { shareTheApp(requireActivity()) }
-                    1 -> { openMailApp(requireActivity(),  "Writing about app",Constants.contactMail) }
-                    2 -> { openMailApp(requireActivity(), "Feedback", Constants.feedbackMail) }
-                    3 -> { openMailApp(requireActivity(), "Bug reports", Constants.feedbackMail) }
-                    4 -> { openWebPage(requireActivity(), Constants.privacyPolicyUrl) }
-                    5 -> { openAppStore(requireActivity(), Constants.publisherName) }
-                    6 -> { openAppStore(requireActivity(), Constants.appStoreId) }
-                    7 -> { openWebPage(requireActivity(), Constants.sourceCodeUrl) }
-                    8 -> { requireActivity().finish() }
-                    9 -> { toast = "Icons by svgrepo.com"}
-                    10 -> { toast = "Version: $appVersion" }
+                    0 -> {
+                        shareTheApp(requireActivity())
+                    }
+                    1 -> {
+                        openMailApp(requireActivity(), "Writing about app", Constants.contactMail)
+                    }
+                    2 -> {
+                        openMailApp(requireActivity(), "Feedback", Constants.feedbackMail)
+                    }
+                    3 -> {
+                        openMailApp(requireActivity(), "Bug reports", Constants.feedbackMail)
+                    }
+                    4 -> {
+                        openWebPage(requireActivity(), Constants.privacyPolicyUrl) { toast = it }
+                    }
+                    5 -> {
+                        openAppStore(requireActivity(), Constants.publisherName) { toast = it }
+                    }
+                    6 -> {
+                        openAppStore(requireActivity(), Constants.appStoreId) { toast = it }
+                    }
+                    7 -> {
+                        openWebPage(requireActivity(), Constants.sourceCodeUrl) { toast = it }
+                    }
+                    8 -> {
+                        requireActivity().finish()
+                    }
+                    9 -> {
+                        toast = "Icons by svgrepo.com"
+                    }
+                    10 -> {
+                        toast = "Version: $appVersion"
+                    }
                 }
             }
         }
@@ -328,9 +359,18 @@ class MainViewModel constructor(
             inRelation = inRelation
         )
 
-        mainRepository.setCouple(couple)
-
-        toast = "Updated..."
+        CustomSheet().show(view.context) {
+            style(SheetStyle.BOTTOM_SHEET)
+            title("Confirm Changes")
+            content("Do you want to save the new changes?")
+            onPositive("Yes") {
+                toast = "Changes saved successfully"
+                mainRepository.setCouple(couple)
+            }
+            onNegative("No") {
+                toast = "Changes not saved"
+            }
+        }
 
     }
 
@@ -359,6 +399,9 @@ class MainViewModel constructor(
             fallInLove = couple.fallInLove
             inRelation = couple.inRelation
         }
+
+        counterDate = dateDifference(inRelation, defaultDate)
+
 
     }
 
