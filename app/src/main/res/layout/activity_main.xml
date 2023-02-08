@@ -41,7 +41,10 @@
                     android:background="@drawable/bg_icon"
                     android:contentDescription="@string/menu"
                     android:padding="15dp"
-                    android:src="@drawable/ic_menu" />
+                    android:src="@drawable/ic_menu"
+                    android:onClick="@{vm.openMenu}"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
                 <TextView
                     android:layout_width="0dp"

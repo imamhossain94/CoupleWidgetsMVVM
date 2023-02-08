@@ -105,7 +105,7 @@
                             android:padding="15dp"
                             android:text="@{'#'+Integer.toHexString(viewModel.shapeColor).toUpperCase()}"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableStartCompat="@drawable/ic_color_palette"
                             app:drawableTint="@color/black"/>
 
                     </LinearLayout>
@@ -175,7 +175,7 @@
                             android:tag="Symbol Color"
                             android:text="@{'#'+Integer.toHexString(viewModel.symbolColor).toUpperCase()}"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableStartCompat="@drawable/ic_color_palette"
                             app:drawableTint="@color/black"/>
 
                     </LinearLayout>
@@ -214,7 +214,7 @@
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Name Color"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableStartCompat="@drawable/ic_color_palette"
                             app:drawableTint="@color/black"/>
 
                     </LinearLayout>
@@ -245,7 +245,7 @@
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Counter Color"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableStartCompat="@drawable/ic_color_palette"
                             app:drawableTint="@color/black"/>
 
                     </LinearLayout>

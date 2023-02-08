@@ -12,6 +12,7 @@ import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
 import com.maxkeppeler.sheets.calendar.utils.toLocalDate
 import com.maxkeppeler.sheets.color.ColorSheet
+import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 import com.newagedevs.couplewidgets.R
@@ -133,6 +134,8 @@ class MainViewModel constructor(
                 Option(symbols[3], symbolTitles[3]),
                 Option(symbols[4], symbolTitles[4]),
                 Option(symbols[5], symbolTitles[5]),
+                Option(symbols[6], symbolTitles[6]),
+                Option(symbols[7], symbolTitles[7]),
             )
             onPositive { index: Int, _: Option ->
 
@@ -261,6 +264,32 @@ class MainViewModel constructor(
                         partnerBirthday = date
                     }
                 }
+
+            }
+        }
+
+    }
+
+    fun openMenu(view: View) {
+
+        OptionSheet().show(view.context) {
+            title("Menu")
+            columns(3)
+            displayMode(DisplayMode.GRID_VERTICAL)
+            with(
+                Option(R.drawable.ic_share, "Share"),
+                Option(R.drawable.ic_edit, "Write us"),
+                Option(R.drawable.ic_feedback, "Feedback"),
+                Option(R.drawable.ic_bug, "Bug reports"),
+                Option(R.drawable.ic_privacy, "Privacy policy"),
+                Option(R.drawable.ic_playstore, "Other apps"),
+                Option(R.drawable.ic_star, "Rate us"),
+                Option(R.drawable.ic_github, "Source code"),
+                Option(R.drawable.ic_power, "Exit"),
+                Option("svgrepo.com", "Icons by"),
+                Option("1.0.0", "Version"),
+            )
+            onPositive { index: Int, _: Option ->
 
             }
         }
