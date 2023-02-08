@@ -16,11 +16,12 @@ import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 import com.newagedevs.couplewidgets.R
-import com.newagedevs.couplewidgets.extensions.px
+import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.repository.MainRepository
+import com.newagedevs.couplewidgets.utils.Constants
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
 import timber.log.Timber
@@ -272,6 +273,8 @@ class MainViewModel constructor(
 
     fun openMenu(view: View) {
 
+        val appVersion  = getApplicationVersion()
+
         OptionSheet().show(view.context) {
             title("Menu")
             columns(3)
@@ -286,11 +289,25 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_star, "Rate us"),
                 Option(R.drawable.ic_github, "Source code"),
                 Option(R.drawable.ic_power, "Exit"),
-                Option("svgrepo.com", "Icons by"),
-                Option("1.0.0", "Version"),
+                Option(R.drawable.ic_svg_repo, "Icons by"),
+                Option(appVersion, "Version"),
             )
             onPositive { index: Int, _: Option ->
 
+
+                when (index) {
+                    0 -> { shareTheApp(requireActivity()) }
+                    1 -> { openMailApp(requireActivity(),  "Writing about app",Constants.contactMail) }
+                    2 -> { openMailApp(requireActivity(), "Feedback", Constants.feedbackMail) }
+                    3 -> { openMailApp(requireActivity(), "Bug reports", Constants.feedbackMail) }
+                    4 -> { openWebPage(requireActivity(), Constants.privacyPolicyUrl) }
+                    5 -> { openAppStore(requireActivity(), Constants.publisherName) }
+                    6 -> { openAppStore(requireActivity(), Constants.appStoreId) }
+                    7 -> { openWebPage(requireActivity(), Constants.sourceCodeUrl) }
+                    8 -> { requireActivity().finish() }
+                    9 -> { toast = "Icons by svgrepo.com"}
+                    10 -> { toast = "App version: $appVersion" }
+                }
             }
         }
 
