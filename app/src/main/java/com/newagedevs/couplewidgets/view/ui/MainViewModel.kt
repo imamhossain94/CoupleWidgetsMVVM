@@ -1,6 +1,10 @@
 package com.newagedevs.couplewidgets.view.ui
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.View
@@ -23,6 +27,7 @@ import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
+import com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
 import timber.log.Timber
@@ -234,7 +239,7 @@ class MainViewModel constructor(
         val tag = textView.tag
 
         var title = ""
-        var calendar:Calendar = Calendar.getInstance()
+        var calendar: Calendar = Calendar.getInstance()
         when (tag) {
             "Fall in Love" -> {
                 title = "What's the date you fell in love?"
@@ -366,6 +371,41 @@ class MainViewModel constructor(
             onPositive("Yes") {
                 toast = "Changes saved successfully"
                 mainRepository.setCouple(couple)
+                // Update widget
+                val context = view.context
+                val activity = view.context as Activity
+                val applicationContext = context.applicationContext
+
+                val intent = Intent(context, CoupleWidgetProvider::class.java)
+                intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+
+                val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
+                    .getAppWidgetIds(
+                        ComponentName(
+                            applicationContext,
+                            CoupleWidgetProvider::class.java
+                        )
+                    )
+
+                val id = activity.intent.extras?.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID
+                )
+                val idsExtra = activity.intent.extras?.getIntArray("ids")
+
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+
+                if (idsExtra != null) {
+                    context.sendBroadcast(intent)
+                    activity.finish()
+                } else if (id != null) {
+                    activity.setResult(RESULT_OK, intent)
+                    activity.finish()
+                } else {
+                    context.sendBroadcast(intent)
+                }
+
+
             }
             onNegative("No") {
                 toast = "Changes not saved"

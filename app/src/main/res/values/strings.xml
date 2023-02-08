@@ -25,4 +25,5 @@
     <string name="relationship_start_date">Relationship start date</string>
     <string name="your_birthday">Your birthday</string>
     <string name="date_and_time">DATE AND TIME</string>
+    <string name="nickname">nickname</string>
 </resources>

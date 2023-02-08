@@ -13,7 +13,8 @@ object VectorDrawableMasker {
         image: Bitmap,
         mask: Int,
         canvasSize: Int,
-        borderSize: Int
+        borderSize: Int,
+        borderColor: Int
     ): Bitmap {
 
         val scaledImage = Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false)
@@ -31,14 +32,15 @@ object VectorDrawableMasker {
         maskedCanvas.drawBitmap(scaledMask, 0f, 0f, paint)
         paint.xfermode = null
 
-        return drawBorderUsingVectorPath(context, maskedBitmap, mask, borderSize.toFloat())
+        return drawBorderUsingVectorPath(context, maskedBitmap, mask, borderSize.toFloat(), borderColor)
     }
 
     private fun drawBorderUsingVectorPath(
         context: Context,
         bitmap: Bitmap,
         mask: Int,
-        stroke: Float
+        stroke: Float,
+        strokePaintColor:Int
     ): Bitmap {
         val vectorDrawable = VectorDrawableParser.parsedVectorDrawable(context.resources, mask)
 
@@ -55,7 +57,7 @@ object VectorDrawableMasker {
             strokePaint.style = Paint.Style.STROKE
             strokePaint.strokeWidth = stroke
 
-            strokePaint.color = Color.parseColor("#000000")
+            strokePaint.color = strokePaintColor
 
             for (path in vectorDrawable.pathData) {
                 val data = SvgPath(path!!)

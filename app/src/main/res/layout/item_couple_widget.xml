@@ -32,7 +32,8 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 app:bitmap="@{viewModel.yourImage}"
-                app:shape="@{viewModel.shape}"/>
+                app:shape="@{viewModel.shape}"
+                app:borderColor="@{viewModel.shapeColor}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,7 +48,8 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
             <ImageView
                 android:layout_width="30dp"
@@ -61,7 +63,7 @@
                 android:text="@{viewModel.counterDate}"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@{viewModel.counterColor}"/>
 
             <android.widget.TextClock
@@ -89,7 +91,8 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 app:bitmap="@{viewModel.partnerImage}"
-                app:shape="@{viewModel.shape}"/>
+                app:shape="@{viewModel.shape}"
+                app:borderColor="@{viewModel.shapeColor}"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -71,7 +71,7 @@
                             android:padding="15dp"
                             android:text="Shape"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/ic_circle"
+                            app:drawableStart="@{viewModel.shape}"
                             android:scaleX="1"
                             android:scaleY="1"
                             app:drawableTint="@color/black"/>
@@ -143,7 +143,7 @@
                             android:padding="15dp"
                             android:text="Symbol"
                             android:textColor="@color/black"
-                            app:drawableStartCompat="@drawable/symbol_1"
+                            app:drawableStart="@{viewModel.symbol}"
                             app:drawableTint="@color/black"/>
 
                     </LinearLayout>

@@ -4,13 +4,16 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.newagedevs.couplewidgets.R
+import com.newagedevs.couplewidgets.extensions.px
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
 import com.skydoves.whatif.whatIfNotNullOrEmpty
 
@@ -26,6 +29,18 @@ object ViewBinding {
 
 
     @JvmStatic
+    @BindingAdapter(value = ["app:drawableStart"], requireAll = false)
+    fun drawableStartCompat(view: TextView, resource: Int?) {
+
+        val image = ResourcesCompat.getDrawable(view.resources, resource!!, null)
+        image?.setBounds(0, 0, 24.px, 24.px)
+
+        view.setCompoundDrawables(image, null, null, null)
+
+    }
+
+
+    @JvmStatic
     @BindingAdapter(value = ["app:resource", "app:tint"], requireAll = false)
     fun setImageResource(view: ImageView, resource: Int?, tint: Int?) {
         Glide.with(view.context)
@@ -35,8 +50,8 @@ object ViewBinding {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["app:bitmap", "app:shape"], requireAll = false)
-    fun setImageBitmap(view: ImageView, bitmap: Bitmap?, shape: Int) {
+    @BindingAdapter(value = ["app:bitmap", "app:shape", "app:borderColor"], requireAll = false)
+    fun setImageBitmap(view: ImageView, bitmap: Bitmap?, shape: Int, borderColor: Int) {
 
         Glide.with(view.context)
             .asBitmap()
@@ -55,7 +70,8 @@ object ViewBinding {
                         resource,
                         shape,
                         view.width,
-                        5
+                        5,
+                        borderColor
                     )
                     view.setImageBitmap(newBitmap)
                 }
