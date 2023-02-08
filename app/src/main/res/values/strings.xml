@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoupleWidgets</string>
+    <string name="app_name">Couple Widgets</string>
     <string name="database">CoupleWidgets.db</string>
     <string name="menu">menu</string>
     <string name="couple_widgets">COUPLE WIDGETS</string>

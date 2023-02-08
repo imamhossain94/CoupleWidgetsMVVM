@@ -12,6 +12,7 @@ import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
 import com.maxkeppeler.sheets.calendar.utils.toLocalDate
 import com.maxkeppeler.sheets.color.ColorSheet
+import com.maxkeppeler.sheets.core.SheetStyle
 import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
@@ -289,8 +290,8 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_star, "Rate us"),
                 Option(R.drawable.ic_github, "Source code"),
                 Option(R.drawable.ic_power, "Exit"),
-                Option(R.drawable.ic_svg_repo, "Icons by"),
-                Option(appVersion, "Version"),
+                Option(R.drawable.ic_svg, "Icons by"),
+                Option(R.drawable.ic_plugin, "V:$appVersion"),
             )
             onPositive { index: Int, _: Option ->
 
@@ -306,7 +307,7 @@ class MainViewModel constructor(
                     7 -> { openWebPage(requireActivity(), Constants.sourceCodeUrl) }
                     8 -> { requireActivity().finish() }
                     9 -> { toast = "Icons by svgrepo.com"}
-                    10 -> { toast = "App version: $appVersion" }
+                    10 -> { toast = "Version: $appVersion" }
                 }
             }
         }
@@ -330,6 +331,7 @@ class MainViewModel constructor(
         mainRepository.setCouple(couple)
 
         toast = "Updated..."
+
     }
 
     private fun initializeData() {

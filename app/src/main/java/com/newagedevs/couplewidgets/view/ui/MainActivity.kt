@@ -10,9 +10,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.maxkeppeler.sheets.core.SheetStyle
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
 import com.skydoves.bindables.BindingActivity
@@ -98,6 +98,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
             else -> {
                 viewModel.toast = "Task Cancelled"
+            }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        CustomSheet().show(this@MainActivity) {
+            style(SheetStyle.BOTTOM_SHEET)
+            title("Confirm Exit")
+            content("Are you sure you want to exit? Hope you will come back again.")
+            onPositive("Exit") {
+                finish()
             }
         }
     }

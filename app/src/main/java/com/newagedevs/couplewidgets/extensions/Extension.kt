@@ -12,9 +12,7 @@ import com.newagedevs.couplewidgets.BuildConfig
 
 
 fun getApplicationVersion(): String {
-    val versionName: String = BuildConfig.VERSION_NAME
-    //val versionCode: Int = BuildConfig.VERSION_CODE
-    return "Version: $versionName"
+    return BuildConfig.VERSION_NAME
 }
 
 
