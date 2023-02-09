@@ -35,14 +35,14 @@ fun dateDifference(_startDate: String?, _endDate: String?): String {
             val months: Int = period.months
             val days: Int = period.days
 
-            "$years y $months m $days d"
+            "${years}y ${months}m ${days}d"
         } else {
-            "0 y 0 m 0 d"
+            "0y 0m 0d"
         }
     } catch (e: ParseException) {
         e.printStackTrace()
     }
 
-    return "0 y 0 m 0 d"
+    return "0y 0m 0d"
 }
 
