@@ -1,9 +1,9 @@
 <h1 align="center">CoupleWidgets</h1>
 
-<p align="center">
-  ![Visitor](https://visitor-badge.laobi.icu/badge?page_id=imamhossain94.x)
-  ![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)
-  ![API](https://img.shields.io/badge/Github-imamhossain94-blue)
+<p style="text-align:center;">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=imamhossain94.CoupleWidgetsMVVM" alt="Visitor">
+  <img src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat" alt="API">
+  <img src="https://img.shields.io/badge/Github-imamhossain94-blue" alt="Github">
 </p>
 
 <p align="center">  
