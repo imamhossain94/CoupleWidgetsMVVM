@@ -29,14 +29,13 @@
                 android:value="" />
         </activity>
 
-
-
-        <receiver android:name=".widgets.CoupleWidgetProvider"
+        <receiver
+            android:name=".widgets.CoupleWidgetProvider"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <intent-filter android:priority="1" >
+            <intent-filter android:priority="1">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
             <intent-filter>
