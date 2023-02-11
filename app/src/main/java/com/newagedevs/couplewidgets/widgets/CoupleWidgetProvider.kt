@@ -3,14 +3,13 @@ package com.newagedevs.couplewidgets.widgets
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.widget.RemoteViews
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -29,17 +28,47 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.CountDownLatch
 
+
 class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
 
     private val coupleRepository: CoupleRepository by inject()
     private val layoutResource: Int get() = R.layout.couple_widget_layout
-    private val defaultDate =
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
 
 
-    @OptIn(DelicateCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
+    override fun onReceive(context: Context?, intent: Intent?) {
+
+        val actions = listOf(
+            "android.intent.action.TIME_SET",
+            "android.intent.action.TIMEZONE_CHANGED",
+            "android.intent.action.DATE_CHANGED"
+        )
+
+        if (actions.contains(intent!!.action)) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val appWidgetIds: IntArray = appWidgetManager.getAppWidgetIds(
+                ComponentName(
+                    context!!.applicationContext,
+                    CoupleWidgetProvider::class.java
+                )
+            )
+
+            renderCoupleWidget(context, appWidgetManager, appWidgetIds)
+        }
+
+        super.onReceive(context, intent)
+    }
+
+
     @ExperimentalCoroutinesApi
     override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) = renderCoupleWidget(context, appWidgetManager, appWidgetIds)
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun renderCoupleWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
@@ -51,6 +80,12 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
                 coupleRepository.getCoupleWithFlow().collect { Couples ->
                     withContext(Dispatchers.Main) {
 
+
+                        val defaultDate =
+                            SimpleDateFormat(
+                                "yyyy-MM-dd",
+                                Locale.getDefault()
+                            ).format(Calendar.getInstance().time)
 
                         val couple: Couple = if (Couples.isNotEmpty()) {
                             Couples[0]
@@ -93,57 +128,11 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
                             "k'h' mm'm' ss's'"
                         )
                         views.setTextColor(R.id.counter_clock, couple.counterColor)
+                        views.setTextColor(R.id.counter_clock, couple.counterColor)
 
 
-                        var placeholder = ResourcesCompat.getDrawable(
-                            context.resources,
-                            R.drawable.ic_person,
-                            context.theme
-                        )
-                            ?.toBitmap(height = 200, width = 200)
-
-                        val latch = CountDownLatch(1)
-
-                        Glide.with(context)
-                            .asBitmap()
-                            .load(R.drawable.ic_person)
-                            .into(object : CustomTarget<Bitmap>() {
-                                override fun onResourceReady(
-                                    resource: Bitmap,
-                                    transition: Transition<in Bitmap>?
-                                ) {
-                                    placeholder = resource
-                                    latch.countDown()
-                                }
-
-                                override fun onLoadCleared(placeholder: Drawable?) {}
-                            })
-
-                        withContext(Dispatchers.IO) {
-                            latch.await()
-                        }
-
-
-                        val yourImage = VectorDrawableMasker.maskImage(
-                            context,
-                            couple.you?.image ?: placeholder!!,
-                            couple.frame?.vector!!,
-                            200,
-                            5,
-                            couple.frame?.color!!
-                        )
-                        views.setImageViewBitmap(R.id.your_image, yourImage)
-
-                        val partnerImage = VectorDrawableMasker.maskImage(
-                            context,
-                            couple.partner?.image ?: placeholder!!,
-                            couple.frame?.vector!!,
-                            200,
-                            5,
-                            couple.frame?.color!!
-                        )
-                        views.setImageViewBitmap(R.id.partner_image, partnerImage)
-
+                        renderCoupleImage(context, views, couple, true)
+                        renderCoupleImage(context, views, couple, false)
 
                         views.setImageViewResource(R.id.heart_symbol, couple.heart?.vector!!)
                         views.setInt(R.id.heart_symbol, "setColorFilter", couple.heart?.color!!)
@@ -154,6 +143,49 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
             }
         }
     }
+
+    private suspend fun renderCoupleImage(
+        context: Context,
+        views: RemoteViews,
+        couple: Couple,
+        you: Boolean = true
+    ) {
+
+        val latch = CountDownLatch(1)
+
+        val source = if (you) couple.you?.image else couple.partner?.image
+        val destination = if (you) R.id.your_image else R.id.partner_image
+
+        Glide.with(context)
+            .asBitmap()
+            .load(source ?: R.drawable.ic_person)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    val image = VectorDrawableMasker.maskImage(
+                        context,
+                        resource,
+                        couple.frame?.vector!!,
+                        200,
+                        5,
+                        couple.frame?.color!!
+                    )
+                    views.setImageViewBitmap(destination, image)
+
+                    latch.countDown()
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
+
+        withContext(Dispatchers.IO) {
+            latch.await()
+        }
+
+    }
+
 
     private fun setUpClickIntent(context: Context, views: RemoteViews, appWidgetIds: IntArray) {
         val intent = Intent(context, MainActivity::class.java).apply {

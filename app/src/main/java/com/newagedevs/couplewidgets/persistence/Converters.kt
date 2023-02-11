@@ -2,6 +2,7 @@ package com.newagedevs.couplewidgets.persistence
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Base64
 import androidx.room.TypeConverter
 import com.google.gson.Gson
@@ -38,32 +39,16 @@ class PersonConverter {
 
         val name = obj.get("name").asString
         val birthday = obj.get("birthday").asString
-        val image = obj.get("image").asString
+        val image = Uri.parse(obj.get("image").asString) ?: null
 
-        // Base64 string to bitmap
-        var bitmap:Bitmap? = null
-        try{
-            val base64 = Base64.decode(image, Base64.DEFAULT)
-            bitmap = BitmapFactory.decodeByteArray(base64, 0, base64.size)
-
-        }catch(_: Exception){}
-
-        return Person(name, birthday, bitmap)
+        return Person(name, birthday, image)
     }
 
     @TypeConverter
     fun fromObject(obj: Person): String {
 
-        // Bitmap to base64 string
-        var base64:String? = null
-        try{
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            obj.image?.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            val byte = byteArrayOutputStream.toByteArray()
-            base64 = Base64.encodeToString(byte, Base64.DEFAULT)
-        }catch(_: Exception){}
-
-        val jsonObject = JSONObject("{\"name\":\"${obj.name}\", \"birthday\":\"${obj.birthday}\", \"image\":\"$base64\"}")
+        val uriString: String = obj.image.toString()
+        val jsonObject = JSONObject("{\"name\":\"${obj.name}\", \"birthday\":\"${obj.birthday}\", \"image\":\"$uriString\"}")
 
         return jsonObject.toString()
     }

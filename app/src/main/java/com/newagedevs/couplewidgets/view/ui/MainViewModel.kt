@@ -4,9 +4,12 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -52,10 +55,10 @@ class MainViewModel constructor(
     var partnerName: String? by bindingProperty("nickname")
 
     @get:Bindable
-    var yourImage: Bitmap? by bindingProperty(null)
+    var yourImage: Uri? by bindingProperty(null)
 
     @get:Bindable
-    var partnerImage: Bitmap? by bindingProperty(null)
+    var partnerImage: Uri? by bindingProperty(null)
 
     @get:Bindable
     var shape: Int? by bindingProperty(R.drawable.shape_1)
@@ -216,15 +219,21 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_picture, "Gallery")
             )
             onPositive { index: Int, _: Option ->
+
+                val wrapper = ContextWrapper(view.context)
+                val file = wrapper.getDir("images", Context.MODE_PRIVATE)
+
                 if (index == 0) {
                     ImagePicker.with(view.context as Activity)
                         .cameraOnly()
                         .cropSquare()
+                        .saveDir(file)
                         .start(requestCode)
                 } else if (index == 1) {
                     ImagePicker.with(view.context as Activity)
                         .galleryOnly()
                         .cropSquare()
+                        .saveDir(file)
                         .start(requestCode)
                 }
             }

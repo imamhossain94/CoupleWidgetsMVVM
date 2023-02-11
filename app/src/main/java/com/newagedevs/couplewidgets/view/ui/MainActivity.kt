@@ -72,26 +72,36 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             Activity.RESULT_OK -> {
 
                 val uri: Uri = data?.data!!
-                var bitmap: Bitmap
 
-                var inputStream: InputStream? = null
-                try {
-                    inputStream = this.contentResolver.openInputStream(uri)
-                    inputStream?.let {
-                        bitmap = BitmapFactory.decodeStream(it)
-
-                        when (requestCode) {
-                            1094 -> {
-                                viewModel.yourImage = bitmap
-                            }
-                            1095 -> {
-                                viewModel.partnerImage = bitmap
-                            }
-                        }
+                when (requestCode) {
+                    1094 -> {
+                        viewModel.yourImage = uri
                     }
-                } finally {
-                    inputStream?.close()
+                    1095 -> {
+                        viewModel.partnerImage = uri
+                    }
                 }
+
+
+//                var bitmap: Bitmap
+//                var inputStream: InputStream? = null
+//                try {
+//                    inputStream = this.contentResolver.openInputStream(uri)
+//                    inputStream?.let {
+//                        bitmap = BitmapFactory.decodeStream(it)
+//
+//                        when (requestCode) {
+//                            1094 -> {
+//                                viewModel.yourImage = bitmap
+//                            }
+//                            1095 -> {
+//                                viewModel.partnerImage = bitmap
+//                            }
+//                        }
+//                    }
+//                } finally {
+//                    inputStream?.close()
+//                }
             }
             ImagePicker.RESULT_ERROR -> {
                 viewModel.toast = ImagePicker.getError(data)

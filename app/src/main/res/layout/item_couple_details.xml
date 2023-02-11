@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="15dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/bg_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,15 +64,15 @@
                             android:id="@+id/et_your_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:drawableTint="@color/black"
+                            android:drawableTint="?attr/icon_color"
                             android:hint="@string/nickname"
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
                             android:text="@={viewModel.yourName}"
-                            android:textColor="#000000"
+                            
                             android:textColorHint="#717171" />
 
                     </LinearLayout>
@@ -94,15 +95,14 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawableStart="@drawable/ic_edit"
                             android:drawablePadding="15dp"
-                            android:drawableTint="@color/black"
+                            android:drawableTint="?attr/icon_color"
                             android:hint="@string/nickname"
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
                             android:text="@={viewModel.partnerName}"
-                            android:textColor="#000000"
                             android:textColorHint="#717171" />
 
                     </LinearLayout>
@@ -132,16 +132,15 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.imagePicker}"
                             android:padding="15dp"
                             android:tag="@string/your_image"
                             android:text="@string/choose_image"
-                            android:textColor="#000000"
                             app:drawableStartCompat="@drawable/ic_picture"
-                            app:drawableTint="@color/black" />
+                            app:drawableTint="?attr/icon_color" />
 
                     </LinearLayout>
 
@@ -163,17 +162,15 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.imagePicker}"
                             android:padding="15dp"
                             android:tag="partner_image"
                             android:text="@string/choose_image"
-                            android:textColor="#000000"
-                            android:textColorHint="#D4D4D4"
                             app:drawableStartCompat="@drawable/ic_picture"
-                            app:drawableTint="@color/black" />
+                            app:drawableTint="?attr/icon_color" />
 
                     </LinearLayout>
 

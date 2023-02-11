@@ -31,7 +31,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                app:bitmap="@{viewModel.yourImage}"
+                app:uri="@{viewModel.yourImage}"
                 app:shape="@{viewModel.shape}"
                 app:borderColor="@{viewModel.shapeColor}"/>
 
@@ -90,7 +90,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                app:bitmap="@{viewModel.partnerImage}"
+                app:uri="@{viewModel.partnerImage}"
                 app:shape="@{viewModel.shape}"
                 app:borderColor="@{viewModel.shapeColor}"/>
 

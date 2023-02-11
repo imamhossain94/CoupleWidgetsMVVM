@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="15dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/bg_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,17 +65,17 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.shapePicker}"
                             android:padding="15dp"
                             android:text="Shape"
-                            android:textColor="@color/black"
+                            
                             app:drawableStart="@{viewModel.shape}"
                             android:scaleX="1"
                             android:scaleY="1"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 
@@ -97,16 +98,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Shape Color"
                             android:padding="15dp"
                             android:text="@{'#'+Integer.toHexString(viewModel.shapeColor).toUpperCase()}"
-                            android:textColor="@color/black"
+                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 
@@ -136,15 +137,15 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:onClick="@{viewModel.symbolPicker}"
                             android:padding="15dp"
                             android:text="Symbol"
-                            android:textColor="@color/black"
+                            
                             app:drawableStart="@{viewModel.symbol}"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 
@@ -167,16 +168,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Symbol Color"
                             android:text="@{'#'+Integer.toHexString(viewModel.symbolColor).toUpperCase()}"
-                            android:textColor="@color/black"
+                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 
@@ -206,16 +207,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{'#'+Integer.toHexString(viewModel.nameColor).toUpperCase()}"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Name Color"
-                            android:textColor="@color/black"
+                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 
@@ -237,16 +238,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{'#'+Integer.toHexString(viewModel.counterColor).toUpperCase()}"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Counter Color"
-                            android:textColor="@color/black"
+                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="@color/black"/>
+                            app:drawableTint="?attr/icon_color"/>
 
                     </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.newagedevs.couplewidgets.binding
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -50,12 +51,12 @@ object ViewBinding {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["app:bitmap", "app:shape", "app:borderColor"], requireAll = false)
-    fun setImageBitmap(view: ImageView, bitmap: Bitmap?, shape: Int, borderColor: Int) {
+    @BindingAdapter(value = ["app:uri", "app:shape", "app:borderColor"], requireAll = false)
+    fun setImageBitmap(view: ImageView, uri: Uri?, shape: Int, borderColor: Int) {
 
         Glide.with(view.context)
             .asBitmap()
-            .load(bitmap ?: R.drawable.ic_person)
+            .load(uri ?: R.drawable.ic_person)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .into(object : CustomTarget<Bitmap>() {

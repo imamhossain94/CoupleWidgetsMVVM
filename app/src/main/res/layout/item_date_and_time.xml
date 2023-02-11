@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardCornerRadius="15dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/bg_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,14 +65,13 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{viewModel.fallInLove}"
-                            android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_calender"
-                            app:drawableTint="@color/black"
+                            app:drawableTint="?attr/icon_color"
                             android:onClick="@{viewModel.datePicker}"
                             android:tag="Fall in Love"/>
 
@@ -95,14 +95,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{viewModel.inRelation}"
-                            android:textColor="@color/black"
+
                             app:drawableStartCompat="@drawable/ic_calender"
-                            app:drawableTint="@color/black"
+                            app:drawableTint="?attr/icon_color"
                             android:onClick="@{viewModel.datePicker}"
                             android:tag="In Relation"/>
 
@@ -134,14 +134,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{viewModel.yourBirthday}"
-                            android:textColor="@color/black"
+
                             app:drawableStartCompat="@drawable/ic_birthday"
-                            app:drawableTint="@color/black"
+                            app:drawableTint="?attr/icon_color"
                             android:onClick="@{viewModel.datePicker}"
                             android:tag="Your Birthday"/>
 
@@ -165,14 +165,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_light"
+                            android:background="?attr/bg_rounded"
                             android:drawablePadding="15dp"
                             android:gravity="center|start"
                             android:padding="15dp"
                             android:text="@{viewModel.partnerBirthday}"
-                            android:textColor="@color/black"
+
                             app:drawableStartCompat="@drawable/ic_birthday"
-                            app:drawableTint="@color/black"
+                            app:drawableTint="?attr/icon_color"
                             android:onClick="@{viewModel.datePicker}"
                             android:tag="Partner Birthday"/>
 

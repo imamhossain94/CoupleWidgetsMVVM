@@ -25,27 +25,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_bottom_curve"
+            android:background="?attr/bg_bottom_curve"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="?attr/colorSecondaryVariant"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_icon"
+                    android:background="?attr/bg_rounded_icon"
                     android:contentDescription="@string/menu"
                     android:padding="15dp"
                     android:src="@drawable/ic_menu"
                     android:onClick="@{vm.openMenu}"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    app:tint="?attr/icon_color"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -59,13 +59,14 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_icon"
+                    android:background="?attr/bg_rounded_icon"
                     android:contentDescription="@string/menu"
                     android:padding="15dp"
                     android:src="@drawable/ic_check"
                     android:onClick="@{vm.submitData}"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    app:tint="?attr/icon_color"/>
 
             </LinearLayout>
 
