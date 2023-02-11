@@ -1,18 +1,14 @@
 package com.newagedevs.couplewidgets.persistence
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Base64
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import com.newagedevs.couplewidgets.extensions.isUriEmpty
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import org.json.JSONObject
-import timber.log.Timber
-import java.io.ByteArrayOutputStream
 
 
 class DecoratorConverter {
@@ -39,16 +35,20 @@ class PersonConverter {
 
         val name = obj.get("name").asString
         val birthday = obj.get("birthday").asString
-        val image = Uri.parse(obj.get("image").asString) ?: null
+        val image = obj.get("image").asString
 
-        return Person(name, birthday, image)
+        val imageUri: Uri? = if (image == "null") Uri.EMPTY else Uri.parse(image)
+
+        return Person(name, birthday, imageUri)
     }
 
     @TypeConverter
     fun fromObject(obj: Person): String {
 
-        val uriString: String = obj.image.toString()
-        val jsonObject = JSONObject("{\"name\":\"${obj.name}\", \"birthday\":\"${obj.birthday}\", \"image\":\"$uriString\"}")
+        val uriString: String? = if (isUriEmpty(obj.image)) null else obj.image.toString()
+
+        val jsonObject =
+            JSONObject("{\"name\":\"${obj.name}\", \"birthday\":\"${obj.birthday}\", \"image\":\"$uriString\"}")
 
         return jsonObject.toString()
     }

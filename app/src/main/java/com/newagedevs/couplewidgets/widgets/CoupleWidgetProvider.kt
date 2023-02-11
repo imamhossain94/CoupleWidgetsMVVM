@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.dateDifference
+import com.newagedevs.couplewidgets.extensions.isUriEmpty
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
@@ -153,7 +154,10 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
 
         val latch = CountDownLatch(1)
 
-        val source = if (you) couple.you?.image else couple.partner?.image
+        val yourImage = if (isUriEmpty(couple.you?.image)) null else couple.you?.image
+        val partnerImage = if (isUriEmpty(couple.partner?.image)) null else couple.partner?.image
+
+        val source = if (you) yourImage else partnerImage
         val destination = if (you) R.id.your_image else R.id.partner_image
 
         Glide.with(context)

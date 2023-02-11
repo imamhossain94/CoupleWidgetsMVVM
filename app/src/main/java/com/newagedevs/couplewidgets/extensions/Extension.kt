@@ -55,3 +55,7 @@ fun openWebPage(context: Context, url: String?, error: (String?) -> Unit) {
         error(e.message)
     }
 }
+
+fun isUriEmpty(uri: Uri?):Boolean{
+    return uri == null || uri == Uri.EMPTY
+}

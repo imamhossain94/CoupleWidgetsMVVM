@@ -14,9 +14,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.newagedevs.couplewidgets.R
+import com.newagedevs.couplewidgets.extensions.isUriEmpty
 import com.newagedevs.couplewidgets.extensions.px
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
+import com.skydoves.whatif.whatIfNotNull
 import com.skydoves.whatif.whatIfNotNullOrEmpty
+import timber.log.Timber
 
 object ViewBinding {
 
@@ -54,9 +57,11 @@ object ViewBinding {
     @BindingAdapter(value = ["app:uri", "app:shape", "app:borderColor"], requireAll = false)
     fun setImageBitmap(view: ImageView, uri: Uri?, shape: Int, borderColor: Int) {
 
+        val source = if (isUriEmpty(uri)) R.drawable.ic_person else uri
+
         Glide.with(view.context)
             .asBitmap()
-            .load(uri ?: R.drawable.ic_person)
+            .load(source)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .into(object : CustomTarget<Bitmap>() {

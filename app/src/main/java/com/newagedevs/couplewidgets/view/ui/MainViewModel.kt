@@ -7,7 +7,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.view.View
@@ -55,10 +54,10 @@ class MainViewModel constructor(
     var partnerName: String? by bindingProperty("nickname")
 
     @get:Bindable
-    var yourImage: Uri? by bindingProperty(null)
+    var yourImage: Uri? by bindingProperty(Uri.EMPTY)
 
     @get:Bindable
-    var partnerImage: Uri? by bindingProperty(null)
+    var partnerImage: Uri? by bindingProperty(Uri.EMPTY)
 
     @get:Bindable
     var shape: Int? by bindingProperty(R.drawable.shape_1)
