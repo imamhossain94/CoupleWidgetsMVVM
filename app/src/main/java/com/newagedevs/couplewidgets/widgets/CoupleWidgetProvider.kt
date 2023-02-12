@@ -40,6 +40,7 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
     override fun onReceive(context: Context?, intent: Intent?) {
 
         val actions = listOf(
+            "android.appwidget.action.APPWIDGET_UPDATE",
             "android.intent.action.TIME_SET",
             "android.intent.action.TIMEZONE_CHANGED",
             "android.intent.action.DATE_CHANGED"
