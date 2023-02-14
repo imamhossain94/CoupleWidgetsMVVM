@@ -72,7 +72,6 @@
                             android:inputType="textVisiblePassword"
                             android:padding="15dp"
                             android:text="@={viewModel.yourName}"
-                            
                             android:textColorHint="#717171" />
 
                     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.newagedevs.couplewidgets.widgets
 
+import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -39,6 +40,8 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
     @ExperimentalCoroutinesApi
     override fun onReceive(context: Context?, intent: Intent?) {
 
+        super.onReceive(context, intent)
+
         val actions = listOf(
             "android.appwidget.action.APPWIDGET_UPDATE",
             "android.intent.action.TIME_SET",
@@ -67,7 +70,39 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
-    ) = renderCoupleWidget(context, appWidgetManager, appWidgetIds)
+    ) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
+        renderCoupleWidget(context, appWidgetManager, appWidgetIds)
+        setAlarm(context)
+    }
+
+
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        super.onDeleted(context, appWidgetIds)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, CoupleWidgetProvider::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or 0
+        )
+        alarmManager.cancel(pendingIntent)
+    }
+
+    override fun onDisabled(context: Context) {
+        super.onDisabled(context)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, CoupleWidgetProvider::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or 0
+        )
+        alarmManager.cancel(pendingIntent)
+    }
+
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun renderCoupleWidget(
@@ -201,6 +236,30 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or 0
         )
         views.setOnClickPendingIntent(R.id.couple_widget, pendingIntent)
+    }
+
+    private fun setAlarm(context: Context): PendingIntent {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, CoupleWidgetProvider::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or 0
+        )
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+        return pendingIntent
     }
 
 
