@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="320dp"
     android:minHeight="72dp"
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="86400000"
     android:previewImage="@drawable/preview"
     android:resizeMode="horizontal|vertical"
     android:initialLayout="@layout/couple_widget_layout"
@@ -10,5 +10,3 @@
     android:configure="com.newagedevs.couplewidgets.view.ui.MainActivity"
     android:widgetCategory="home_screen">
 </appwidget-provider>
-
-<!--android:configure="com.newagedevs.couplewidgets.view.ui.MainActivity"-->

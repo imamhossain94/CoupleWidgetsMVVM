@@ -46,3 +46,15 @@ fun dateDifference(_startDate: String?, _endDate: String?): String {
     return "0y 0m 0d"
 }
 
+fun getMidnight(): Calendar {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = System.currentTimeMillis()
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    if (calendar.timeInMillis <= System.currentTimeMillis()) {
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+    }
+    return calendar
+}
