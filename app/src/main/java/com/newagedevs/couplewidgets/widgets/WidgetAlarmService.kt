@@ -17,21 +17,21 @@ class WidgetAlarmService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val pendingIntent = getPendingIntent()
-        val midnight = getMidnight().timeInMillis
-        alarmMgr.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            midnight,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-//        val startTime = System.currentTimeMillis()
-//        val interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES
+//        val midnight = getMidnight().timeInMillis
 //        alarmMgr.setInexactRepeating(
 //            AlarmManager.RTC_WAKEUP,
-//            startTime,
-//            interval,
+//            midnight,
+//            AlarmManager.INTERVAL_DAY,
 //            pendingIntent
 //        )
+        val startTime = System.currentTimeMillis()
+        val interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES
+        alarmMgr.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            startTime,
+            interval,
+            pendingIntent
+        )
         return START_STICKY
     }
 
