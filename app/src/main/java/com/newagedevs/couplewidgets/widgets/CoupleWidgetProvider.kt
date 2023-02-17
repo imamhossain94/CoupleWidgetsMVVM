@@ -9,33 +9,36 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.view.Menu
 import android.widget.RemoteViews
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.dateDifference
-import com.newagedevs.couplewidgets.extensions.isUriEmpty
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
+import com.newagedevs.couplewidgets.persistence.AppDatabase
 import com.newagedevs.couplewidgets.repository.CoupleRepository
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
-import com.newagedevs.couplewidgets.view.ui.MainActivity
+import com.newagedevs.couplewidgets.view.ui.main.MainActivity
 import kotlinx.coroutines.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
+class CoupleWidgetProvider : AppWidgetProvider() {
 
-    private val coupleRepository: CoupleRepository by inject()
     private val layoutResource: Int get() = R.layout.couple_widget_layout
     private val widgetScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
+    private fun database(context: Context) = CoupleRepository(
+        Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            context.getString(R.string.database)
+        ).build().coupleDao()
+    )
 
     @ExperimentalCoroutinesApi
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -56,6 +59,7 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
         )
 
         if (actions.contains(intent!!.action)) {
+            WidgetAlarmReceiver().setAlarm(context)
             renderCoupleWidget(context, appWidgetManager, appWidgetIds)
         }
 
@@ -90,7 +94,7 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
         appWidgetIds.forEach { appWidgetId ->
             val views = RemoteViews(context.packageName, layoutResource)
             widgetScope.launch {
-                coupleRepository.getCoupleWithFlow().collect { Couples ->
+                database(context).getCoupleWithFlow().collect { Couples ->
                     val defaultDate =
                         SimpleDateFormat(
                             "yyyy-MM-dd",
@@ -123,8 +127,7 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
 
                     views.setTextViewText(
                         R.id.counter_date,
-                        (0..10000).random().toString()
-                        // dateDifference(couple.inRelation, defaultDate)
+                        dateDifference(couple.inRelation, defaultDate)
                     )
                     views.setTextColor(R.id.counter_date, couple.counterColor!!)
 
@@ -160,17 +163,18 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
         couple: Couple,
         you: Boolean = true
     ) {
-        val yourImage = if (isUriEmpty(couple.you?.image)) null else couple.you?.image
-        val partnerImage = if (isUriEmpty(couple.partner?.image)) null else couple.partner?.image
 
-        val source = if (you) yourImage else partnerImage
+        val source = if (you) couple.you?.image else couple.partner?.image
         val destination = if (you) R.id.your_image else R.id.partner_image
 
         val imageDeferred = CompletableDeferred<Bitmap?>()
+
         Glide.with(context)
             .asBitmap()
-            .load(source ?: R.drawable.ic_person)
+            .load(source)
             .into(object : CustomTarget<Bitmap>() {
+                override fun onLoadCleared(placeholder: Drawable?) {}
+
                 override fun onResourceReady(
                     resource: Bitmap,
                     transition: Transition<in Bitmap>?
@@ -178,7 +182,22 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
                     imageDeferred.complete(resource)
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) {}
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(R.drawable.ic_person)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                imageDeferred.complete(resource)
+                            }
+                        })
+                }
             })
 
         val bitmapResources = withContext(Dispatchers.IO) {

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="couple"
+            type="com.newagedevs.couplewidgets.model.Couple" />
+
+        <variable
+            name="background"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="counter"
+            type="String" />
+    </data>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#EBEBEB">
+
+        <FrameLayout
+            android:id="@+id/previewFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/system_wallpaper"
+                android:scaleType="centerCrop"
+                app:background="@{background}"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginVertical="28dp">
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:layout_gravity="center|end"
+                    android:gravity="center|end">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        app:uri="@{couple.you.image}"
+                        app:shape="@{couple.frame.vector}"
+                        app:borderColor="@{couple.frame.color}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{couple.you.name}"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="@{couple.nameColor}"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        app:resource="@{couple.heart.vector}"
+                        app:tint="@{couple.heart.color}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{counter}"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@{couple.counterColor}"/>
+
+                    <android.widget.TextClock
+                        android:id="@+id/clock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:format12Hour="k'h' mm'm' ss's'"
+                        android:format24Hour="k'h' mm'm' ss's'"
+                        android:textColor="@{couple.counterColor}"
+                        android:alpha="0.7"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:layout_gravity="center|start"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        app:uri="@{couple.partner.image}"
+                        app:shape="@{couple.frame.vector}"
+                        app:borderColor="@{couple.frame.color}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@{couple.partner.name}"
+                        android:gravity="center"
+                        android:textColor="@{couple.nameColor}"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</layout>
+

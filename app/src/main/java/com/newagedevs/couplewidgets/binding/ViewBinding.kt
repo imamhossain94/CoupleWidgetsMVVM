@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -45,6 +46,13 @@ object ViewBinding {
 
 
     @JvmStatic
+    @BindingAdapter(value = ["app:background"], requireAll = false)
+    fun drawableBackground(view: ImageView, resource: Drawable?) {
+        view.setImageDrawable(resource)
+    }
+
+
+    @JvmStatic
     @BindingAdapter(value = ["app:resource", "app:tint"], requireAll = false)
     fun setImageResource(view: ImageView, resource: Int?, tint: Int?) {
         Glide.with(view.context)
@@ -57,11 +65,9 @@ object ViewBinding {
     @BindingAdapter(value = ["app:uri", "app:shape", "app:borderColor"], requireAll = false)
     fun setImageBitmap(view: ImageView, uri: Uri?, shape: Int, borderColor: Int) {
 
-        val source = if (isUriEmpty(uri)) R.drawable.ic_person else uri
-
         Glide.with(view.context)
             .asBitmap()
-            .load(source)
+            .load(uri)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .into(object : CustomTarget<Bitmap>() {
@@ -74,6 +80,20 @@ object ViewBinding {
                     val newBitmap = VectorDrawableMasker.maskImage(
                         view.context,
                         resource,
+                        shape,
+                        view.width,
+                        5,
+                        borderColor
+                    )
+                    view.setImageBitmap(newBitmap)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+
+                    val newBitmap = VectorDrawableMasker.maskImage(
+                        view.context,
+                        null,
                         shape,
                         view.width,
                         5,

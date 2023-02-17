@@ -10,6 +10,11 @@ class MainRepository constructor(
 ) : Repository {
 
 
+    fun getCouples(): List<Couple> {
+        return coupleDao.getCouples()
+    }
+
+
     fun getCouple(): Couple? {
         val couple = coupleDao.getCouples()
         return if (couple.isEmpty()) {

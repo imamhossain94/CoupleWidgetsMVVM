@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.newagedevs.couplewidgets.view.ui.MainViewModel" />
+            type="com.newagedevs.couplewidgets.view.ui.main.MainViewModel" />
 
     </data>
 

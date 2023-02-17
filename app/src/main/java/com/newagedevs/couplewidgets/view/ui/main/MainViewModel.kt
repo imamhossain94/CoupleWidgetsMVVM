@@ -1,9 +1,8 @@
-package com.newagedevs.couplewidgets.view.ui
+package com.newagedevs.couplewidgets.view.ui.main
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -29,6 +28,8 @@ import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
+import com.newagedevs.couplewidgets.view.ui.CustomSheet
+import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
@@ -305,6 +306,7 @@ class MainViewModel constructor(
             columns(3)
             displayMode(DisplayMode.GRID_VERTICAL)
             with(
+                Option(R.drawable.ic_widgets, "Widgets"),
                 Option(R.drawable.ic_share, "Share"),
                 Option(R.drawable.ic_edit, "Write us"),
                 Option(R.drawable.ic_feedback, "Feedback"),
@@ -313,38 +315,38 @@ class MainViewModel constructor(
                 Option(R.drawable.ic_playstore, "Other apps"),
                 Option(R.drawable.ic_star, "Rate us"),
                 Option(R.drawable.ic_github, "Source code"),
-                Option(R.drawable.ic_power, "Exit"),
                 Option(R.drawable.ic_svg, "Icons by"),
                 Option(R.drawable.ic_plugin, "V:$appVersion"),
+                Option(R.drawable.ic_power, "Exit"),
             )
             onPositive { index: Int, _: Option ->
                 when (index) {
                     0 -> {
-                        shareTheApp(requireActivity())
+                        WidgetsActivity.startActivity(view.context)
                     }
                     1 -> {
-                        openMailApp(requireActivity(), "Writing about app", Constants.contactMail)
+                        shareTheApp(requireActivity())
                     }
                     2 -> {
-                        openMailApp(requireActivity(), "Feedback", Constants.feedbackMail)
+                        openMailApp(requireActivity(), "Writing about app", Constants.contactMail)
                     }
                     3 -> {
-                        openMailApp(requireActivity(), "Bug reports", Constants.feedbackMail)
+                        openMailApp(requireActivity(), "Feedback", Constants.feedbackMail)
                     }
                     4 -> {
-                        openWebPage(requireActivity(), Constants.privacyPolicyUrl) { toast = it }
+                        openMailApp(requireActivity(), "Bug reports", Constants.feedbackMail)
                     }
                     5 -> {
-                        openAppStore(requireActivity(), Constants.publisherName) { toast = it }
+                        openWebPage(requireActivity(), Constants.privacyPolicyUrl) { toast = it }
                     }
                     6 -> {
-                        openAppStore(requireActivity(), Constants.appStoreId) { toast = it }
+                        openAppStore(requireActivity(), Constants.publisherName) { toast = it }
                     }
                     7 -> {
-                        openWebPage(requireActivity(), Constants.sourceCodeUrl) { toast = it }
+                        openAppStore(requireActivity(), Constants.appStoreId) { toast = it }
                     }
                     8 -> {
-                        requireActivity().finish()
+                        openWebPage(requireActivity(), Constants.sourceCodeUrl) { toast = it }
                     }
                     9 -> {
                         toast = "Icons by svgrepo.com"
@@ -352,10 +354,12 @@ class MainViewModel constructor(
                     10 -> {
                         toast = "Version: $appVersion"
                     }
+                    11 -> {
+                        requireActivity().finish()
+                    }
                 }
             }
         }
-
     }
 
     fun submitData(view: View) {
@@ -382,26 +386,15 @@ class MainViewModel constructor(
                 // Update widget
                 val context = view.context
                 val activity = view.context as Activity
-                val applicationContext = context.applicationContext
 
                 val intent = Intent(context, CoupleWidgetProvider::class.java)
                 intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-
-                val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
-                    .getAppWidgetIds(
-                        ComponentName(
-                            applicationContext,
-                            CoupleWidgetProvider::class.java
-                        )
-                    )
 
                 val id = activity.intent.extras?.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID
                 )
                 val idsExtra = activity.intent.extras?.getIntArray("ids")
-
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
 
                 if (idsExtra != null) {
                     context.sendBroadcast(intent)
@@ -412,7 +405,6 @@ class MainViewModel constructor(
                 } else {
                     context.sendBroadcast(intent)
                 }
-
 
             }
             onNegative("No") {

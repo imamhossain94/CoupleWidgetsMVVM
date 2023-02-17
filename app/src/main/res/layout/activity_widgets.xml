@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.newagedevs.couplewidgets.view.ui.widgets.WidgetsViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.newagedevs.couplewidgets.view.adapter.WidgetsAdapter" />
+
+        <variable
+            name="dispatcher"
+            type="androidx.activity.OnBackPressedDispatcherOwner" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
+        android:orientation="vertical"
+        tools:context=".view.ui.widgets.WidgetsActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/bg_bottom_curve"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/bg_rounded_icon"
+                    android:contentDescription="@string/menu"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_arrow_left"
+                    android:onClick="@{() -> dispatcher.onBackPressedDispatcher.onBackPressed()}"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="?attr/icon_color"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="All Widgets"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/bg_rounded_icon"
+                    android:contentDescription="@string/menu"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_delete"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="?attr/icon_color"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                app:adapter="@{adapter}"
+                app:adapterWidgetsList="@{vm.widgets}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_widget" />
+
+<!--            <include-->
+<!--                layout="@layout/item_notfound"-->
+<!--                android:visibility="@{vm.widgets ? View.VISIBLE : View.GONE}" />-->
+
+            <include
+                layout="@layout/item_notfound"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+</layout>

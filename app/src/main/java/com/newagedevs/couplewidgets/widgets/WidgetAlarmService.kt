@@ -31,13 +31,14 @@ class WidgetAlarmReceiver : BroadcastReceiver() {
         val intent = Intent(context, WidgetAlarmReceiver::class.java)
 
         val pendingIntent =
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis(),
-            (5*60*1000L),
-//            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+            // (1*60*1000L),
+            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
             pendingIntent)
+
     }
 
     fun cancelAlarm(context: Context) {
@@ -53,5 +54,6 @@ class WidgetAlarmReceiver : BroadcastReceiver() {
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         context.sendBroadcast(intent)
     }
+
 
 }

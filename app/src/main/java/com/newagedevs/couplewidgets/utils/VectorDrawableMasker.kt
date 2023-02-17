@@ -4,20 +4,27 @@ import android.content.Context
 import android.graphics.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import com.newagedevs.couplewidgets.R
 import com.slaviboy.svgpath.SvgPath
 
 object VectorDrawableMasker {
 
     fun maskImage(
         context: Context,
-        image: Bitmap,
+        image: Bitmap?,
         mask: Int,
         canvasSize: Int,
         borderSize: Int,
         borderColor: Int
     ): Bitmap {
 
-        val scaledImage = Bitmap.createScaledBitmap(image, canvasSize, canvasSize, false)
+        val scaledImage = try{
+            Bitmap.createScaledBitmap(image!!, canvasSize, canvasSize, false)
+        } catch (_:Exception) {
+            val bitmap: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.ic_person)
+            Bitmap.createScaledBitmap(bitmap, canvasSize, canvasSize, false)
+        }
+
         val scaledMask = Bitmap.createScaledBitmap(
             ResourcesCompat.getDrawable(context.resources, mask, null)!!.toBitmap(),
             canvasSize, canvasSize, false
