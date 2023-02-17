@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".Application"
@@ -30,7 +31,15 @@
                 android:value="" />
         </activity>
 
-        <service android:name=".widgets.WidgetAlarmService" />
+        <receiver
+            android:name=".widgets.WidgetAlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name=".widgets.CoupleWidgetProvider"
@@ -41,7 +50,6 @@
                 <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
                 <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
                 <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="HELLO_WORLD" />
             </intent-filter>
 
             <intent-filter android:priority="1">

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.view.Menu
 import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -50,6 +51,7 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
 
         val actions = listOf(
             "android.appwidget.action.APPWIDGET_UPDATE",
+            "android.appwidget.action.android.appwidget.action.APPWIDGET_UPDATE",
             "android.intent.action.TIME_SET",
         )
 
@@ -76,7 +78,6 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        startAlarm(context)
         renderCoupleWidget(context, appWidgetManager, appWidgetIds)
     }
 
@@ -122,7 +123,8 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
 
                     views.setTextViewText(
                         R.id.counter_date,
-                        dateDifference(couple.inRelation, defaultDate)
+                        (0..10000).random().toString()
+                        // dateDifference(couple.inRelation, defaultDate)
                     )
                     views.setTextColor(R.id.counter_date, couple.counterColor!!)
 
@@ -210,14 +212,11 @@ class CoupleWidgetProvider : AppWidgetProvider(), KoinComponent {
     }
 
     private fun startAlarm(context: Context) {
-        val intent = Intent(context, WidgetAlarmService::class.java)
-        context.stopService(intent)
-        context.startService(intent)
+        WidgetAlarmReceiver().setAlarm(context)
     }
 
     private fun cancelAlarm(context: Context) {
-        val intent = Intent(context, WidgetAlarmService::class.java)
-        context.stopService(intent)
+        WidgetAlarmReceiver().cancelAlarm(context)
     }
 
 }

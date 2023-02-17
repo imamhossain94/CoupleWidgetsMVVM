@@ -2,47 +2,56 @@ package com.newagedevs.couplewidgets.widgets
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.Service
 import android.appwidget.AppWidgetManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
-import com.newagedevs.couplewidgets.extensions.getMidnight
+import android.os.PowerManager
 
-class WidgetAlarmService : Service() {
+class WidgetAlarmReceiver : BroadcastReceiver() {
 
-    private val alarmMgr: AlarmManager by lazy {
-        getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    override fun onReceive(context: Context, intent: Intent) {
+
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            setAlarm(context)
+        }
+
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PeriSecure:MyWakeLock")
+        wakeLock.acquire(10*60*1000L)
+
+        updateWidget(context)
+
+        wakeLock.release()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val pendingIntent = getPendingIntent()
-//        val midnight = getMidnight().timeInMillis
-//        alarmMgr.setInexactRepeating(
-//            AlarmManager.RTC_WAKEUP,
-//            midnight,
-//            AlarmManager.INTERVAL_DAY,
-//            pendingIntent
-//        )
-        val startTime = System.currentTimeMillis()
-        val interval = AlarmManager.INTERVAL_FIFTEEN_MINUTES
-        alarmMgr.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            startTime,
-            interval,
-            pendingIntent
-        )
-        return START_STICKY
+
+    fun setAlarm(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, WidgetAlarmReceiver::class.java)
+
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis(),
+            (5*60*1000L),
+//            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+            pendingIntent)
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    fun cancelAlarm(context: Context) {
+        val intent = Intent(context, WidgetAlarmReceiver::class.java)
+        val sender =
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(sender)
     }
 
-    private fun getPendingIntent(): PendingIntent {
-        val intent = Intent(this, CoupleWidgetProvider::class.java)
+    private fun updateWidget(context: Context) {
+        val intent = Intent(context, CoupleWidgetProvider::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or 0)
+        context.sendBroadcast(intent)
     }
 
 }
