@@ -39,6 +39,8 @@ import java.util.*
 
 
 class MainViewModel constructor(
+    private var widgetId: Long?,
+    private var widgetIds: IntArray?,
     private val mainRepository: MainRepository
 ) : BindingViewModel() {
 
@@ -365,7 +367,7 @@ class MainViewModel constructor(
     fun submitData(view: View) {
 
         val couple = Couple(
-            id = 0,
+            active = true,
             frame = Decorator(shape, shapeColor),
             heart = Decorator(symbol, symbolColor),
             nameColor = nameColor,
@@ -376,27 +378,32 @@ class MainViewModel constructor(
             inRelation = inRelation
         )
 
+        // Update widget
+        val context = view.context
+        val activity = view.context as Activity
+
+        val intent = Intent(context, CoupleWidgetProvider::class.java)
+        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+
+        val id = activity.intent.extras?.getInt(
+            AppWidgetManager.EXTRA_APPWIDGET_ID,
+            AppWidgetManager.INVALID_APPWIDGET_ID
+        )
+
         CustomSheet().show(view.context) {
             style(SheetStyle.BOTTOM_SHEET)
             title("Confirm Changes")
-            content("Do you want to save the new changes?")
-            onPositive("Yes") {
+            content("Do you want to save the changes or create a new widget?")
+            onPositive("Save Changes") {
                 toast = "Changes saved successfully"
-                mainRepository.setCouple(couple)
-                // Update widget
-                val context = view.context
-                val activity = view.context as Activity
 
-                val intent = Intent(context, CoupleWidgetProvider::class.java)
-                intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                if(widgetId != null) {
+                    couple.id = widgetId!!
+                }
 
-                val id = activity.intent.extras?.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID
-                )
-                val idsExtra = activity.intent.extras?.getIntArray("ids")
+                widgetId = mainRepository.setWidget(couple)
 
-                if (idsExtra != null) {
+                if (widgetIds != null) {
                     context.sendBroadcast(intent)
                     activity.finish()
                 } else if (id != null) {
@@ -407,8 +414,11 @@ class MainViewModel constructor(
                 }
 
             }
-            onNegative("No") {
-                toast = "Changes not saved"
+            onNegative("Create Widget") {
+                toast = "New widget created"
+                widgetIds = null
+                widgetId = mainRepository.setWidget(couple)
+                initializeData()
             }
         }
 
@@ -416,9 +426,21 @@ class MainViewModel constructor(
 
     private fun initializeData() {
 
-        val couple = mainRepository.getCouple()
+        var couple:Couple? = null
+
+        if (widgetIds != null && widgetId == null) {
+            couple = mainRepository.getActiveWidget()
+        } else if (widgetId != null) {
+            couple = mainRepository.getWidgetByID(widgetId!!)
+        }
+
+        if(widgetIds == null && widgetId == null) {
+            couple = mainRepository.getActiveWidget()
+        }
 
         if (couple != null) {
+            widgetId = couple.id
+
             yourName = couple.you?.name
             yourImage = couple.you?.image
             yourBirthday = couple.you?.birthday
@@ -441,7 +463,6 @@ class MainViewModel constructor(
         }
 
         counterDate = dateDifference(inRelation, defaultDate)
-
 
     }
 

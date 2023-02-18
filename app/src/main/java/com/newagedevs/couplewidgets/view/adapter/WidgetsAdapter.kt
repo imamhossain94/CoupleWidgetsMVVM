@@ -7,12 +7,13 @@ import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ItemWidgetBinding
 import com.newagedevs.couplewidgets.extensions.dateDifference
 import com.newagedevs.couplewidgets.model.Couple
+import com.newagedevs.couplewidgets.view.ui.main.MainActivity
 import com.skydoves.bindables.binding
 import java.text.SimpleDateFormat
 import java.util.*
 
 class WidgetsAdapter(
-    background: Drawable?
+    private val backgroundDrawable: Drawable?
 ) : RecyclerView.Adapter<WidgetsAdapter.WidgetsViewHolder>() {
 
     private val items = mutableListOf<Couple>()
@@ -33,10 +34,10 @@ class WidgetsAdapter(
                     adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                         ?: return@setOnClickListener
 
-//        MainActivity.startActivity(
-//          view.context,
-//          items[position]
-//        )
+                MainActivity.startActivity(
+                  view.context,
+                  items[position]
+                )
             }
         }
 
@@ -54,7 +55,7 @@ class WidgetsAdapter(
         holder.binding.apply {
             couple = items[position]
             counter = dateDifference(items[position].inRelation, defaultDate)
-            background = background
+            background = backgroundDrawable
             executePendingBindings()
         }
     }

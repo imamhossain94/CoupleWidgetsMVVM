@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -27,6 +26,7 @@
         android:layout_height="match_parent"
         android:background="?attr/backgroundColor"
         android:orientation="vertical"
+        app:toast="@{vm.toast}"
         tools:context=".view.ui.widgets.WidgetsActivity">
 
         <LinearLayout
@@ -72,6 +72,7 @@
                     android:src="@drawable/ic_delete"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="@{vm.deleteAllWidgets}"
                     app:tint="?attr/icon_color"/>
 
             </LinearLayout>
@@ -83,6 +84,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/widget_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
@@ -92,17 +94,14 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_widget" />
 
-<!--            <include-->
-<!--                layout="@layout/item_notfound"-->
-<!--                android:visibility="@{vm.widgets ? View.VISIBLE : View.GONE}" />-->
-
             <include
-                layout="@layout/item_notfound"
-                android:visibility="gone" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/empty_widget"
+                layout="@layout/item_not_found"
+                android:visibility="@{vm.widgets.isEmpty() ? View.VISIBLE : View.INVISIBLE}" />
 
         </FrameLayout>
-
-
 
     </LinearLayout>
 

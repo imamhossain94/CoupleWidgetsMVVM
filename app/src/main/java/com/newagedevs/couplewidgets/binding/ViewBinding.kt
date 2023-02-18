@@ -46,7 +46,7 @@ object ViewBinding {
 
 
     @JvmStatic
-    @BindingAdapter(value = ["app:background"], requireAll = false)
+    @BindingAdapter(value = ["app:drawableBackground"], requireAll = false)
     fun drawableBackground(view: ImageView, resource: Drawable?) {
         view.setImageDrawable(resource)
     }

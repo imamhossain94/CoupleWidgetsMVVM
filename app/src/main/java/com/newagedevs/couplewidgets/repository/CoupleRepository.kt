@@ -10,9 +10,8 @@ import kotlinx.coroutines.flow.map
 
 class CoupleRepository(private val coupleDao: CoupleDao) {
 
-    fun getCoupleWithFlow(): Flow<List<Couple>> {
-
-        return coupleDao.getAllCouples().map {
+    fun getActiveWidgetFlow(): Flow<Couple?> {
+        return coupleDao.getActiveWidgetFlow().map {
             it
         }.flowOn(Dispatchers.IO)
     }

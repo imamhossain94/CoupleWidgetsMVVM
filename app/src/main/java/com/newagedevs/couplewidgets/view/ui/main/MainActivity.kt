@@ -3,6 +3,7 @@ package com.newagedevs.couplewidgets.view.ui.main
 import android.Manifest
 import android.app.Activity
 import android.app.WallpaperManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,19 +14,23 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
+import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.skydoves.bindables.BindingActivity
-import org.koin.android.viewmodel.ext.android.getViewModel
+import com.skydoves.bundler.bundle
+import com.skydoves.bundler.intentOf
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    lateinit var viewModel: MainViewModel
+    private val widgetID: Long? by bundle("widgetId")
+    private val appWidgetIDs: IntArray? by bundle("appWidgetIds")
+    private val viewModel: MainViewModel by viewModel { parametersOf(widgetID, appWidgetIDs) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = getViewModel()
 
         binding {
             vm = viewModel
@@ -98,6 +103,25 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             onPositive("Exit") {
                 finish()
             }
+        }
+    }
+
+
+    companion object {
+        fun startActivity(
+            context: Context,
+            couple: Couple
+        ) = context.intentOf<MainActivity> {
+            putExtra("widgetId", couple.id.toInt())
+            context.startActivity(intent, null)
+            (context as Activity).finish()
+        }
+
+        fun restartActivity(
+            context: Context
+        ) = context.intentOf<MainActivity> {
+            context.startActivity(intent, null)
+            (context as Activity).finish()
         }
     }
 

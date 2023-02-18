@@ -1,9 +1,6 @@
 package com.newagedevs.couplewidgets.persistence
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.newagedevs.couplewidgets.model.Couple
 import kotlinx.coroutines.flow.Flow
 
@@ -11,17 +8,39 @@ import kotlinx.coroutines.flow.Flow
 interface CoupleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCouple(shape: Couple)
+    fun insertWidget(shape: Couple): Long
 
-    @Query("SELECT * FROM Couple WHERE id = :id_")
-    fun getCouple(id_: Long): Couple
+    // GET WIDGETS
+    @Query("SELECT * FROM Couple")
+    fun getWidgets(): List<Couple>
 
     @Query("SELECT * FROM Couple")
-    fun getCouples(): List<Couple>
+    fun getWidgetsFlow(): Flow<List<Couple>>
 
+    @Query("SELECT * FROM Couple WHERE id = :id_ LIMIT 1")
+    fun getWidgetByID(id_: Long): Couple?
+
+
+    // GET WIDGETS by Condition
+    @Query("SELECT * FROM Couple WHERE active = 1 LIMIT 1")
+    fun getActiveWidget(): Couple?
+
+    @Query("SELECT * FROM Couple WHERE active = 1 LIMIT 1")
+    fun getActiveWidgetFlow(): Flow<Couple?>
+
+    @Query("SELECT * FROM Couple WHERE active = 1")
+    fun getActiveWidgets(): List<Couple>
+
+
+    // DELETE Widgets
     @Query("DELETE FROM Couple")
-    fun deleteCouples()
+    fun deleteWidgets()
 
-    @Query("SELECT * FROM Couple")
-    fun getAllCouples(): Flow<List<Couple>>
+
+    // UPDATE Widgets
+    @Update
+    fun updateWidget(memo: Couple)
+
+    @Query("UPDATE Couple SET active = :active_ WHERE id = :id_")
+    fun updateWidgetActiveStatus(id_: Long, active_: Boolean)
 }

@@ -63,6 +63,9 @@ class CoupleWidgetProvider : AppWidgetProvider() {
             renderCoupleWidget(context, appWidgetManager, appWidgetIds)
         }
 
+
+
+
     }
 
     override fun onEnabled(context: Context?) {
@@ -94,18 +97,16 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         appWidgetIds.forEach { appWidgetId ->
             val views = RemoteViews(context.packageName, layoutResource)
             widgetScope.launch {
-                database(context).getCoupleWithFlow().collect { Couples ->
+                database(context).getActiveWidgetFlow().collect {
                     val defaultDate =
                         SimpleDateFormat(
                             "yyyy-MM-dd",
                             Locale.getDefault()
                         ).format(Calendar.getInstance().time)
 
-                    val couple: Couple = if (Couples.isNotEmpty()) {
-                        Couples[0]
-                    } else {
-                        Couple(
-                            id = 0,
+                    val couple: Couple = it
+                        ?: Couple(
+                            active = true,
                             frame = Decorator(R.drawable.shape_1, Color.WHITE),
                             heart = Decorator(R.drawable.symbol_1, Color.WHITE),
                             nameColor = Color.WHITE,
@@ -115,7 +116,6 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                             fallInLove = defaultDate,
                             inRelation = defaultDate
                         )
-                    }
 
                     setUpClickIntent(context, views, appWidgetIds)
 
@@ -221,7 +221,7 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     private fun setUpClickIntent(context: Context, views: RemoteViews, appWidgetIds: IntArray) {
         val intent = Intent(context, MainActivity::class.java).apply {
-            putExtra("ids", appWidgetIds)
+            putExtra("appWidgetIds", appWidgetIds)
         }
         val pendingIntent = PendingIntent.getActivity(
             context, 0, intent,

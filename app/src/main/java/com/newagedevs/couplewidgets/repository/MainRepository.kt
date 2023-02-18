@@ -2,6 +2,10 @@ package com.newagedevs.couplewidgets.repository
 
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.persistence.CoupleDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 
@@ -10,25 +14,41 @@ class MainRepository constructor(
 ) : Repository {
 
 
-    fun getCouples(): List<Couple> {
-        return coupleDao.getCouples()
+    fun getWidgets(): Flow<List<Couple>?> {
+        return coupleDao.getWidgetsFlow().map {
+            it
+        }.flowOn(Dispatchers.IO)
     }
 
 
-    fun getCouple(): Couple? {
-        val couple = coupleDao.getCouples()
-        return if (couple.isEmpty()) {
-            null
+    fun getWidgetByID(id: Long): Couple? {
+        return coupleDao.getWidgetByID(id)
+    }
+
+    fun getActiveWidget(): Couple? {
+        return coupleDao.getActiveWidget()
+    }
+
+    fun setWidget(couple: Couple): Long {
+        val widgets = coupleDao.getActiveWidgets()
+
+        if(widgets.isEmpty()) {
+            widgets.forEach {
+                coupleDao.updateWidgetActiveStatus(it.id, false)
+            }
+        }
+
+        return if (getWidgetByID(couple.id) != null) {
+            coupleDao.updateWidget(couple)
+            couple.id
         } else {
-            couple[0]
+            coupleDao.insertWidget(couple)
         }
     }
 
-    fun setCouple(couple:Couple) {
-        coupleDao.deleteCouples()
-        coupleDao.insertCouple(couple)
+    fun deleteAllWidgets() {
+        coupleDao.deleteWidgets()
     }
-
 
     init {
         Timber.d("Injection MainRepository")

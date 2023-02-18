@@ -28,23 +28,23 @@
         <FrameLayout
             android:id="@+id/previewFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="156dp">
 
             <ImageView
-                android:id="@+id/bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/system_wallpaper"
                 android:scaleType="centerCrop"
-                app:background="@{background}"/>
+                app:drawableBackground="@{background}"/>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="28dp"
-                android:layout_marginVertical="28dp">
+                android:layout_marginVertical="0dp">
 
                 <LinearLayout
                     android:layout_height="wrap_content"
