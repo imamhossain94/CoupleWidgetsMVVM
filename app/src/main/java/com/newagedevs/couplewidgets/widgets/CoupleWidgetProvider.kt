@@ -63,9 +63,6 @@ class CoupleWidgetProvider : AppWidgetProvider() {
             renderCoupleWidget(context, appWidgetManager, appWidgetIds)
         }
 
-
-
-
     }
 
     override fun onEnabled(context: Context?) {

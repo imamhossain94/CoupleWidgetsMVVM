@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Bindable
+import com.applovin.mediation.ads.MaxInterstitialAd
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
@@ -44,17 +45,21 @@ class MainViewModel constructor(
     private val mainRepository: MainRepository
 ) : BindingViewModel() {
 
-    private val defaultDate =
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val defaultDate = dateFormat.format(Calendar.getInstance().time)
+    private val imuDate = "1997-12-07"
+    private val ufmDate = "2004-10-21"
+    private val fallDate = "2021-05-27"
+    private val relationDate = "2021-05-27"
 
     @get:Bindable
     var toast: String? by bindingProperty(null)
 
     @get:Bindable
-    var yourName: String? by bindingProperty("nickname")
+    var yourName: String? by bindingProperty("imu")
 
     @get:Bindable
-    var partnerName: String? by bindingProperty("nickname")
+    var partnerName: String? by bindingProperty("ufm")
 
     @get:Bindable
     var yourImage: Uri? by bindingProperty(Uri.EMPTY)
@@ -63,13 +68,13 @@ class MainViewModel constructor(
     var partnerImage: Uri? by bindingProperty(Uri.EMPTY)
 
     @get:Bindable
-    var shape: Int? by bindingProperty(R.drawable.shape_1)
+    var shape: Int? by bindingProperty(R.drawable.shape_4)
 
     @get:Bindable
     var shapeColor: Int? by bindingProperty(Color.WHITE)
 
     @get:Bindable
-    var symbol: Int? by bindingProperty(R.drawable.symbol_1)
+    var symbol: Int? by bindingProperty(R.drawable.symbol_6)
 
     @get:Bindable
     var symbolColor: Int? by bindingProperty(Color.WHITE)
@@ -81,19 +86,21 @@ class MainViewModel constructor(
     var counterColor: Int? by bindingProperty(Color.WHITE)
 
     @get:Bindable
-    var fallInLove: String? by bindingProperty(defaultDate)
+    var fallInLove: String? by bindingProperty(fallDate)
 
     @get:Bindable
-    var inRelation: String? by bindingProperty(defaultDate)
+    var inRelation: String? by bindingProperty(relationDate)
 
     @get:Bindable
-    var yourBirthday: String? by bindingProperty(defaultDate)
+    var yourBirthday: String? by bindingProperty(imuDate)
 
     @get:Bindable
-    var partnerBirthday: String? by bindingProperty(defaultDate)
+    var partnerBirthday: String? by bindingProperty(ufmDate)
 
     @get:Bindable
     var counterDate: String? by bindingProperty(defaultDate)
+
+    lateinit var interstitialAd: MaxInterstitialAd
 
     // Widget settings
     fun shapePicker(view: View) {
@@ -324,6 +331,9 @@ class MainViewModel constructor(
             onPositive { index: Int, _: Option ->
                 when (index) {
                     0 -> {
+                        if( interstitialAd.isReady ) {
+                            interstitialAd.showAd()
+                        }
                         WidgetsActivity.startActivity(view.context)
                     }
                     1 -> {
@@ -403,6 +413,10 @@ class MainViewModel constructor(
 
                 widgetId = mainRepository.setWidget(couple)
 
+                if( interstitialAd.isReady ) {
+                    interstitialAd.showAd()
+                }
+
                 if (widgetIds != null) {
                     context.sendBroadcast(intent)
                     activity.finish()
@@ -419,6 +433,10 @@ class MainViewModel constructor(
                 widgetIds = null
                 widgetId = mainRepository.setWidget(couple)
                 initializeData()
+
+                if( interstitialAd.isReady ) {
+                    interstitialAd.showAd()
+                }
             }
         }
 

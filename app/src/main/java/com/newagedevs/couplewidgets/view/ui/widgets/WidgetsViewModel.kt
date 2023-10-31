@@ -35,7 +35,7 @@ class WidgetsViewModel constructor(
             style(SheetStyle.BOTTOM_SHEET)
             title("Confirm Delete")
             content("Are you sure you want to delete all widgets? ")
-            onPositive("Exit") {
+            onPositive("Yes") {
                 mainRepository.deleteAllWidgets()
                 toast = "All widgets have been deleted"
                 MainActivity.restartActivity(view.context)
