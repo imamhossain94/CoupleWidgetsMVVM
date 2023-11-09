@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="#EBEBEB">
+        app:cardBackgroundColor="#000000">
 
         <FrameLayout
             android:id="@+id/previewFrame"
