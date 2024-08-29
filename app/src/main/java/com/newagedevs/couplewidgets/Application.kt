@@ -12,7 +12,9 @@ import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxAppOpenAd
+import com.applovin.sdk.AppLovinMediationProvider
 import com.applovin.sdk.AppLovinSdk
+import com.applovin.sdk.AppLovinSdkInitializationConfiguration
 import com.newagedevs.couplewidgets.di.persistenceModule
 import com.newagedevs.couplewidgets.di.repositoryModule
 import com.newagedevs.couplewidgets.di.viewModelModule
@@ -43,14 +45,13 @@ class Application : Application() {
   }
 
   private fun initializeAppLovinSdk() {
-//        val settings = AppLovinSdkSettings(this@Application)
-//        settings.testDeviceAdvertisingIds = listOf("d4456f44-7fc5-4102-8999-6b5714de2d8f")
-//        val sdk = AppLovinSdk.getInstance(settings, this@Application)
-//        sdk.showMediationDebugger()
 
-    val sdk = AppLovinSdk.getInstance(this@Application)
-    sdk.mediationProvider = "max"
-    sdk.initializeSdk {
+    // Create the initialization configuration
+    val initConfig = AppLovinSdkInitializationConfiguration.builder(BuildConfig.applovinSdkKey, this)
+      .setMediationProvider(AppLovinMediationProvider.MAX)
+      .build()
+
+    AppLovinSdk.getInstance(this).initialize(initConfig) { sdkConfig ->
       appOpenManager = AppOpenManager(this@Application)
     }
   }

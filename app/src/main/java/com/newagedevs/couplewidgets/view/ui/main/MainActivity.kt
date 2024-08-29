@@ -74,31 +74,31 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private val bannerAdsListener = object : MaxAdViewAdListener {
-        override fun onAdLoaded(p0: MaxAd?) {
+        override fun onAdLoaded(p0: MaxAd) {
             binding.adsContainer.visibility = View.VISIBLE
         }
 
-        override fun onAdDisplayed(p0: MaxAd?) {
+        override fun onAdDisplayed(p0: MaxAd) {
             binding.adsContainer.visibility = View.VISIBLE
         }
 
-        override fun onAdHidden(p0: MaxAd?) {
+        override fun onAdHidden(p0: MaxAd) {
             binding.adsContainer.visibility = View.GONE
         }
 
-        override fun onAdClicked(p0: MaxAd?) { }
+        override fun onAdClicked(p0: MaxAd) { }
 
-        override fun onAdLoadFailed(p0: String?, p1: MaxError?) {
+        override fun onAdLoadFailed(p0: String, p1: MaxError) {
             binding.adsContainer.visibility = View.GONE
         }
 
-        override fun onAdDisplayFailed(p0: MaxAd?, p1: MaxError?) {
+        override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
             binding.adsContainer.visibility = View.GONE
         }
 
-        override fun onAdExpanded(p0: MaxAd?) { }
+        override fun onAdExpanded(p0: MaxAd) { }
 
-        override fun onAdCollapsed(p0: MaxAd?) { }
+        override fun onAdCollapsed(p0: MaxAd) { }
     }
     // ----------------------------------------------------------------
     private fun createInterstitialAd() {
@@ -113,13 +113,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             retryAttempt = 0.0
         }
 
-        override fun onAdLoadFailed(adUnitId: String?, error: MaxError?) {
+        override fun onAdLoadFailed(adUnitId: String, error: MaxError) {
             retryAttempt++
             val delayMillis = TimeUnit.SECONDS.toMillis( 2.0.pow(6.0.coerceAtMost(retryAttempt)).toLong() )
             Handler(Looper.getMainLooper()).postDelayed( { viewModel.interstitialAd.loadAd()  }, delayMillis )
         }
 
-        override fun onAdDisplayFailed(ad: MaxAd?, error: MaxError?) {
+        override fun onAdDisplayFailed(ad: MaxAd, error: MaxError) {
             viewModel.interstitialAd.loadAd()
         }
 

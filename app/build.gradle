@@ -100,7 +100,6 @@ dependencies {
     implementation "joda-time:joda-time:$versions.jodaTime"
 
     // Applovin
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-    implementation 'com.applovin:applovin-sdk:11.10.1'
+    implementation 'com.applovin:applovin-sdk:+'
     implementation "androidx.lifecycle:lifecycle-process:2.5.1"
 }

@@ -73,9 +73,6 @@
 
         </receiver>
 
-        <meta-data android:name="applovin.sdk.key"
-            android:value="${applovinSdkKey}"/>
-
     </application>
 
 </manifest>
