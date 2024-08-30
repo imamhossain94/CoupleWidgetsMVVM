@@ -19,8 +19,6 @@
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_light</item>
         <item name="icon_color">#09244B</item>
         <item name="bg_card">@color/white</item>
-
-
     </style>
 
 </resources>
