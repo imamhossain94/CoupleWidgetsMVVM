@@ -1,13 +1,14 @@
 package com.newagedevs.couplewidgets.view.ui.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -27,6 +28,7 @@ import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
+import com.newagedevs.couplewidgets.persistence.SharedPref
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
@@ -39,10 +41,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainViewModel constructor(
+class MainViewModel(
     private var widgetId: Long?,
     private var widgetIds: IntArray?,
-    private val mainRepository: MainRepository
+    private val mainRepository: MainRepository,
+    val preference: SharedPref
 ) : BindingViewModel() {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -230,7 +233,8 @@ class MainViewModel constructor(
             onPositive { index: Int, _: Option ->
 
                 val wrapper = ContextWrapper(view.context)
-                val file = wrapper.getDir("images", Context.MODE_PRIVATE)
+//                val file = wrapper.getDir("images", Context.MODE_PRIVATE)
+                val file = wrapper.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!
 
                 if (index == 0) {
                     ImagePicker.with(view.context as Activity)
@@ -283,6 +287,7 @@ class MainViewModel constructor(
             setSelectedDate(calendar)
             onPositive { dateStart, _ ->
 
+                @SuppressLint("RestrictedApi")
                 val date = dateStart.toLocalDate().toString()
 
                 when (tag) {
@@ -331,8 +336,8 @@ class MainViewModel constructor(
             onPositive { index: Int, _: Option ->
                 when (index) {
                     0 -> {
-                        if( interstitialAd.isReady ) {
-                            interstitialAd.showAd()
+                        if( interstitialAd.isReady && preference.shouldShowInterstitialAds()) {
+                            interstitialAd.showAd(view.context as Activity)
                         }
                         WidgetsActivity.startActivity(view.context)
                     }
@@ -413,10 +418,6 @@ class MainViewModel constructor(
 
                 widgetId = mainRepository.setWidget(couple)
 
-                if( interstitialAd.isReady ) {
-                    interstitialAd.showAd()
-                }
-
                 if (widgetIds != null) {
                     context.sendBroadcast(intent)
                     activity.finish()
@@ -434,8 +435,8 @@ class MainViewModel constructor(
                 widgetId = mainRepository.setWidget(couple)
                 initializeData()
 
-                if( interstitialAd.isReady ) {
-                    interstitialAd.showAd()
+                if( interstitialAd.isReady && preference.shouldShowInterstitialAds()) {
+                    interstitialAd.showAd(view.context as Activity)
                 }
             }
         }
