@@ -1,22 +1,16 @@
 package com.newagedevs.couplewidgets.view.ui.main
 
-import android.Manifest
 import android.app.Activity
-import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
-import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.applovin.mediation.MaxAd
@@ -56,15 +50,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding {
             vm = viewModel
+            bg.setImageResource(viewModel.getNextBackground())
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        setupPreviewFrame()
 
         createBannerAd()
         createInterstitialAd()
@@ -142,31 +135,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             viewModel.interstitialAd.loadAd()
         }
     }
-    // ----------------------------------------------------------------
-
-    private fun setupPreviewFrame() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            val preview = findViewById<ImageView>(R.id.bg)
-            val wallpaperManager = WallpaperManager.getInstance(this)
-
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    3
-                )
-                return
-            }
-
-            val wallpaperDrawable = wallpaperManager.drawable
-            preview.setImageDrawable(wallpaperDrawable)
-        }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -174,7 +142,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        setupPreviewFrame()
+
     }
 
     @Deprecated("Deprecated in Java")
@@ -182,7 +150,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         super.onActivityResult(requestCode, resultCode, data)
 
         when (resultCode) {
-            Activity.RESULT_OK -> {
+            RESULT_OK -> {
 
                 val uri: Uri = data?.data!!
 
@@ -206,6 +174,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         CustomSheet().show(this@MainActivity) {
             style(SheetStyle.BOTTOM_SHEET)
             title("Confirm Exit")
@@ -215,7 +184,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         }
     }
-
 
     companion object {
         fun startActivity(

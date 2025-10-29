@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-
 class CoupleRepository(private val coupleDao: CoupleDao) {
 
     fun getActiveWidgetFlow(): Flow<Couple?> {
@@ -17,5 +16,3 @@ class CoupleRepository(private val coupleDao: CoupleDao) {
     }
 
 }
-
-

@@ -1,7 +1,7 @@
 package com.newagedevs.couplewidgets.view.adapter
 
-import android.graphics.drawable.Drawable
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ItemWidgetBinding
@@ -12,9 +12,7 @@ import com.skydoves.bindables.binding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WidgetsAdapter(
-    private val backgroundDrawable: Drawable?
-) : RecyclerView.Adapter<WidgetsAdapter.WidgetsViewHolder>() {
+class WidgetsAdapter() : RecyclerView.Adapter<WidgetsAdapter.WidgetsViewHolder>() {
 
     private val items = mutableListOf<Couple>()
     private val defaultDate =
@@ -22,6 +20,15 @@ class WidgetsAdapter(
             "yyyy-MM-dd",
             Locale.getDefault()
         ).format(Calendar.getInstance().time)
+
+    // Background drawables list
+    private val backgrounds = listOf(
+        R.drawable.bg_1,
+        R.drawable.bg_2,
+        R.drawable.bg_3,
+        R.drawable.bg_4,
+        R.drawable.bg_5
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetsViewHolder {
 
@@ -31,12 +38,12 @@ class WidgetsAdapter(
 
             binding.root.setOnClickListener { view ->
                 val position =
-                    adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
+                    bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                         ?: return@setOnClickListener
 
                 MainActivity.startActivity(
-                  view.context,
-                  items[position]
+                    view.context,
+                    items[position]
                 )
             }
         }
@@ -55,15 +62,19 @@ class WidgetsAdapter(
         holder.binding.apply {
             couple = items[position]
             counter = dateDifference(items[position].inRelation, defaultDate)
-            background = backgroundDrawable
+
+            // Set background based on position (cycles through backgrounds)
+            val bgDrawable = AppCompatResources.getDrawable(
+                holder.itemView.context,
+                backgrounds[position % backgrounds.size]
+            )
+            background = bgDrawable
+
             executePendingBindings()
         }
     }
-
-    fun getCouple(index: Int): Couple = items[index]
 
     class WidgetsViewHolder(val binding: ItemWidgetBinding) :
         RecyclerView.ViewHolder(binding.root)
 
 }
-

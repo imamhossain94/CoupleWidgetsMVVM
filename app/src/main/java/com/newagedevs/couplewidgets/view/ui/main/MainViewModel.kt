@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
+import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Color
@@ -11,6 +12,7 @@ import android.net.Uri
 import android.os.Environment
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Bindable
 import com.applovin.mediation.ads.MaxInterstitialAd
@@ -483,6 +485,23 @@ class MainViewModel(
 
         counterDate = dateDifference(inRelation, defaultDate)
 
+    }
+
+    fun getNextBackground(): Int {
+        val backgrounds = listOf(
+            R.drawable.bg_1,
+            R.drawable.bg_2,
+            R.drawable.bg_3,
+            R.drawable.bg_4,
+            R.drawable.bg_5
+        )
+
+        val lastIndex = preference.sharedPref.getInt("last_bg_index", -1)
+        val nextIndex = (lastIndex + 1) % backgrounds.size
+
+        preference.sharedPref.edit { putInt("last_bg_index", nextIndex) }
+
+        return backgrounds[nextIndex]
     }
 
 
