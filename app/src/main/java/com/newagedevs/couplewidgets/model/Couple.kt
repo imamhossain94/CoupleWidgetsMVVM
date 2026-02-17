@@ -17,6 +17,7 @@ data class Couple(
     val partner: Person?,
     val fallInLove: String?,
     val inRelation: String?,
+    var appWidgetId: Int? = null,
 ) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

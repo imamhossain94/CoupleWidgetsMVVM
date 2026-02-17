@@ -34,6 +34,12 @@ interface CoupleDao {
     @Query("SELECT * FROM Couple WHERE active = 1")
     fun getActiveWidgets(): List<Couple>
 
+    @Query("SELECT * FROM Couple WHERE appWidgetId = :appWidgetId LIMIT 1")
+    fun getWidgetByAppWidgetId(appWidgetId: Int): Couple?
+
+    @Query("SELECT * FROM Couple WHERE appWidgetId = :appWidgetId LIMIT 1")
+    fun getWidgetByAppWidgetIdFlow(appWidgetId: Int): Flow<Couple?>
+
 
     // DELETE Widgets
     @Query("DELETE FROM Couple")

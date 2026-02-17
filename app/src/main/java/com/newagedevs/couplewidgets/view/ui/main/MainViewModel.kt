@@ -446,17 +446,11 @@ class MainViewModel(
                     couple.id = widgetId!!
                 }
 
+                couple.appWidgetId = appWidgetId
                 widgetId = mainRepository.setWidget(couple)
 
-                // Save widget mapping if we have an appWidgetId
-                if (appWidgetId != null && widgetId != null) {
-                    saveWidgetMapping(appWidgetId!!, widgetId!!)
-                }
-
-                if (widgetIds != null) {
+                if (id != null) {
                     context.sendBroadcast(intent)
-                    activity.finish()
-                } else if (id != null) {
                     activity.setResult(RESULT_OK, intent)
                     activity.finish()
                 } else {
@@ -464,6 +458,8 @@ class MainViewModel(
                     // If no widget on home screen, guide user to add one
                     if (!hasWidgetOnHomeScreen(context)) {
                         guideUserToAddWidget(activity)
+                    } else if (widgetIds == null) {
+                         activity.finish()
                     }
                 }
 
@@ -471,15 +467,12 @@ class MainViewModel(
             onNegative("Create Widget") {
                 toast = "New widget created"
                 widgetIds = null
+                couple.appWidgetId = appWidgetId
                 widgetId = mainRepository.setWidget(couple)
-                
-                // Save widget mapping if we have an appWidgetId
-                if (appWidgetId != null && widgetId != null) {
-                    saveWidgetMapping(appWidgetId!!, widgetId!!)
-                }
                 
                 viewModelScope.launch {
                     initializeData()
+                    context.sendBroadcast(intent)
                 }
 
                 // Check if we should show ad
@@ -502,19 +495,14 @@ class MainViewModel(
 
         var couple:Couple? = null
 
-        // 1. Try to get specific widgetId from mapping if we only have appWidgetId
-        if (widgetId == null && appWidgetId != null) {
-            widgetId = getWidgetMapping(appWidgetId!!)
-        }
-
         withContext(Dispatchers.IO) {
-            // Priority 1: If we have a specific widgetId (from clicking an existing widget or mapping)
+            // Priority 1: If we have a specific widgetId (DB ID)
             if (widgetId != null) {
                 couple = mainRepository.getWidgetByID(widgetId!!)
             }
-            // Priority 2: If we have an appWidgetId but no widgetId (configuring a NEW widget from picker)
+            // Priority 2: If we have an appWidgetId (System ID from native home screen)
             else if (appWidgetId != null) {
-                // We'll reset to default below in the Main thread
+                couple = mainRepository.getWidgetByAppWidgetId(appWidgetId!!)
             }
             // Priority 3: Default behavior (app icon open) - load active/last widget
             else {
@@ -523,42 +511,33 @@ class MainViewModel(
         }
 
         if (couple != null) {
-            widgetId = couple.id
+            widgetId = couple!!.id
 
-            yourName = couple.you?.name
-            yourImage = couple.you?.image
-            yourBirthday = couple.you?.birthday
+            yourName = couple!!.you?.name
+            yourImage = couple!!.you?.image
+            yourBirthday = couple!!.you?.birthday
 
-            partnerName = couple.partner?.name
-            partnerImage = couple.partner?.image
-            partnerBirthday = couple.partner?.birthday
+            partnerName = couple!!.partner?.name
+            partnerImage = couple!!.partner?.image
+            partnerBirthday = couple!!.partner?.birthday
 
-            shape = couple.frame?.vector
-            shapeColor = couple.frame?.color
+            shape = couple!!.frame?.vector
+            shapeColor = couple!!.frame?.color
 
-            symbol = couple.heart?.vector
-            symbolColor = couple.heart?.color
+            symbol = couple!!.heart?.vector
+            symbolColor = couple!!.heart?.color
 
-            nameColor = couple.nameColor
-            counterColor = couple.counterColor
+            nameColor = couple!!.nameColor
+            counterColor = couple!!.counterColor
 
-            fallInLove = couple.fallInLove
-            inRelation = couple.inRelation
-        } else if (appWidgetId != null && widgetId == null) {
+            fallInLove = couple!!.fallInLove
+            inRelation = couple!!.inRelation
+        } else {
             resetToDefaultData()
         }
 
         counterDate = dateDifference(inRelation, defaultDate)
 
-    }
-
-    private fun getWidgetMapping(appWidgetId: Int): Long? {
-        val mappings = preference.context.getSharedPreferences(
-            "widget_id_mappings",
-            Context.MODE_PRIVATE
-        )
-        val id = mappings.getLong("widget_$appWidgetId", -1L)
-        return if (id == -1L) null else id
     }
 
     private fun resetToDefaultData() {
@@ -631,16 +610,6 @@ class MainViewModel(
             Handler(Looper.getMainLooper()).postDelayed({
                 activity.moveTaskToBack(true)
             }, 1500)
-        }
-    }
-
-    private fun saveWidgetMapping(appWidgetId: Int, dbWidgetId: Long) {
-        val mappings = preference.context.getSharedPreferences(
-            "widget_id_mappings",
-            Context.MODE_PRIVATE
-        )
-        mappings.edit {
-            putLong("widget_$appWidgetId", dbWidgetId)
         }
     }
 

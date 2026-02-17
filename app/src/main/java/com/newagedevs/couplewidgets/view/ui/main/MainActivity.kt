@@ -207,7 +207,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             context: Context,
             couple: Couple
         ) = context.intentOf<MainActivity> {
-            putExtra("widgetId", couple.id.toInt())
+            putExtra("widgetId", couple.id)
             context.startActivity(intent, null)
             (context as Activity).finish()
         }

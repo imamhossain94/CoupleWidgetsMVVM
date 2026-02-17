@@ -32,28 +32,9 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     private val layoutResource: Int get() = R.layout.couple_widget_layout
     private val widgetScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val widgetMappingPrefName = "widget_id_mappings"
-    
     private fun database(context: Context) = CoupleRepository(
         AppDatabase.getInstance(context).coupleDao()
     )
-
-    private fun getWidgetMappings(context: Context) = 
-        context.getSharedPreferences(widgetMappingPrefName, Context.MODE_PRIVATE)
-
-    private fun getDbWidgetId(context: Context, appWidgetId: Int): Long? {
-        val mappings = getWidgetMappings(context)
-        val dbWidgetId = mappings.getLong("widget_$appWidgetId", -1L)
-        return if (dbWidgetId == -1L) null else dbWidgetId
-    }
-
-    private fun setDbWidgetId(context: Context, appWidgetId: Int, dbWidgetId: Long) {
-        getWidgetMappings(context).edit().putLong("widget_$appWidgetId", dbWidgetId).apply()
-    }
-
-    private fun removeDbWidgetId(context: Context, appWidgetId: Int) {
-        getWidgetMappings(context).edit().remove("widget_$appWidgetId").apply()
-    }
 
     @ExperimentalCoroutinesApi
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -88,7 +69,13 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         super.onDeleted(context, appWidgetIds)
         // Clean up widget mappings
         appWidgetIds?.forEach { appWidgetId ->
-            context?.let { removeDbWidgetId(it, appWidgetId) }
+            runBlocking(Dispatchers.IO) {
+                val widget = database(context!!).getWidgetByAppWidgetId(appWidgetId)
+                if (widget != null) {
+                    widget.appWidgetId = null
+                    database(context).setWidget(widget)
+                }
+            }
         }
         context?.let { cancelAlarm(it) }
     }
@@ -101,15 +88,17 @@ class CoupleWidgetProvider : AppWidgetProvider() {
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         
-        // For each widget being updated, create a mapping if it doesn't exist
+        // For each widget being updated, if it doesn't have a configuration, link to current active one
         appWidgetIds.forEach { appWidgetId ->
-            val existingMapping = getDbWidgetId(context, appWidgetId)
-            if (existingMapping == null) {
-                // Widget added from home screen - map to active widget
-                runBlocking(Dispatchers.IO) {
+            runBlocking(Dispatchers.IO) {
+                val existingWidget = database(context).getWidgetByAppWidgetId(appWidgetId)
+                if (existingWidget == null) {
                     val activeWidget = database(context).getActiveWidget()
                     if (activeWidget != null) {
-                        setDbWidgetId(context, appWidgetId, activeWidget.id)
+                        // Clone active widget for this specific appWidgetId
+                        val newWidget = activeWidget.copy(appWidgetId = appWidgetId)
+                        newWidget.id = 0 // Force new insertion
+                        database(context).setWidget(newWidget)
                     }
                 }
             }
@@ -127,70 +116,71 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         appWidgetIds.forEach { appWidgetId ->
             val views = RemoteViews(context.packageName, layoutResource)
             widgetScope.launch {
-                // Try to get the specific widget configuration for this appWidgetId
-                val dbWidgetId = getDbWidgetId(context, appWidgetId)
-                val widgetFlow = if (dbWidgetId != null) {
-                    database(context).getWidgetByIDFlow(dbWidgetId)
-                } else {
-                    database(context).getActiveWidgetFlow()
+                // Fetch the specific widget configuration for this appWidgetId directly from DB
+                val couple = withContext(Dispatchers.IO) {
+                    database(context).getWidgetByAppWidgetId(appWidgetId)
                 }
-                
-                widgetFlow.collect {
-                    val defaultDate =
-                        SimpleDateFormat(
-                            "yyyy-MM-dd",
-                            Locale.getDefault()
-                        ).format(Calendar.getInstance().time)
 
-                    val couple: Couple = it
-                        ?: Couple(
-                            active = true,
-                            frame = Decorator(R.drawable.shape_1, Color.WHITE),
-                            heart = Decorator(R.drawable.symbol_1, Color.WHITE),
-                            nameColor = Color.WHITE,
-                            counterColor = Color.WHITE,
-                            you = Person("nickname", defaultDate, null),
-                            partner = Person("nickname", defaultDate, null),
-                            fallInLove = defaultDate,
-                            inRelation = defaultDate
-                        )
+                val defaultDate =
+                    SimpleDateFormat(
+                        "yyyy-MM-dd",
+                        Locale.getDefault()
+                    ).format(Calendar.getInstance().time)
 
-                    setUpClickIntent(context, views, appWidgetId, dbWidgetId ?: couple.id)
+                // Fallback hierarchy: Specific Mapping -> Active Widget -> Default Couple
+                val finalCouple: Couple = couple ?: run {
+                    withContext(Dispatchers.IO) {
+                        database(context).getActiveWidget()
+                    }
+                } ?: Couple(
+                    active = true,
+                    frame = Decorator(R.drawable.shape_1, Color.WHITE),
+                    heart = Decorator(R.drawable.symbol_1, Color.WHITE),
+                    nameColor = Color.WHITE,
+                    counterColor = Color.WHITE,
+                    you = Person("nickname", defaultDate, null),
+                    partner = Person("nickname", defaultDate, null),
+                    fallInLove = defaultDate,
+                    inRelation = defaultDate
+                )
 
-                    views.setTextViewText(R.id.your_name, couple.you?.name)
-                    views.setTextColor(R.id.your_name, couple.nameColor!!)
+                setUpClickIntent(context, views, appWidgetId, finalCouple.id)
 
-                    views.setTextViewText(R.id.partner_name, couple.partner?.name)
-                    views.setTextColor(R.id.partner_name, couple.nameColor)
+                views.setTextViewText(R.id.your_name, finalCouple.you?.name)
+                views.setTextColor(R.id.your_name, finalCouple.nameColor!!)
 
-                    views.setTextViewText(
-                        R.id.counter_date,
-                        dateDifference(couple.inRelation, defaultDate)
-                    )
-                    views.setTextColor(R.id.counter_date, couple.counterColor!!)
+                views.setTextViewText(R.id.partner_name, finalCouple.partner?.name)
+                views.setTextColor(R.id.partner_name, finalCouple.nameColor)
 
-                    views.setCharSequence(
-                        R.id.counter_clock,
-                        "setFormat24Hour",
-                        "k'h' mm'm' ss's'"
-                    )
-                    views.setCharSequence(
-                        R.id.counter_clock,
-                        "setFormat12Hour",
-                        "k'h' mm'm' ss's'"
-                    )
-                    views.setTextColor(R.id.counter_clock, couple.counterColor)
-                    views.setTextColor(R.id.counter_clock, couple.counterColor)
+                views.setTextViewText(
+                    R.id.counter_date,
+                    dateDifference(finalCouple.inRelation, defaultDate)
+                )
+                views.setTextColor(R.id.counter_date, finalCouple.counterColor!!)
 
+                views.setCharSequence(
+                    R.id.counter_clock,
+                    "setFormat24Hour",
+                    "k'h' mm'm' ss's'"
+                )
+                views.setCharSequence(
+                    R.id.counter_clock,
+                    "setFormat12Hour",
+                    "k'h' mm'm' ss's'"
+                )
+                views.setTextColor(R.id.counter_clock, finalCouple.counterColor)
 
-                    renderCoupleImage(context, views, couple, true)
-                    renderCoupleImage(context, views, couple, false)
+                // Render images in parallel
+                val job1 = launch { renderCoupleImage(context, views, finalCouple, true) }
+                val job2 = launch { renderCoupleImage(context, views, finalCouple, false) }
+                joinAll(job1, job2)
 
-                    views.setImageViewResource(R.id.heart_symbol, couple.heart?.vector!!)
-                    views.setInt(R.id.heart_symbol, "setColorFilter", couple.heart?.color!!)
-
-                    appWidgetManager.updateAppWidget(appWidgetId, views)
+                finalCouple.heart?.let { heart ->
+                    views.setImageViewResource(R.id.heart_symbol, heart.vector ?: R.drawable.symbol_1)
+                    views.setInt(R.id.heart_symbol, "setColorFilter", heart.color ?: Color.WHITE)
                 }
+
+                appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }
     }

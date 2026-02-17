@@ -29,6 +29,14 @@ class MainRepository constructor(
         return coupleDao.getActiveWidget()
     }
 
+    fun getWidgetByAppWidgetId(appWidgetId: Int): Couple? {
+        return coupleDao.getWidgetByAppWidgetId(appWidgetId)
+    }
+
+    fun getWidgetByAppWidgetIdFlow(appWidgetId: Int): Flow<Couple?> {
+        return coupleDao.getWidgetByAppWidgetIdFlow(appWidgetId).flowOn(Dispatchers.IO)
+    }
+
     fun setWidget(couple: Couple): Long {
         val widgets = coupleDao.getActiveWidgets()
 
