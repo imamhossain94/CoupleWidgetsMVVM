@@ -32,13 +32,28 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     private val layoutResource: Int get() = R.layout.couple_widget_layout
     private val widgetScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val widgetMappingPrefName = "widget_id_mappings"
+    
     private fun database(context: Context) = CoupleRepository(
-        Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            context.getString(R.string.database)
-        ).build().coupleDao()
+        AppDatabase.getInstance(context).coupleDao()
     )
+
+    private fun getWidgetMappings(context: Context) = 
+        context.getSharedPreferences(widgetMappingPrefName, Context.MODE_PRIVATE)
+
+    private fun getDbWidgetId(context: Context, appWidgetId: Int): Long? {
+        val mappings = getWidgetMappings(context)
+        val dbWidgetId = mappings.getLong("widget_$appWidgetId", -1L)
+        return if (dbWidgetId == -1L) null else dbWidgetId
+    }
+
+    private fun setDbWidgetId(context: Context, appWidgetId: Int, dbWidgetId: Long) {
+        getWidgetMappings(context).edit().putLong("widget_$appWidgetId", dbWidgetId).apply()
+    }
+
+    private fun removeDbWidgetId(context: Context, appWidgetId: Int) {
+        getWidgetMappings(context).edit().remove("widget_$appWidgetId").apply()
+    }
 
     @ExperimentalCoroutinesApi
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -53,8 +68,7 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         )
 
         val actions = listOf(
-            "android.appwidget.action.APPWIDGET_UPDATE",
-            "android.appwidget.action.android.appwidget.action.APPWIDGET_UPDATE",
+            AppWidgetManager.ACTION_APPWIDGET_UPDATE,
             "android.intent.action.TIME_SET",
         )
 
@@ -72,6 +86,10 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
+        // Clean up widget mappings
+        appWidgetIds?.forEach { appWidgetId ->
+            context?.let { removeDbWidgetId(it, appWidgetId) }
+        }
         context?.let { cancelAlarm(it) }
     }
 
@@ -82,6 +100,21 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
+        
+        // For each widget being updated, create a mapping if it doesn't exist
+        appWidgetIds.forEach { appWidgetId ->
+            val existingMapping = getDbWidgetId(context, appWidgetId)
+            if (existingMapping == null) {
+                // Widget added from home screen - map to active widget
+                runBlocking(Dispatchers.IO) {
+                    val activeWidget = database(context).getActiveWidget()
+                    if (activeWidget != null) {
+                        setDbWidgetId(context, appWidgetId, activeWidget.id)
+                    }
+                }
+            }
+        }
+        
         renderCoupleWidget(context, appWidgetManager, appWidgetIds)
     }
 
@@ -94,7 +127,15 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         appWidgetIds.forEach { appWidgetId ->
             val views = RemoteViews(context.packageName, layoutResource)
             widgetScope.launch {
-                database(context).getActiveWidgetFlow().collect {
+                // Try to get the specific widget configuration for this appWidgetId
+                val dbWidgetId = getDbWidgetId(context, appWidgetId)
+                val widgetFlow = if (dbWidgetId != null) {
+                    database(context).getWidgetByIDFlow(dbWidgetId)
+                } else {
+                    database(context).getActiveWidgetFlow()
+                }
+                
+                widgetFlow.collect {
                     val defaultDate =
                         SimpleDateFormat(
                             "yyyy-MM-dd",
@@ -114,7 +155,7 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                             inRelation = defaultDate
                         )
 
-                    setUpClickIntent(context, views, appWidgetIds)
+                    setUpClickIntent(context, views, appWidgetId, dbWidgetId ?: couple.id)
 
                     views.setTextViewText(R.id.your_name, couple.you?.name)
                     views.setTextColor(R.id.your_name, couple.nameColor!!)
@@ -216,13 +257,14 @@ class CoupleWidgetProvider : AppWidgetProvider() {
     }
 
 
-    private fun setUpClickIntent(context: Context, views: RemoteViews, appWidgetIds: IntArray) {
+    private fun setUpClickIntent(context: Context, views: RemoteViews, appWidgetId: Int, dbWidgetId: Long) {
         val intent = Intent(context, MainActivity::class.java).apply {
-            putExtra("appWidgetIds", appWidgetIds)
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            putExtra("widgetId", dbWidgetId)
         }
         val pendingIntent = PendingIntent.getActivity(
-            context, 0, intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT or 0
+            context, appWidgetId, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         views.setOnClickPendingIntent(R.id.couple_widget, pendingIntent)
     }

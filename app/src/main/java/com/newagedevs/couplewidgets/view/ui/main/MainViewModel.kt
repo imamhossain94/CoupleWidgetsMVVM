@@ -3,13 +3,17 @@ package com.newagedevs.couplewidgets.view.ui.main
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.edit
@@ -31,6 +35,7 @@ import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.persistence.SharedPref
+import androidx.lifecycle.viewModelScope
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
@@ -38,6 +43,9 @@ import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,6 +54,7 @@ import java.util.*
 class MainViewModel(
     private var widgetId: Long?,
     private var widgetIds: IntArray?,
+    private var appWidgetId: Int?,
     private val mainRepository: MainRepository,
     val preference: SharedPref
 ) : BindingViewModel() {
@@ -106,6 +115,20 @@ class MainViewModel(
     var counterDate: String? by bindingProperty(defaultDate)
 
     lateinit var interstitialAd: MaxInterstitialAd
+
+    init {
+        viewModelScope.launch {
+            initializeData()
+        }
+    }
+
+    fun refreshData(newWidgetId: Long?, newAppWidgetId: Int?) {
+        this.widgetId = newWidgetId
+        this.appWidgetId = newAppWidgetId
+        viewModelScope.launch {
+            initializeData()
+        }
+    }
 
     // Widget settings
     fun shapePicker(view: View) {
@@ -340,6 +363,7 @@ class MainViewModel(
                     0 -> {
                         if( interstitialAd.isReady && preference.shouldShowInterstitialAds()) {
                             interstitialAd.showAd(view.context as Activity)
+                            preference.recordAdShown()
                         }
                         WidgetsActivity.startActivity(view.context)
                     }
@@ -407,6 +431,10 @@ class MainViewModel(
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
 
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, CoupleWidgetProvider::class.java))
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+
         CustomSheet().show(view.context) {
             style(SheetStyle.BOTTOM_SHEET)
             title("Confirm Changes")
@@ -420,6 +448,11 @@ class MainViewModel(
 
                 widgetId = mainRepository.setWidget(couple)
 
+                // Save widget mapping if we have an appWidgetId
+                if (appWidgetId != null && widgetId != null) {
+                    saveWidgetMapping(appWidgetId!!, widgetId!!)
+                }
+
                 if (widgetIds != null) {
                     context.sendBroadcast(intent)
                     activity.finish()
@@ -428,6 +461,10 @@ class MainViewModel(
                     activity.finish()
                 } else {
                     context.sendBroadcast(intent)
+                    // If no widget on home screen, guide user to add one
+                    if (!hasWidgetOnHomeScreen(context)) {
+                        guideUserToAddWidget(activity)
+                    }
                 }
 
             }
@@ -435,28 +472,54 @@ class MainViewModel(
                 toast = "New widget created"
                 widgetIds = null
                 widgetId = mainRepository.setWidget(couple)
-                initializeData()
+                
+                // Save widget mapping if we have an appWidgetId
+                if (appWidgetId != null && widgetId != null) {
+                    saveWidgetMapping(appWidgetId!!, widgetId!!)
+                }
+                
+                viewModelScope.launch {
+                    initializeData()
+                }
 
-                if( interstitialAd.isReady && preference.shouldShowInterstitialAds()) {
+                // Check if we should show ad
+                val shouldShowAd = interstitialAd.isReady && preference.shouldShowInterstitialAds()
+                if (shouldShowAd) {
                     interstitialAd.showAd(view.context as Activity)
+                    preference.recordAdShown()
+                }
+                
+                // If no widget on home screen, guide user to add one
+                if (!hasWidgetOnHomeScreen(context) && !shouldShowAd) {
+                    guideUserToAddWidget(activity)
                 }
             }
         }
 
     }
 
-    private fun initializeData() {
+    private suspend fun initializeData() {
 
         var couple:Couple? = null
 
-        if (widgetIds != null && widgetId == null) {
-            couple = mainRepository.getActiveWidget()
-        } else if (widgetId != null) {
-            couple = mainRepository.getWidgetByID(widgetId!!)
+        // 1. Try to get specific widgetId from mapping if we only have appWidgetId
+        if (widgetId == null && appWidgetId != null) {
+            widgetId = getWidgetMapping(appWidgetId!!)
         }
 
-        if(widgetIds == null && widgetId == null) {
-            couple = mainRepository.getActiveWidget()
+        withContext(Dispatchers.IO) {
+            // Priority 1: If we have a specific widgetId (from clicking an existing widget or mapping)
+            if (widgetId != null) {
+                couple = mainRepository.getWidgetByID(widgetId!!)
+            }
+            // Priority 2: If we have an appWidgetId but no widgetId (configuring a NEW widget from picker)
+            else if (appWidgetId != null) {
+                // We'll reset to default below in the Main thread
+            }
+            // Priority 3: Default behavior (app icon open) - load active/last widget
+            else {
+                couple = mainRepository.getActiveWidget()
+            }
         }
 
         if (couple != null) {
@@ -481,10 +544,104 @@ class MainViewModel(
 
             fallInLove = couple.fallInLove
             inRelation = couple.inRelation
+        } else if (appWidgetId != null && widgetId == null) {
+            resetToDefaultData()
         }
 
         counterDate = dateDifference(inRelation, defaultDate)
 
+    }
+
+    private fun getWidgetMapping(appWidgetId: Int): Long? {
+        val mappings = preference.context.getSharedPreferences(
+            "widget_id_mappings",
+            Context.MODE_PRIVATE
+        )
+        val id = mappings.getLong("widget_$appWidgetId", -1L)
+        return if (id == -1L) null else id
+    }
+
+    private fun resetToDefaultData() {
+        widgetId = null
+        yourName = "You"
+        yourImage = Uri.EMPTY
+        yourBirthday = imuDate
+        partnerName = "Partner"
+        partnerImage = Uri.EMPTY
+        partnerBirthday = ufmDate
+        shape = R.drawable.shape_4
+        shapeColor = Color.WHITE
+        symbol = R.drawable.symbol_6
+        symbolColor = Color.WHITE
+        nameColor = Color.WHITE
+        counterColor = Color.WHITE
+        fallInLove = fallDate
+        inRelation = relationDate
+    }
+
+    private fun hasWidgetOnHomeScreen(context: Context): Boolean {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val widgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(context, CoupleWidgetProvider::class.java)
+        )
+        return widgetIds.isNotEmpty()
+    }
+
+    private fun guideUserToAddWidget(activity: Activity) {
+        val appWidgetManager = AppWidgetManager.getInstance(activity)
+        
+        // Check if programmatic widget pinning is supported (Android 8.0+)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (appWidgetManager.isRequestPinAppWidgetSupported) {
+                // Create component name for our widget
+                val widgetProvider = ComponentName(activity, CoupleWidgetProvider::class.java)
+                
+                // Create a callback intent that will be triggered when widget is pinned
+                val successCallback = Intent(activity, MainActivity::class.java).let { intent ->
+                    PendingIntent.getActivity(
+                        activity,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                }
+                
+                // Request to pin the widget
+                val pinned = appWidgetManager.requestPinAppWidget(widgetProvider, null, successCallback)
+                
+                if (pinned) {
+                    toast = "Widget configured! Select placement on home screen"
+                } else {
+                    toast = "Widget configured! Add it manually from widget menu"
+                    // Fallback: minimize app
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        activity.moveTaskToBack(true)
+                    }, 1500)
+                }
+            } else {
+                // Device doesn't support programmatic pinning
+                toast = "Widget configured! Now add it to your home screen"
+                Handler(Looper.getMainLooper()).postDelayed({
+                    activity.moveTaskToBack(true)
+                }, 1500)
+            }
+        } else {
+            // Android version below 8.0 - fallback to minimizing
+            toast = "Widget configured! Now add it to your home screen"
+            Handler(Looper.getMainLooper()).postDelayed({
+                activity.moveTaskToBack(true)
+            }, 1500)
+        }
+    }
+
+    private fun saveWidgetMapping(appWidgetId: Int, dbWidgetId: Long) {
+        val mappings = preference.context.getSharedPreferences(
+            "widget_id_mappings",
+            Context.MODE_PRIVATE
+        )
+        mappings.edit {
+            putLong("widget_$appWidgetId", dbWidgetId)
+        }
     }
 
     fun getNextBackground(): Int {
@@ -504,11 +661,6 @@ class MainViewModel(
         return backgrounds[nextIndex]
     }
 
-
-    init {
-        Timber.d("injection DashboardViewModel")
-        initializeData()
-    }
 
 }
 

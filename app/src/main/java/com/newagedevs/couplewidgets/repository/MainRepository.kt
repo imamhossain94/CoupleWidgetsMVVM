@@ -32,7 +32,7 @@ class MainRepository constructor(
     fun setWidget(couple: Couple): Long {
         val widgets = coupleDao.getActiveWidgets()
 
-        if(widgets.isEmpty()) {
+        if(widgets.isNotEmpty()) {
             widgets.forEach {
                 coupleDao.updateWidgetActiveStatus(it.id, false)
             }

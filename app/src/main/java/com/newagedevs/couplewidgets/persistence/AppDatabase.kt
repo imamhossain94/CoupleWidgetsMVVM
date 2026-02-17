@@ -11,4 +11,19 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun coupleDao(): CoupleDao
 
+    companion object {
+        @Volatile
+        private var instance: AppDatabase? = null
+
+        fun getInstance(context: android.content.Context): AppDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: androidx.room.Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    context.getString(com.newagedevs.couplewidgets.R.string.database)
+                ).build().also { instance = it }
+            }
+        }
+    }
+
 }

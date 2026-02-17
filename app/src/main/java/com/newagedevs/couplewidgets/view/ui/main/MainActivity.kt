@@ -1,6 +1,7 @@
 package com.newagedevs.couplewidgets.view.ui.main
 
 import android.app.Activity
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -39,7 +40,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private val widgetID: Long? by bundle("widgetId")
     private val appWidgetIDs: IntArray? by bundle("appWidgetIds")
-    private val viewModel: MainViewModel by viewModel { parametersOf(widgetID, appWidgetIDs) }
+    private val appWidgetID: Int? by lazy {
+        intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+            .takeIf { it != AppWidgetManager.INVALID_APPWIDGET_ID }
+    }
+    private val viewModel: MainViewModel by viewModel { parametersOf(widgetID, appWidgetIDs, appWidgetID) }
 
     private var retryAttempt = 0.0
 
@@ -63,10 +68,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         createInterstitialAd()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        
+        val newWidgetId = intent.extras?.getLong("widgetId", -1L)
+            ?.takeIf { it != -1L }
+        val newAppWidgetId = intent.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+            ?.takeIf { it != AppWidgetManager.INVALID_APPWIDGET_ID }
+            
+        viewModel.refreshData(newWidgetId, newAppWidgetId)
+    }
+
     // ----------------------------------------------------------------
     private fun createBannerAd() {
-        val bannerId = BuildConfig.banner_AdUnit
-        val adView = MaxAdView(bannerId, this).apply {
+        val bannerId = BuildConfig.AD_UNIT_BANNER
+        val adView = MaxAdView(bannerId).apply {
             setListener(bannerAdsListener)
             layoutParams = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -106,8 +123,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
     // ----------------------------------------------------------------
     private fun createInterstitialAd() {
-        val interstitialId = BuildConfig.interstitial_AdUnit
-        viewModel.interstitialAd = MaxInterstitialAd(interstitialId, this)
+        val interstitialId = BuildConfig.AD_UNIT_INTERSTITIAL
+        viewModel.interstitialAd = MaxInterstitialAd(interstitialId)
         viewModel.interstitialAd.setListener(interstitialAdsListener)
         viewModel.interstitialAd.loadAd()
     }

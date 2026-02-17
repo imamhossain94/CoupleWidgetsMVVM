@@ -16,8 +16,8 @@ android {
         minSdk = 23
         //noinspection OldTargetApi
         targetSdk = 35
-        versionCode = 16
-        versionName = "1.1.6"
+        versionCode = 17
+        versionName = "1.1.7"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -57,11 +57,11 @@ dependencies {
 
     // architecture components
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4'
-    implementation "androidx.room:room-runtime:2.8.3"
-    implementation "androidx.room:room-ktx:2.8.3"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0'
+    implementation "androidx.room:room-runtime:2.8.4"
+    implementation "androidx.room:room-ktx:2.8.4"
     //noinspection KaptUsageInsteadOfKsp
-    kapt "androidx.room:room-compiler:2.8.3"
+    kapt "androidx.room:room-compiler:2.8.4"
     testImplementation "androidx.arch.core:core-testing:2.2.0"
 
     // binding
@@ -99,6 +99,7 @@ dependencies {
 
     // image picker
     implementation "com.github.dhaval2404:imagepicker:2.1"
+    implementation "com.github.yalantis:ucrop:2.2.11"
 
     // gson
     implementation "com.google.code.gson:gson:2.13.2"
@@ -110,6 +111,6 @@ dependencies {
     implementation "joda-time:joda-time:2.14.0"
 
     // Applovin
-    implementation 'com.applovin:applovin-sdk:13.5.0'
-    implementation "androidx.lifecycle:lifecycle-process:2.9.4"
+    implementation 'com.applovin:applovin-sdk:13.5.1'
+    implementation "androidx.lifecycle:lifecycle-process:2.10.0"
 }

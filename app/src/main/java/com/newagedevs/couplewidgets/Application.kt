@@ -89,7 +89,7 @@ class Application : Application() {
     try {
       val appLovinSdk = AppLovinSdk.getInstance(this@Application)
 
-      val initConfig = AppLovinSdkInitializationConfiguration.builder(BuildConfig.applovinSdkKey)
+      val initConfig = AppLovinSdkInitializationConfiguration.builder(BuildConfig.APPLOVIN_SDK_KEY)
         .setMediationProvider(AppLovinMediationProvider.MAX)
         .apply {
           // Only add test device IDs in debug builds
@@ -113,7 +113,7 @@ class Application : Application() {
   inner class AppOpenManager(private val context: Context) : MaxAdListener {
 
     private var appOpenAd: MaxAppOpenAd? = null
-    private val adUnitId = BuildConfig.appOpen_AdUnit
+    private val adUnitId = BuildConfig.AD_UNIT_APP_OPEN
     private var isLoadingAd = false
     private var isShowingAd = false
 

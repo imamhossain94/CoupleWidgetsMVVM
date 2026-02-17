@@ -21,4 +21,14 @@
         <item name="bg_card">@color/white</item>
     </style>
 
+    <style name="ImagePicker.NonFullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+
 </resources>

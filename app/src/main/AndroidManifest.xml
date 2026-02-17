@@ -22,13 +22,12 @@
         tools:targetApi="33">
         <activity
             android:name=".view.ui.main.MainActivity"
+            android:theme="@style/Theme.CoupleWidgets"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -36,7 +35,20 @@
 
         <activity
             android:name=".view.ui.widgets.WidgetsActivity"
+            android:theme="@style/Theme.CoupleWidgets"
             android:exported="false" />
+
+        <activity
+            android:name="com.github.dhaval2404.imagepicker.ImagePickerActivity"
+            android:theme="@style/ImagePicker.NonFullscreen"
+            tools:replace="android:theme"/>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ImagePicker.NonFullscreen"
+            tools:ignore="DiscouragedApi"
+            tools:replace="android:theme"/>
 
         <receiver
             android:name=".widgets.WidgetAlarmReceiver"

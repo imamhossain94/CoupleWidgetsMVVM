@@ -20,6 +20,9 @@ interface CoupleDao {
     @Query("SELECT * FROM Couple WHERE id = :id_ LIMIT 1")
     fun getWidgetByID(id_: Long): Couple?
 
+    @Query("SELECT * FROM Couple WHERE id = :id_ LIMIT 1")
+    fun getWidgetByIDFlow(id_: Long): Flow<Couple?>
+
 
     // GET WIDGETS by Condition
     @Query("SELECT * FROM Couple WHERE active = 1 LIMIT 1")

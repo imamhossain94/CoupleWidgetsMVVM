@@ -15,4 +15,14 @@ class CoupleRepository(private val coupleDao: CoupleDao) {
         }.flowOn(Dispatchers.IO)
     }
 
+    fun getWidgetByIDFlow(id: Long): Flow<Couple?> {
+        return coupleDao.getWidgetByIDFlow(id).map {
+            it
+        }.flowOn(Dispatchers.IO)
+    }
+
+    fun getActiveWidget(): Couple? {
+        return coupleDao.getActiveWidget()
+    }
+
 }

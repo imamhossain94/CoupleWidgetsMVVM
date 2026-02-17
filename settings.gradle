@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://jitpack.io/" }
+        maven { url "https://jitpack.io" }
         jcenter()
     }
 }
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://jitpack.io/" }
+        maven { url "https://jitpack.io" }
         jcenter()
     }
 }

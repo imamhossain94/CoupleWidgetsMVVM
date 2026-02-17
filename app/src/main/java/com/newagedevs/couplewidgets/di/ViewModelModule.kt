@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    viewModel { (widgetID: Long?, widgetIds:IntArray?) -> MainViewModel(widgetID, widgetIds, get(), get()) }
+    viewModel { (widgetID: Long?, widgetIds:IntArray?, appWidgetID: Int?) -> MainViewModel(widgetID, widgetIds, appWidgetID, get(), get()) }
     viewModel { WidgetsViewModel(get()) }
 
 }
