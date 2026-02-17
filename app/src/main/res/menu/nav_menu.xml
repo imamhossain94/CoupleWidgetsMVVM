@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_widgets"
+            android:icon="@drawable/ic_widgets"
+            android:title="Widgets" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share"
+            android:title="Share" />
+        <item
+            android:id="@+id/nav_write_us"
+            android:icon="@drawable/ic_edit"
+            android:title="Write us" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback" />
+        <item
+            android:id="@+id/nav_bug_reports"
+            android:icon="@drawable/ic_bug"
+            android:title="Bug reports" />
+        <item
+            android:id="@+id/nav_privacy_policy"
+            android:icon="@drawable/ic_privacy"
+            android:title="Privacy policy" />
+        <item
+            android:id="@+id/nav_other_apps"
+            android:icon="@drawable/ic_playstore"
+            android:title="Other apps" />
+        <item
+            android:id="@+id/nav_rate_us"
+            android:icon="@drawable/ic_star"
+            android:title="Rate us" />
+        <item
+            android:id="@+id/nav_source_code"
+            android:icon="@drawable/ic_github"
+            android:title="Source code" />
+        <item
+            android:id="@+id/nav_icons_by"
+            android:icon="@drawable/ic_svg"
+            android:title="Icons by" />
+        <item
+            android:id="@+id/nav_version"
+            android:icon="@drawable/ic_plugin"
+            android:title="Version" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_power"
+            android:title="Exit" />
+    </group>
+
+</menu>

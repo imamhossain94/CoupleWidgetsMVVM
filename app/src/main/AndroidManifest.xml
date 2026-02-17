@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoupleWidgets"
-        tools:targetApi="33">
+        android:screenOrientation="portrait"
+        tools:targetApi="33"
+        tools:ignore="DiscouragedApi">
         <activity
             android:name=".view.ui.main.MainActivity"
             android:theme="@style/Theme.CoupleWidgets"

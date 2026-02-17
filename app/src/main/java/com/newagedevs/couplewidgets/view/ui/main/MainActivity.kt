@@ -32,6 +32,10 @@ import com.skydoves.bundler.bundle
 import com.skydoves.bundler.intentOf
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.activity.OnBackPressedCallback
+import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
+import com.newagedevs.couplewidgets.extensions.*
+import com.newagedevs.couplewidgets.utils.Constants
+import androidx.core.view.GravityCompat
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.concurrent.TimeUnit
@@ -71,16 +75,53 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                MaterialAlertDialogBuilder(this@MainActivity)
-                    .setTitle("Confirm Exit")
-                    .setMessage("Are you sure you want to exit? Hope you will come back again.")
-                    .setPositiveButton("Exit") { _, _ ->
-                        finish()
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .show()
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    MaterialAlertDialogBuilder(this@MainActivity)
+                        .setTitle("Confirm Exit")
+                        .setMessage("Are you sure you want to exit? Hope you will come back again.")
+                        .setPositiveButton("Exit") { _, _ ->
+                            finish()
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                }
             }
         })
+
+        setupNavigationDrawer()
+    }
+
+    private fun setupNavigationDrawer() {
+        binding.menuButton.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_widgets -> {
+                    if (viewModel.interstitialAd.isReady && viewModel.preference.shouldShowInterstitialAds()) {
+                        viewModel.interstitialAd.showAd(this)
+                        viewModel.preference.recordAdShown()
+                    }
+                    WidgetsActivity.startActivity(this)
+                }
+                R.id.nav_share -> shareTheApp(this)
+                R.id.nav_write_us -> openMailApp(this, "Writing about app", Constants.contactMail)
+                R.id.nav_feedback -> openMailApp(this, "Feedback", Constants.feedbackMail)
+                R.id.nav_bug_reports -> openMailApp(this, "Bug reports", Constants.feedbackMail)
+                R.id.nav_privacy_policy -> openWebPage(this, Constants.privacyPolicyUrl) { viewModel.toast = it }
+                R.id.nav_other_apps -> openAppStore(this, Constants.publisherName) { viewModel.toast = it }
+                R.id.nav_rate_us -> openAppStore(this, Constants.appStoreId) { viewModel.toast = it }
+                R.id.nav_source_code -> openWebPage(this, Constants.sourceCodeUrl) { viewModel.toast = it }
+                R.id.nav_icons_by -> viewModel.toast = "Icons by svgrepo.com"
+                R.id.nav_version -> viewModel.toast = "Version: ${getApplicationVersion()}"
+                R.id.nav_exit -> finish()
+            }
+            binding.drawerLayout.closeDrawers()
+            true
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
