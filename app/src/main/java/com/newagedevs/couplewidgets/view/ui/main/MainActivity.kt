@@ -27,9 +27,11 @@ import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
-import com.skydoves.bindables.BindingActivity
+import com. skydoves.bindables.BindingActivity
 import com.skydoves.bundler.bundle
 import com.skydoves.bundler.intentOf
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.activity.OnBackPressedCallback
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.concurrent.TimeUnit
@@ -66,6 +68,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         createBannerAd()
         createInterstitialAd()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                MaterialAlertDialogBuilder(this@MainActivity)
+                    .setTitle("Confirm Exit")
+                    .setMessage("Are you sure you want to exit? Hope you will come back again.")
+                    .setPositiveButton("Exit") { _, _ ->
+                        finish()
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        })
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -189,18 +204,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        CustomSheet().show(this@MainActivity) {
-            style(SheetStyle.BOTTOM_SHEET)
-            title("Confirm Exit")
-            content("Are you sure you want to exit? Hope you will come back again.")
-            onPositive("Exit") {
-                finish()
-            }
-        }
-    }
 
     companion object {
         fun startActivity(

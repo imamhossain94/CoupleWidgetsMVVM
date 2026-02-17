@@ -41,6 +41,7 @@ import com.newagedevs.couplewidgets.utils.Constants
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
@@ -435,14 +436,13 @@ class MainViewModel(
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(context, CoupleWidgetProvider::class.java))
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
 
-        CustomSheet().show(view.context) {
-            style(SheetStyle.BOTTOM_SHEET)
-            title("Confirm Changes")
-            content("Do you want to save the changes or create a new widget?")
-            onPositive("Save Changes") {
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Confirm Changes")
+            .setMessage("Do you want to save the changes or create a new widget?")
+            .setPositiveButton("Save Changes") { dialog, which ->
                 toast = "Changes saved successfully"
 
-                if(widgetId != null) {
+                if (widgetId != null) {
                     couple.id = widgetId!!
                 }
 
@@ -459,17 +459,16 @@ class MainViewModel(
                     if (!hasWidgetOnHomeScreen(context)) {
                         guideUserToAddWidget(activity)
                     } else if (widgetIds == null) {
-                         activity.finish()
+                        activity.finish()
                     }
                 }
-
             }
-            onNegative("Create Widget") {
+            .setNegativeButton("Create Widget") { dialog, which ->
                 toast = "New widget created"
                 widgetIds = null
                 couple.appWidgetId = appWidgetId
                 widgetId = mainRepository.setWidget(couple)
-                
+
                 viewModelScope.launch {
                     initializeData()
                     context.sendBroadcast(intent)
@@ -481,13 +480,16 @@ class MainViewModel(
                     interstitialAd.showAd(view.context as Activity)
                     preference.recordAdShown()
                 }
-                
+
                 // If no widget on home screen, guide user to add one
                 if (!hasWidgetOnHomeScreen(context) && !shouldShowAd) {
                     guideUserToAddWidget(activity)
                 }
             }
-        }
+            .setNeutralButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
 
     }
 

@@ -6,8 +6,8 @@ import androidx.databinding.Bindable
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.repository.MainRepository
-import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.main.MainActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.skydoves.bindables.BindingViewModel
 import com.skydoves.bindables.asBindingProperty
 import com.skydoves.bindables.bindingProperty
@@ -30,18 +30,16 @@ class WidgetsViewModel constructor(
 
 
     fun deleteAllWidgets(view: View) {
-
-        CustomSheet().show(view.context) {
-            style(SheetStyle.BOTTOM_SHEET)
-            title("Confirm Delete")
-            content("Are you sure you want to delete all widgets? ")
-            onPositive("Yes") {
+        MaterialAlertDialogBuilder(view.context)
+            .setTitle("Confirm Delete")
+            .setMessage("Are you sure you want to delete all widgets?")
+            .setPositiveButton("Yes") { _, _ ->
                 mainRepository.deleteAllWidgets()
                 toast = "All widgets have been deleted"
                 MainActivity.restartActivity(view.context)
             }
-        }
-
+            .setNegativeButton("No", null)
+            .show()
     }
 
 
