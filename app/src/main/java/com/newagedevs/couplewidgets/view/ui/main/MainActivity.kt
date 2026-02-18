@@ -98,29 +98,52 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        binding.navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_widgets -> {
-                    if (viewModel.interstitialAd.isReady && viewModel.preference.shouldShowInterstitialAds()) {
-                        viewModel.interstitialAd.showAd(this)
-                        viewModel.preference.recordAdShown()
-                    }
-                    WidgetsActivity.startActivity(this)
-                }
-                R.id.nav_share -> shareTheApp(this)
-                R.id.nav_write_us -> openMailApp(this, "Writing about app", Constants.contactMail)
-                R.id.nav_feedback -> openMailApp(this, "Feedback", Constants.feedbackMail)
-                R.id.nav_bug_reports -> openMailApp(this, "Bug reports", Constants.feedbackMail)
-                R.id.nav_privacy_policy -> openWebPage(this, Constants.privacyPolicyUrl) { viewModel.toast = it }
-                R.id.nav_other_apps -> openAppStore(this, Constants.publisherName) { viewModel.toast = it }
-                R.id.nav_rate_us -> openAppStore(this, Constants.appStoreId) { viewModel.toast = it }
-                R.id.nav_source_code -> openWebPage(this, Constants.sourceCodeUrl) { viewModel.toast = it }
-                R.id.nav_icons_by -> viewModel.toast = "Icons by svgrepo.com"
-                R.id.nav_version -> viewModel.toast = "Version: ${getApplicationVersion()}"
-                R.id.nav_exit -> finish()
-            }
+        val drawerAction: (action: () -> Unit) -> Unit = { action ->
+            action()
             binding.drawerLayout.closeDrawers()
-            true
+        }
+
+        binding.navView.findViewById<View>(R.id.nav_widgets).setOnClickListener {
+            drawerAction {
+                if (viewModel.interstitialAd.isReady && viewModel.preference.shouldShowInterstitialAds()) {
+                    viewModel.interstitialAd.showAd(this)
+                    viewModel.preference.recordAdShown()
+                }
+                WidgetsActivity.startActivity(this)
+            }
+        }
+        binding.navView.findViewById<View>(R.id.nav_share).setOnClickListener {
+            drawerAction { shareTheApp(this) }
+        }
+        binding.navView.findViewById<View>(R.id.nav_write_us).setOnClickListener {
+            drawerAction { openMailApp(this, "Writing about app", Constants.contactMail) }
+        }
+        binding.navView.findViewById<View>(R.id.nav_feedback).setOnClickListener {
+            drawerAction { openMailApp(this, "Feedback", Constants.feedbackMail) }
+        }
+        binding.navView.findViewById<View>(R.id.nav_bug_reports).setOnClickListener {
+            drawerAction { openMailApp(this, "Bug reports", Constants.feedbackMail) }
+        }
+        binding.navView.findViewById<View>(R.id.nav_privacy_policy).setOnClickListener {
+            drawerAction { openWebPage(this, Constants.privacyPolicyUrl) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_other_apps).setOnClickListener {
+            drawerAction { openAppStore(this, Constants.publisherName) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_rate_us).setOnClickListener {
+            drawerAction { openAppStore(this, Constants.appStoreId) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_source_code).setOnClickListener {
+            drawerAction { openWebPage(this, Constants.sourceCodeUrl) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_icons_by).setOnClickListener {
+            drawerAction { viewModel.toast = "Icons by svgrepo.com" }
+        }
+        binding.navView.findViewById<View>(R.id.nav_version).setOnClickListener {
+            drawerAction { viewModel.toast = "Version: ${getApplicationVersion()}" }
+        }
+        binding.navView.findViewById<View>(R.id.nav_exit).setOnClickListener {
+            drawerAction { finish() }
         }
     }
 

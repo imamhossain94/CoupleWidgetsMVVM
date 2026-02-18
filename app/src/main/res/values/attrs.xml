@@ -7,4 +7,14 @@
     <attr name="icon_color" format="color" />
     <attr name="bg_card" format="color" />
 
+    <!-- Drawer theming -->
+    <attr name="drawerBackground" format="color" />
+    <attr name="drawerHeaderBackground" format="reference" />
+    <attr name="drawerItemIconTint" format="color" />
+    <attr name="drawerItemTextColor" format="color" />
+    <attr name="drawerAccentColor" format="color" />
+    <attr name="drawerDividerColor" format="color" />
+    <attr name="drawerSectionBackground" format="reference" />
+    <attr name="appBackground" format="reference" />
+
 </resources>

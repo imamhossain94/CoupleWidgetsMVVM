@@ -7,4 +7,32 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Romantic Palette — Light -->
+    <color name="rose_accent">#E8A0B4</color>
+    <color name="rose_deep">#D4738F</color>
+    <color name="blush">#FAEAF0</color>
+    <color name="rose_gradient_start">#F4C6D7</color>
+    <color name="rose_gradient_end">#FAEAF0</color>
+    <color name="warm_ivory">#F5DDD8</color>
+    <color name="warm_ivory_bg">#F5DDD8</color>
+    <color name="warm_white">#FFFAF8</color>
+    <color name="rose_icon_bg">#FFF0ED</color>
+    <color name="rose_icon_tint">#B87088</color>
+    <color name="rose_text">#3D2B33</color>
+    <color name="rose_text_secondary">#7A5E68</color>
+    <color name="rose_selected_bg">#1AE8A0B4</color>
+
+    <!-- Romantic Palette — Dark -->
+    <color name="wine_accent">#C47A8F</color>
+    <color name="wine_deep">#A85E74</color>
+    <color name="wine_gradient_start">#5C2038</color>
+    <color name="wine_gradient_end">#2D1520</color>
+    <color name="dark_rosewood">#110A0E</color>
+    <color name="dark_rosewood_card">#251820</color>
+    <color name="dark_rosewood_surface">#110A0E</color>
+    <color name="wine_icon_tint">#D4A0B4</color>
+    <color name="wine_text">#F2E0E6</color>
+    <color name="wine_text_secondary">#B89AA5</color>
+    <color name="wine_selected_bg">#1AC47A8F</color>
 </resources>

@@ -2,36 +2,48 @@
     <!-- Base application theme. -->
     <style name="Theme.CoupleWidgets" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/rose_deep</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryContainer">#343541</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryContainer">@color/rose_gradient_start</item>
+        <item name="colorOnPrimaryContainer">@color/rose_text</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#444654</item>
+        <item name="colorSecondary">@color/rose_accent</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondaryContainer">@color/white</item>
-        <item name="colorOnSecondaryContainer">@color/black</item>
+        <item name="colorSecondaryContainer">@color/blush</item>
+        <item name="colorOnSecondaryContainer">@color/rose_text</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/warm_ivory_bg</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- Customize your theme here. -->
-        <item name="backgroundColor">#f2f2f2</item>
+
+        <!-- App backgrounds -->
+        <item name="android:windowBackground">?attr/appBackground</item>
+        <item name="backgroundColor">@color/warm_ivory_bg</item>
         <item name="bg_rounded">@drawable/bg_rounded_light</item>
         <item name="bg_rounded_icon">@drawable/bg_rounded_icon_light</item>
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_light</item>
-        <item name="icon_color">#09244B</item>
-        <item name="bg_card">@color/white</item>
+        <item name="icon_color">@color/rose_icon_tint</item>
+        <item name="bg_card">@color/warm_white</item>
+
+        <!-- Drawer theming -->
+        <item name="drawerBackground">@color/warm_ivory</item>
+        <item name="drawerHeaderBackground">@drawable/bg_nav_header_light</item>
+        <item name="drawerItemIconTint">@color/rose_icon_tint</item>
+        <item name="drawerItemTextColor">@color/rose_text</item>
+        <item name="drawerAccentColor">@color/rose_deep</item>
+        <item name="drawerDividerColor">#15D4738F</item>
+        <item name="drawerSectionBackground">@drawable/bg_drawer_section_light</item>
+        <item name="appBackground">@drawable/bg_app_gradient_light</item>
     </style>
 
     <style name="ImagePicker.NonFullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/warm_ivory_bg</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/warm_ivory_bg</item>
     </style>
 
 

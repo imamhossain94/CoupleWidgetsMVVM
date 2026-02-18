@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Solid base -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/dark_rosewood" />
+        </shape>
+    </item>
+
+    <!-- Primary Dynamic Glow - Shifted Top-Left for natural lighting -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="800dp"
+                android:centerX="0.3"
+                android:centerY="0.2"
+                android:startColor="#40C47A8F"
+                android:centerColor="#20A85E74"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- Secondary Soft Glow - Bottom-Right to balance composition and add depth -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="1000dp"
+                android:centerX="0.9"
+                android:centerY="0.9"
+                android:startColor="#15C47A8F"
+                android:centerColor="#0AA85E74"
+                android:endColor="@android:color/transparent" />
+        </shape>
+    </item>
+
+</layer-list>
