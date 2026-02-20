@@ -18,7 +18,7 @@
         <item name="android:windowLightStatusBar">false</item>
 
         <!-- App backgrounds -->
-        <item name="android:windowBackground">?attr/appBackground</item>
+        <item name="android:windowBackground">@color/dark_rosewood</item>
         <item name="backgroundColor">@color/dark_rosewood</item>
         <item name="bg_rounded">@drawable/bg_rounded_dark</item>
         <item name="bg_rounded_icon">@drawable/bg_rounded_icon_dark</item>
@@ -34,7 +34,7 @@
         <item name="drawerAccentColor">@color/wine_accent</item>
         <item name="drawerDividerColor">#15C47A8F</item>
         <item name="drawerSectionBackground">@drawable/bg_drawer_section_dark</item>
-        <item name="appBackground">@drawable/bg_app_gradient_dark</item>
+        <item name="appBackground">@color/dark_rosewood</item>
 
     </style>
 

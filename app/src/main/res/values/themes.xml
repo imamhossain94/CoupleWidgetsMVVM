@@ -18,7 +18,7 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- App backgrounds -->
-        <item name="android:windowBackground">?attr/appBackground</item>
+        <item name="android:windowBackground">@color/warm_ivory_bg</item>
         <item name="backgroundColor">@color/warm_ivory_bg</item>
         <item name="bg_rounded">@drawable/bg_rounded_light</item>
         <item name="bg_rounded_icon">@drawable/bg_rounded_icon_light</item>
@@ -34,7 +34,7 @@
         <item name="drawerAccentColor">@color/rose_deep</item>
         <item name="drawerDividerColor">#15D4738F</item>
         <item name="drawerSectionBackground">@drawable/bg_drawer_section_light</item>
-        <item name="appBackground">@drawable/bg_app_gradient_light</item>
+        <item name="appBackground">@color/warm_ivory_bg</item>
     </style>
 
     <style name="ImagePicker.NonFullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">

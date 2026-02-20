@@ -14,9 +14,9 @@
     <color name="blush">#FAEAF0</color>
     <color name="rose_gradient_start">#F4C6D7</color>
     <color name="rose_gradient_end">#FAEAF0</color>
-    <color name="warm_ivory">#F5DDD8</color>
-    <color name="warm_ivory_bg">#F5DDD8</color>
-    <color name="warm_white">#FFFAF8</color>
+    <color name="warm_ivory">#FDF6F7</color>
+    <color name="warm_ivory_bg">#FDF6F7</color>
+    <color name="warm_white">#FFFFFF</color>
     <color name="rose_icon_bg">#FFF0ED</color>
     <color name="rose_icon_tint">#B87088</color>
     <color name="rose_text">#3D2B33</color>
@@ -28,9 +28,9 @@
     <color name="wine_deep">#A85E74</color>
     <color name="wine_gradient_start">#5C2038</color>
     <color name="wine_gradient_end">#2D1520</color>
-    <color name="dark_rosewood">#110A0E</color>
-    <color name="dark_rosewood_card">#251820</color>
-    <color name="dark_rosewood_surface">#110A0E</color>
+    <color name="dark_rosewood">#121011</color>
+    <color name="dark_rosewood_card">#241D20</color>
+    <color name="dark_rosewood_surface">#121011</color>
     <color name="wine_icon_tint">#D4A0B4</color>
     <color name="wine_text">#F2E0E6</color>
     <color name="wine_text_secondary">#B89AA5</color>

@@ -11,6 +11,7 @@ import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -145,6 +146,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         binding.navView.findViewById<View>(R.id.nav_exit).setOnClickListener {
             drawerAction { finish() }
         }
+
+        binding.navView.findViewById<TextView>(R.id.header_version_name).text = "Version: ${getApplicationVersion()}"
     }
 
     override fun onNewIntent(intent: Intent) {
