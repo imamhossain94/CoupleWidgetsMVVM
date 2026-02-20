@@ -37,10 +37,13 @@ import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.utils.Constants
 import androidx.core.view.GravityCompat
+import com.newagedevs.couplewidgets.utils.InAppUpdateHelper
+import com.newagedevs.couplewidgets.utils.InAppUpdateHelper.Companion.REQUEST_CODE_UPDATE
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.concurrent.TimeUnit
 import kotlin.math.pow
+import timber.log.Timber
 
 
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -54,11 +57,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val viewModel: MainViewModel by viewModel { parametersOf(widgetID, appWidgetIDs, appWidgetID) }
 
     private var retryAttempt = 0.0
+    private lateinit var inAppUpdateHelper: InAppUpdateHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        inAppUpdateHelper = InAppUpdateHelper(this)
+        inAppUpdateHelper.checkForUpdate()
 
         binding {
             vm = viewModel
@@ -148,6 +155,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
 
         binding.navView.findViewById<TextView>(R.id.header_version_name).text = "Version: ${getApplicationVersion()}"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        inAppUpdateHelper.onResume()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -247,6 +259,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQUEST_CODE_UPDATE -> {
+                if (resultCode != RESULT_OK) {
+                    Timber.e("Update flow failed! Result code: $resultCode")
+                    // If an immediate update is cancelled or fails,
+                    // you can decide to exit the app or try again.
+                }
+            }
+        }
 
         when (resultCode) {
             RESULT_OK -> {

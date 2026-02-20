@@ -38,6 +38,7 @@ import com.newagedevs.couplewidgets.persistence.SharedPref
 import androidx.lifecycle.viewModelScope
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
+import com.newagedevs.couplewidgets.utils.InAppRatingManager
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider
@@ -57,7 +58,8 @@ class MainViewModel(
     private var widgetIds: IntArray?,
     private var appWidgetId: Int?,
     private val mainRepository: MainRepository,
-    val preference: SharedPref
+    val preference: SharedPref,
+    private val inAppRatingManager: InAppRatingManager
 ) : BindingViewModel() {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -385,6 +387,7 @@ class MainViewModel(
                     context.sendBroadcast(intent)
                     activity.setResult(RESULT_OK, intent)
                     activity.finish()
+                    inAppRatingManager.onActionCompleted(activity)
                 } else {
                     context.sendBroadcast(intent)
                     // If no widget on home screen, guide user to add one
@@ -392,6 +395,7 @@ class MainViewModel(
                         guideUserToAddWidget(activity)
                     } else if (widgetIds == null) {
                         activity.finish()
+                        inAppRatingManager.onActionCompleted(activity)
                     }
                 }
             }
@@ -417,6 +421,8 @@ class MainViewModel(
                 if (!hasWidgetOnHomeScreen(context) && !shouldShowAd) {
                     guideUserToAddWidget(activity)
                 }
+
+                inAppRatingManager.onActionCompleted(activity)
             }
             .setNeutralButton("Cancel") { dialog, which ->
                 dialog.dismiss()

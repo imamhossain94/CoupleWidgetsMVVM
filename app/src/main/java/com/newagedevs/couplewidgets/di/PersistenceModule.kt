@@ -25,4 +25,6 @@ val persistenceModule = module {
 
   single { SharedPref(get()) }
 
+  single { com.newagedevs.couplewidgets.utils.InAppRatingManager(get()) }
+
 }
