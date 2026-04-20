@@ -12,7 +12,7 @@ import com.newagedevs.couplewidgets.databinding.ActivityWidgetsBinding
 import com.newagedevs.couplewidgets.view.adapter.WidgetsAdapter
 import com.skydoves.bindables.BindingActivity
 import com.skydoves.bundler.intentOf
-import org.koin.android.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class WidgetsActivity : BindingActivity<ActivityWidgetsBinding>(R.layout.activity_widgets) {
 

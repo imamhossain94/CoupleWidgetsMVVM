@@ -13,9 +13,11 @@
         <item name="colorSecondaryContainer">@color/blush</item>
         <item name="colorOnSecondaryContainer">@color/rose_text</item>
 
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/warm_ivory_bg</item>
+        <!-- Status bar and Navigation bar color (Managed by Edge-to-Edge on API 35+) -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
 
         <!-- App backgrounds -->
         <item name="android:windowBackground">@color/warm_ivory_bg</item>

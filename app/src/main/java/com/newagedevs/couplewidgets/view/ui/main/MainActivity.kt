@@ -39,7 +39,7 @@ import com.newagedevs.couplewidgets.utils.Constants
 import androidx.core.view.GravityCompat
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper.Companion.REQUEST_CODE_UPDATE
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.concurrent.TimeUnit
 import kotlin.math.pow

@@ -1,8 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.parcelize")
-    id("kotlin-kapt")
+    id("com.android.legacy-kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -13,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.newagedevs.couplewidgets"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 18
         versionName = "1.1.8"
 
@@ -22,6 +23,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -40,8 +42,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
+}
+
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
@@ -63,9 +69,7 @@ dependencies {
     implementation("com.github.skydoves:bindables:1.2.0")
 
     // koin
-    implementation("io.insert-koin:koin-android:2.2.3")
-    implementation("io.insert-koin:koin-android-scope:2.2.3")
-    implementation("io.insert-koin:koin-android-viewmodel:2.2.3")
+    implementation("io.insert-koin:koin-android:4.2.1")
 
     // coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
@@ -101,10 +105,10 @@ dependencies {
     implementation("com.github.slaviboy:SVGPathKotlin:0.3.0")
 
     // joda-time
-    implementation("joda-time:joda-time:2.14.0")
+    implementation("joda-time:joda-time:2.14.1")
 
     // Applovin
-    implementation("com.applovin:applovin-sdk:13.6.0")
+    implementation("com.applovin:applovin-sdk:13.6.2")
     implementation("androidx.lifecycle:lifecycle-process:2.10.0")
 
     // Google Play Core (Modular)
