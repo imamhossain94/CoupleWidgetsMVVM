@@ -22,6 +22,12 @@
         android:screenOrientation="portrait"
         tools:targetApi="33"
         tools:ignore="DiscouragedApi">
+
+        <!-- Required: AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${ADMOB_APP_ID}" />
+
         <activity
             android:name=".view.ui.main.MainActivity"
             android:theme="@style/Theme.CoupleWidgets"

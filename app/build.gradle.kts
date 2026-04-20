@@ -19,6 +19,9 @@ android {
         versionName = "1.1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AdMob App ID is injected via secrets-gradle-plugin from local.properties
+        manifestPlaceholders["ADMOB_APP_ID"] = ""
     }
 
     buildFeatures {
@@ -107,8 +110,8 @@ dependencies {
     // joda-time
     implementation("joda-time:joda-time:2.14.1")
 
-    // Applovin
-    implementation("com.applovin:applovin-sdk:13.6.2")
+    // Google AdMob
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("androidx.lifecycle:lifecycle-process:2.10.0")
 
     // Google Play Core (Modular)

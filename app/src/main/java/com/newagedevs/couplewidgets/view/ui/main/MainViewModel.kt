@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Bindable
-import com.applovin.mediation.ads.MaxInterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
@@ -117,7 +117,8 @@ class MainViewModel(
     @get:Bindable
     var counterDate: String? by bindingProperty(defaultDate)
 
-    lateinit var interstitialAd: MaxInterstitialAd
+    // Nullable: AdMob's interstitial must be discarded after showing and reloaded
+    var interstitialAd: InterstitialAd? = null
 
     init {
         viewModelScope.launch {
@@ -410,10 +411,10 @@ class MainViewModel(
                     context.sendBroadcast(intent)
                 }
 
-                // Check if we should show ad
-                val shouldShowAd = interstitialAd.isReady && preference.shouldShowInterstitialAds()
+                val shouldShowAd = interstitialAd != null && preference.shouldShowInterstitialAds()
                 if (shouldShowAd) {
-                    interstitialAd.showAd(view.context as Activity)
+                    interstitialAd?.show(view.context as Activity)
+                    interstitialAd = null
                     preference.recordAdShown()
                 }
 
