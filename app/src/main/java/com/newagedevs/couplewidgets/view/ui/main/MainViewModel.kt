@@ -3,7 +3,7 @@ package com.newagedevs.couplewidgets.view.ui.main
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.app.PendingIntent
+
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -509,45 +509,32 @@ class MainViewModel(
 
     private fun guideUserToAddWidget(activity: Activity) {
         val appWidgetManager = AppWidgetManager.getInstance(activity)
-        
-        // Check if programmatic widget pinning is supported (Android 8.0+)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            if (appWidgetManager.isRequestPinAppWidgetSupported) {
-                // Create component name for our widget
-                val widgetProvider = ComponentName(activity, CoupleWidgetProvider::class.java)
-                
-                // Create a callback intent that will be triggered when widget is pinned
-                val successCallback = Intent(activity, MainActivity::class.java).let { intent ->
-                    PendingIntent.getActivity(
-                        activity,
-                        0,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    )
-                }
-                
-                // Request to pin the widget
-                val pinned = appWidgetManager.requestPinAppWidget(widgetProvider, null, successCallback)
-                
-                if (pinned) {
-                    toast = "Widget configured! Select placement on home screen"
-                } else {
-                    toast = "Widget configured! Add it manually from widget menu"
-                    // Fallback: minimize app
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        activity.moveTaskToBack(true)
-                    }, 1500)
-                }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O &&
+            appWidgetManager.isRequestPinAppWidgetSupported) {
+
+            val widgetProvider = ComponentName(activity, CoupleWidgetProvider::class.java)
+
+            // Pass null for successCallback — we do NOT re-launch the app after pinning.
+            // Instead we minimize so the user sees the home screen and can position the widget.
+            val pinned = appWidgetManager.requestPinAppWidget(widgetProvider, null, null)
+
+            if (pinned) {
+                // System pin dialog is now showing — minimize after a short delay
+                // so when the user taps "Add", they land directly on the home screen
+                toast = "Almost done! Tap 'Add' to place the widget on your home screen"
+                Handler(Looper.getMainLooper()).postDelayed({
+                    activity.moveTaskToBack(true)
+                }, 800)
             } else {
-                // Device doesn't support programmatic pinning
-                toast = "Widget configured! Now add it to your home screen"
+                toast = "Widget saved! Add it to your home screen from the widget menu"
                 Handler(Looper.getMainLooper()).postDelayed({
                     activity.moveTaskToBack(true)
                 }, 1500)
             }
         } else {
-            // Android version below 8.0 - fallback to minimizing
-            toast = "Widget configured! Now add it to your home screen"
+            // Android < 8.0 or device doesn't support pin request
+            toast = "Widget saved! Long-press your home screen to add the widget"
             Handler(Looper.getMainLooper()).postDelayed({
                 activity.moveTaskToBack(true)
             }, 1500)

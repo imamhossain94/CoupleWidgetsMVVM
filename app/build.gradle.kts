@@ -15,8 +15,8 @@ android {
         applicationId = "com.newagedevs.couplewidgets"
         minSdk = 23
         targetSdk = 36
-        versionCode = 18
-        versionName = "1.1.8"
+        versionCode = 19
+        versionName = "1.1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -111,7 +111,7 @@ dependencies {
     implementation("joda-time:joda-time:2.14.1")
 
     // Google AdMob
-    implementation("com.google.android.gms:play-services-ads:23.6.0")
+    implementation("com.google.android.gms:play-services-ads:25.2.0")
     implementation("androidx.lifecycle:lifecycle-process:2.10.0")
 
     // Google Play Core (Modular)

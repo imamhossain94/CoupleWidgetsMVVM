@@ -198,7 +198,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     // ----------------------------------------------------------------
     private fun createBannerAd() {
         val adView = AdView(this).apply {
-            adUnitId = BuildConfig.AD_UNIT_BANNER
+            adUnitId = if (BuildConfig.DEBUG) {
+                "ca-app-pub-3940256099942544/6300978111" // Demo Banner
+            } else {
+                BuildConfig.AD_UNIT_BANNER
+            }
             // Adaptive banner: fills the screen width for optimal fill/revenue
             setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
                 this@MainActivity,
@@ -242,7 +246,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     internal fun loadInterstitialAd() {
         InterstitialAd.load(
             this,
-            BuildConfig.AD_UNIT_INTERSTITIAL,
+            if (BuildConfig.DEBUG) "ca-app-pub-3940256099942544/1033173712" // Demo Interstitial
+            else BuildConfig.AD_UNIT_INTERSTITIAL,
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: InterstitialAd) {

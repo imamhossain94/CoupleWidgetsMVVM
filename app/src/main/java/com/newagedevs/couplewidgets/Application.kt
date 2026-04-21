@@ -115,7 +115,13 @@ class Application : Application() {
     inner class AppOpenManager(private val context: Context) {
 
         private var appOpenAd: AppOpenAd? = null
-        private val adUnitId = BuildConfig.AD_UNIT_APP_OPEN
+        // Use Google's demo ad unit IDs in DEBUG so test ads always load
+        // (real unit IDs are rejected until AdMob account is approved)
+        private val adUnitId = if (BuildConfig.DEBUG) {
+            "ca-app-pub-3940256099942544/9257395921" // Demo App Open
+        } else {
+            BuildConfig.AD_UNIT_APP_OPEN
+        }
         private var isLoadingAd = false
         private var isShowingAd = false
         private var currentActivity: Activity? = null
