@@ -1,6 +1,8 @@
 package com.newagedevs.couplewidgets.extensions
 
 import android.net.ParseException
+import org.joda.time.Days
+import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
 import java.text.SimpleDateFormat
@@ -44,6 +46,32 @@ fun dateDifference(_startDate: String?, _endDate: String?): String {
     }
 
     return "0y 0m 0d"
+}
+
+/**
+ * "days until the next yearly anniversary of [inRelation]" for the widget's milestone line.
+ * Returns null if [inRelation] can't be parsed (caller hides the milestone row in that case).
+ */
+fun nextAnniversaryText(inRelation: String?): String? {
+    if (inRelation.isNullOrBlank()) return null
+
+    return try {
+        val anniversary = LocalDate.parse(inRelation)
+        val today = LocalDate.now()
+
+        var nextAnniversary = anniversary.withYear(today.year)
+        if (nextAnniversary.isBefore(today)) {
+            nextAnniversary = nextAnniversary.plusYears(1)
+        }
+
+        when (val daysUntil = Days.daysBetween(today, nextAnniversary).days) {
+            0 -> "🎉 Happy Anniversary!"
+            1 -> "🎉 Anniversary tomorrow!"
+            else -> "🎉 Anniversary in $daysUntil days"
+        }
+    } catch (e: IllegalArgumentException) {
+        null
+    }
 }
 
 fun getMidnight(): Calendar {

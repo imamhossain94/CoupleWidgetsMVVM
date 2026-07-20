@@ -25,6 +25,7 @@
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_dark</item>
         <item name="icon_color">@color/wine_icon_tint</item>
         <item name="bg_card">@color/dark_rosewood_card</item>
+        <item name="previewCardBackground">@color/dark_rosewood_card</item>
 
         <!-- Drawer theming -->
         <item name="drawerBackground">@color/dark_rosewood_surface</item>

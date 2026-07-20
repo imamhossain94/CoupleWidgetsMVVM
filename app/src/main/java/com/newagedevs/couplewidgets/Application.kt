@@ -39,6 +39,9 @@ class Application : Application() {
     // Background scope for non-UI tasks
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
+    @Volatile
+    private var isMobileAdsInitialized = false
+
     override fun onCreate() {
         super.onCreate()
 
@@ -51,8 +54,8 @@ class Application : Application() {
             configureWebView()
         }
 
-        // 3. AdMob must be initialized on the main thread
-        initializeMobileAds()
+        // AdMob is initialized only after user consent is gathered (see ConsentManager),
+        // triggered from MainActivity — required for the UMP/TCF CMP policy requirement.
     }
 
     private fun setupDependencyInjection() {
@@ -80,7 +83,15 @@ class Application : Application() {
         }
     }
 
-    private fun initializeMobileAds() {
+    /**
+     * Initializes the AdMob SDK. Must only be called once consent has been gathered
+     * (see [com.newagedevs.couplewidgets.utils.ConsentManager]) — safe to call more than
+     * once, only the first call takes effect.
+     */
+    fun initializeMobileAdsSdk() {
+        if (isMobileAdsInitialized) return
+        isMobileAdsInitialized = true
+
         try {
             // Use the MD5 hash from logcat: "Use RequestConfiguration.Builder()..."
             val testDeviceIds = if (BuildConfig.DEBUG) {
@@ -162,7 +173,7 @@ class Application : Application() {
                 preferences.setFirstLaunchCompleted()
                 return false
             }
-            return preferences.shouldShowAd() && !isShowingAd && appOpenAd != null
+            return preferences.shouldShowAppOpenAd() && !isShowingAd && appOpenAd != null
         }
 
         private fun loadAd() {
@@ -207,7 +218,7 @@ class Application : Application() {
                 override fun onAdDismissedFullScreenContent() {
                     isShowingAd = false
                     appOpenAd = null
-                    preferences.saveLastAdShownTime()
+                    preferences.recordAppOpenAdShown()
                     loadAd() // Pre-load the next ad
                 }
 

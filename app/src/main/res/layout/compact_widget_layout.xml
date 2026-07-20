@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/couple_widget"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="0dp"
+    android:baselineAligned="false">
+
+    <ImageView
+        android:id="@+id/your_image"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:id="@+id/heart_symbol"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+
+        <TextView
+            android:id="@+id/counter_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/milestone_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="8sp"
+            android:maxLines="1"
+            android:alpha="0.85"
+            android:visibility="gone"/>
+
+        <android.widget.TextClock
+            android:id="@+id/counter_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:format12Hour="k'h' mm'm' ss's'"
+            android:format24Hour="k'h' mm'm' ss's'"
+            android:textSize="9sp"
+            android:alpha="0.7"/>
+    </LinearLayout>
+
+    <!-- Names are omitted from the compact layout for space; hidden TextViews keep view IDs
+         consistent with the main widget layout so WidgetRenderer needs no per-style branching. -->
+    <TextView
+        android:id="@+id/your_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/partner_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/partner_image"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

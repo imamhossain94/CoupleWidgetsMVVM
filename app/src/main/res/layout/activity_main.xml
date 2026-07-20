@@ -65,6 +65,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/save_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/bg_rounded_icon"
@@ -79,11 +80,12 @@
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/preview_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     app:cardCornerRadius="15dp"
-                    app:cardBackgroundColor="#EBEBEB">
+                    app:cardBackgroundColor="?attr/previewCardBackground">
 
                     <FrameLayout
                         android:id="@+id/previewFrame"
@@ -116,12 +118,19 @@
                 android:layout_weight="1">
 
                 <LinearLayout
+                    android:id="@+id/settings_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <include
                         layout="@layout/item_widget_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:viewModel="@{vm}"/>
+
+                    <include
+                        layout="@layout/item_widget_style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:viewModel="@{vm}"/>

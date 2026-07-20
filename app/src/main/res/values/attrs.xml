@@ -6,6 +6,7 @@
     <attr name="bg_bottom_curve" format="integer" />
     <attr name="icon_color" format="color" />
     <attr name="bg_card" format="color" />
+    <attr name="previewCardBackground" format="color" />
 
     <!-- Drawer theming -->
     <attr name="drawerBackground" format="color" />

@@ -8,15 +8,15 @@ import android.content.Intent
 import com.newagedevs.couplewidgets.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+/**
+ * A smaller alternate widget style showing the same [com.newagedevs.couplewidgets.model.Couple]
+ * data as [CoupleWidgetProvider], via [WidgetRenderer]. Font-style customization only applies
+ * to the main widget (no room for it at this size), so this always renders the default layout.
+ */
+class CompactCoupleWidgetProvider : AppWidgetProvider() {
 
-class CoupleWidgetProvider : AppWidgetProvider() {
-
-    /** RemoteViews has no API to set a custom Typeface, so font styles are separate layout variants. */
-    private fun layoutResourceFor(fontStyle: Int?): Int = when (fontStyle) {
-        1 -> R.layout.couple_widget_layout_serif
-        2 -> R.layout.couple_widget_layout_cursive
-        else -> R.layout.couple_widget_layout
-    }
+    private fun layoutResourceFor(@Suppress("UNUSED_PARAMETER") fontStyle: Int?): Int =
+        R.layout.compact_widget_layout
 
     @ExperimentalCoroutinesApi
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -26,7 +26,7 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         val appWidgetIds: IntArray = appWidgetManager.getAppWidgetIds(
             ComponentName(
                 context!!.applicationContext,
-                CoupleWidgetProvider::class.java
+                CompactCoupleWidgetProvider::class.java
             )
         )
 
@@ -39,7 +39,6 @@ class CoupleWidgetProvider : AppWidgetProvider() {
             WidgetAlarmReceiver().setAlarm(context)
             WidgetRenderer.renderCoupleWidget(context, appWidgetManager, appWidgetIds, ::layoutResourceFor)
         }
-
     }
 
     override fun onEnabled(context: Context?) {
@@ -63,7 +62,6 @@ class CoupleWidgetProvider : AppWidgetProvider() {
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
-        // For each widget being updated, if it doesn't have a configuration, link to current active one
         WidgetRenderer.linkUnconfiguredWidgets(context, appWidgetIds)
 
         WidgetRenderer.renderCoupleWidget(context, appWidgetManager, appWidgetIds, ::layoutResourceFor)

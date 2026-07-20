@@ -50,9 +50,12 @@ class WidgetAlarmReceiver : BroadcastReceiver() {
     }
 
     private fun updateWidget(context: Context) {
-        val intent = Intent(context, CoupleWidgetProvider::class.java)
-        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        context.sendBroadcast(intent)
+        context.sendBroadcast(Intent(context, CoupleWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        })
+        context.sendBroadcast(Intent(context, CompactCoupleWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        })
     }
 
 

@@ -69,6 +69,10 @@ class MainViewModel(
     private val fallDate = "2021-05-27"
     private val relationDate = "2021-05-27"
 
+    private val widgetBackgroundTitles = listOf("None", "Frosted", "Solid", "Gradient")
+    private val widgetBackgroundIcons = listOf(R.drawable.ic_circle, R.drawable.widget_bg_frosted, R.drawable.widget_bg_solid, R.drawable.widget_bg_gradient)
+    private val fontStyleTitles = listOf("Default", "Serif", "Cursive")
+
     @get:Bindable
     var toast: String? by bindingProperty(null)
 
@@ -117,8 +121,42 @@ class MainViewModel(
     @get:Bindable
     var counterDate: String? by bindingProperty(defaultDate)
 
+    @get:Bindable
+    var widgetBackground: Int? by bindingProperty(0)
+
+    @get:Bindable
+    var widgetBackgroundLabel: String? by bindingProperty("None")
+
+    @get:Bindable
+    var widgetBackgroundIcon: Int? by bindingProperty(R.drawable.ic_circle)
+
+    @get:Bindable
+    var fontStyle: Int? by bindingProperty(0)
+
+    @get:Bindable
+    var fontStyleLabel: String? by bindingProperty("Default")
+
+    @get:Bindable
+    var showMilestone: Boolean? by bindingProperty(true)
+
     // Nullable: AdMob's interstitial must be discarded after showing and reloaded
     var interstitialAd: InterstitialAd? = null
+
+    /**
+     * Single place for the gate -> show -> record -> reload sequence, used by both the
+     * nav-to-widgets click (MainActivity) and the create-widget flow (submitData below) so
+     * ad-cadence tuning only needs to happen here.
+     */
+    fun showInterstitialIfEligible(activity: Activity, onShown: () -> Unit = {}): Boolean {
+        val ad = interstitialAd ?: return false
+        if (!preference.shouldShowInterstitialAds()) return false
+
+        ad.show(activity)
+        interstitialAd = null
+        preference.recordInterstitialAdShown()
+        onShown()
+        return true
+    }
 
     init {
         viewModelScope.launch {
@@ -138,10 +176,13 @@ class MainViewModel(
     fun shapePicker(view: View) {
         val shapes = listOf(
             R.drawable.shape_1, R.drawable.shape_2, R.drawable.shape_3,
-            R.drawable.shape_4, R.drawable.shape_5, R.drawable.shape_6
+            R.drawable.shape_4, R.drawable.shape_5, R.drawable.shape_6,
+            R.drawable.shape_7, R.drawable.shape_8, R.drawable.shape_9,
+            R.drawable.shape_10, R.drawable.shape_11, R.drawable.shape_12
         )
         val shapeTitles = listOf(
-            "Circle", "Tag", "Hexagon", "Square", "Heart", "Rounded"
+            "Circle", "Tag", "Hexagon", "Square", "Heart", "Rounded",
+            "Star", "Diamond", "Arch", "Shield", "Flower", "Blob"
         )
 
         OptionSheet().show(view.context) {
@@ -153,6 +194,12 @@ class MainViewModel(
                 Option(shapes[3], shapeTitles[3]),
                 Option(shapes[4], shapeTitles[4]),
                 Option(shapes[5], shapeTitles[5]),
+                Option(shapes[6], shapeTitles[6]),
+                Option(shapes[7], shapeTitles[7]),
+                Option(shapes[8], shapeTitles[8]),
+                Option(shapes[9], shapeTitles[9]),
+                Option(shapes[10], shapeTitles[10]),
+                Option(shapes[11], shapeTitles[11]),
             )
             onPositive { index: Int, _: Option ->
 
@@ -174,10 +221,13 @@ class MainViewModel(
     fun symbolPicker(view: View) {
         val symbols = listOf(
             R.drawable.symbol_1, R.drawable.symbol_2, R.drawable.symbol_3, R.drawable.symbol_4,
-            R.drawable.symbol_5, R.drawable.symbol_6, R.drawable.symbol_7, R.drawable.symbol_8
+            R.drawable.symbol_5, R.drawable.symbol_6, R.drawable.symbol_7, R.drawable.symbol_8,
+            R.drawable.symbol_9, R.drawable.symbol_10, R.drawable.symbol_11,
+            R.drawable.symbol_12, R.drawable.symbol_13, R.drawable.symbol_14
         )
         val symbolTitles = listOf(
-            "Heart", "Broken", "Battery", "Heart", "Signal", "Bottle", "Heart", "Like"
+            "Heart", "Broken", "Battery", "Heart (Duo)", "Signal", "Bottle", "Heart (Bold)", "Like",
+            "Broken Heart", "Two Hearts", "Sparkle", "Infinity", "Ring", "Star"
         )
 
         OptionSheet().show(view.context) {
@@ -191,6 +241,12 @@ class MainViewModel(
                 Option(symbols[5], symbolTitles[5]),
                 Option(symbols[6], symbolTitles[6]),
                 Option(symbols[7], symbolTitles[7]),
+                Option(symbols[8], symbolTitles[8]),
+                Option(symbols[9], symbolTitles[9]),
+                Option(symbols[10], symbolTitles[10]),
+                Option(symbols[11], symbolTitles[11]),
+                Option(symbols[12], symbolTitles[12]),
+                Option(symbols[13], symbolTitles[13]),
             )
             onPositive { index: Int, _: Option ->
 
@@ -207,6 +263,40 @@ class MainViewModel(
         }
 
 
+    }
+
+    fun backgroundPicker(view: View) {
+        OptionSheet().show(view.context) {
+            title("Select widget background")
+            with(
+                Option(widgetBackgroundIcons[0], widgetBackgroundTitles[0]),
+                Option(widgetBackgroundIcons[1], widgetBackgroundTitles[1]),
+                Option(widgetBackgroundIcons[2], widgetBackgroundTitles[2]),
+                Option(widgetBackgroundIcons[3], widgetBackgroundTitles[3]),
+            )
+            onPositive { index: Int, _: Option ->
+                widgetBackground = index
+                widgetBackgroundLabel = widgetBackgroundTitles[index]
+                widgetBackgroundIcon = widgetBackgroundIcons[index]
+            }
+        }
+    }
+
+    fun fontPicker(view: View) {
+        OptionSheet().show(view.context) {
+            title("Select widget font")
+            with(
+                Option(R.drawable.ic_edit, fontStyleTitles[0]),
+                Option(R.drawable.ic_edit, fontStyleTitles[1]),
+                Option(R.drawable.ic_edit, fontStyleTitles[2]),
+            )
+            onPositive { index: Int, _: Option ->
+                val textView = view as TextView
+                textView.text = fontStyleTitles[index]
+                fontStyle = index
+                fontStyleLabel = fontStyleTitles[index]
+            }
+        }
     }
 
     fun colorPicker(view: View) {
@@ -343,6 +433,15 @@ class MainViewModel(
 
     fun submitData(view: View) {
 
+        // Small tap-feedback pulse on the save button.
+        view.animate()
+            .scaleX(1.2f).scaleY(1.2f)
+            .setDuration(120L)
+            .withEndAction {
+                view.animate().scaleX(1f).scaleY(1f).setDuration(120L).start()
+            }
+            .start()
+
         val couple = Couple(
             active = true,
             frame = Decorator(shape, shapeColor),
@@ -352,7 +451,10 @@ class MainViewModel(
             you = Person(yourName, yourBirthday, yourImage),
             partner = Person(partnerName, partnerBirthday, partnerImage),
             fallInLove = fallInLove,
-            inRelation = inRelation
+            inRelation = inRelation,
+            widgetBackground = widgetBackground,
+            fontStyle = fontStyle,
+            showMilestone = showMilestone
         )
 
         // Update widget
@@ -411,12 +513,7 @@ class MainViewModel(
                     context.sendBroadcast(intent)
                 }
 
-                val shouldShowAd = interstitialAd != null && preference.shouldShowInterstitialAds()
-                if (shouldShowAd) {
-                    interstitialAd?.show(view.context as Activity)
-                    interstitialAd = null
-                    preference.recordAdShown()
-                }
+                val shouldShowAd = showInterstitialIfEligible(activity)
 
                 // If no widget on home screen, guide user to add one
                 if (!hasWidgetOnHomeScreen(context) && !shouldShowAd) {
@@ -473,6 +570,13 @@ class MainViewModel(
 
             fallInLove = couple!!.fallInLove
             inRelation = couple!!.inRelation
+
+            widgetBackground = couple!!.widgetBackground ?: 0
+            widgetBackgroundLabel = widgetBackgroundTitles.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundTitles[0]
+            widgetBackgroundIcon = widgetBackgroundIcons.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundIcons[0]
+            fontStyle = couple!!.fontStyle ?: 0
+            fontStyleLabel = fontStyleTitles.getOrNull(fontStyle ?: 0) ?: fontStyleTitles[0]
+            showMilestone = couple!!.showMilestone ?: true
         } else {
             resetToDefaultData()
         }
@@ -497,6 +601,12 @@ class MainViewModel(
         counterColor = Color.WHITE
         fallInLove = fallDate
         inRelation = relationDate
+        widgetBackground = 0
+        widgetBackgroundLabel = widgetBackgroundTitles[0]
+        widgetBackgroundIcon = widgetBackgroundIcons[0]
+        fontStyle = 0
+        fontStyleLabel = fontStyleTitles[0]
+        showMilestone = true
     }
 
     private fun hasWidgetOnHomeScreen(context: Context): Boolean {

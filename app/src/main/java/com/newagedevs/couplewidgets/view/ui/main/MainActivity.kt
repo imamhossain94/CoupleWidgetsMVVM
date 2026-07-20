@@ -38,6 +38,7 @@ import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.utils.Constants
 import androidx.core.view.GravityCompat
+import com.newagedevs.couplewidgets.utils.ConsentManager
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper.Companion.REQUEST_CODE_UPDATE
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,6 +60,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private var retryAttempt = 0.0
     private lateinit var inAppUpdateHelper: InAppUpdateHelper
+    private lateinit var consentManager: ConsentManager
+    private var adsInitialized = false
 
     // AdMob Banner
     private var bannerAdView: AdView? = null
@@ -82,8 +85,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             insets
         }
 
-        createBannerAd()
-        loadInterstitialAd()
+        initializeConsentAndAds()
+        animateContentEntrance()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -105,6 +108,47 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setupNavigationDrawer()
     }
 
+    /** Subtle fade + rise-in for the two main sections on first load. */
+    private fun animateContentEntrance() {
+        listOf(binding.previewCard, binding.settingsContainer).forEachIndexed { index, view ->
+            view.alpha = 0f
+            view.translationY = 40f
+            view.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setStartDelay(index * 80L)
+                .setDuration(350L)
+                .start()
+        }
+    }
+
+    // ----------------------------------------------------------------
+    // Consent (UMP/TCF CMP) — must be gathered before any ad is requested
+    // https://developers.google.com/admob/android/privacy
+    // ----------------------------------------------------------------
+    private fun initializeConsentAndAds() {
+        consentManager = ConsentManager(this)
+
+        consentManager.gatherConsent { canRequestAds ->
+            if (canRequestAds) initializeAds()
+        }
+
+        // Consent obtained in a previous session lets us request ads immediately
+        // while requestConsentInfoUpdate() runs in parallel.
+        if (consentManager.canRequestAds) {
+            initializeAds()
+        }
+    }
+
+    private fun initializeAds() {
+        if (adsInitialized) return
+        adsInitialized = true
+
+        (application as com.newagedevs.couplewidgets.Application).initializeMobileAdsSdk()
+        createBannerAd()
+        loadInterstitialAd()
+    }
+
     private fun setupNavigationDrawer() {
         binding.menuButton.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -117,13 +161,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding.navView.findViewById<View>(R.id.nav_widgets).setOnClickListener {
             drawerAction {
-                val ad = viewModel.interstitialAd
-                if (ad != null && viewModel.preference.shouldShowInterstitialAds()) {
-                    ad.show(this)
-                    viewModel.interstitialAd = null
-                    viewModel.preference.recordAdShown()
-                    loadInterstitialAd() // Pre-load the next one
-                }
+                viewModel.showInterstitialIfEligible(this) { loadInterstitialAd() }
                 WidgetsActivity.startActivity(this)
             }
         }
@@ -141,6 +179,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
         binding.navView.findViewById<View>(R.id.nav_privacy_policy).setOnClickListener {
             drawerAction { openWebPage(this, Constants.privacyPolicyUrl) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_privacy_options).setOnClickListener {
+            drawerAction {
+                if (::consentManager.isInitialized && consentManager.isPrivacyOptionsRequired) {
+                    consentManager.showPrivacyOptionsForm { formError ->
+                        formError?.let { viewModel.toast = it.message }
+                    }
+                } else {
+                    viewModel.toast = "Privacy options aren't required in your region"
+                }
+            }
         }
         binding.navView.findViewById<View>(R.id.nav_other_apps).setOnClickListener {
             drawerAction { openAppStore(this, Constants.publisherName) { viewModel.toast = it } }

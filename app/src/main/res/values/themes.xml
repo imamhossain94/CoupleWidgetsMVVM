@@ -27,6 +27,7 @@
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_light</item>
         <item name="icon_color">@color/rose_icon_tint</item>
         <item name="bg_card">@color/warm_white</item>
+        <item name="previewCardBackground">#EBEBEB</item>
 
         <!-- Drawer theming -->
         <item name="drawerBackground">@color/warm_ivory</item>
