@@ -12,11 +12,16 @@ object VectorDrawableMasker {
     fun maskImage(
         context: Context,
         image: Bitmap?,
-        mask: Int,
+        rawMask: Int,
         canvasSize: Int,
         borderSize: Int,
         borderColor: Int
     ): Bitmap {
+
+        // A persisted resource ID may no longer refer to a real shape (see
+        // DecoratorCatalog); fall back to the default rather than masking with
+        // whatever unrelated drawable now owns that ID.
+        val mask = DecoratorCatalog.safeShape(rawMask)
 
         val scaledImage = try{
             Bitmap.createScaledBitmap(image!!, canvasSize, canvasSize, false)

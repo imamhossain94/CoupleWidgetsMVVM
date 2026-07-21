@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ================================================================
+         TEXT
+         ================================================================ -->
+
+    <!-- Screen title in the hero app bar -->
+    <style name="Text.ScreenTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/textPrimaryColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- "Widget Settings", "Couple Details", … -->
+    <style name="Text.SectionTitle" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">?attr/textPrimaryColor</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <!-- Small caption above each input -->
+    <style name="Text.FieldLabel" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?attr/textSecondaryColor</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_marginBottom">@dimen/space_s</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Text.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/textSecondaryColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ================================================================
+         FIELDS — the tappable rounded pickers and text inputs
+         ================================================================ -->
+    <style name="Field.Romantic" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/field_height</item>
+        <item name="android:background">?attr/bg_rounded</item>
+        <item name="android:paddingStart">@dimen/space_l</item>
+        <item name="android:paddingEnd">@dimen/space_l</item>
+        <item name="android:paddingTop">@dimen/space_m</item>
+        <item name="android:paddingBottom">@dimen/space_m</item>
+        <item name="android:drawablePadding">@dimen/space_m</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textColor">?attr/textPrimaryColor</item>
+        <item name="android:textColorHint">?attr/textHintColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <!-- Column wrapper holding one label + one field -->
+    <style name="Field.Column" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/space_s</item>
+    </style>
+
+    <!-- ================================================================
+         CARDS
+         ================================================================ -->
+    <style name="Card.Romantic" parent="Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardCornerRadius">@dimen/radius_l</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">?attr/bg_card</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/strokeColor</item>
+    </style>
+
+    <!-- ================================================================
+         ICON BUTTONS in the hero app bar
+         ================================================================ -->
+    <style name="IconButton.Romantic" parent="">
+        <item name="android:layout_width">@dimen/icon_button_size</item>
+        <item name="android:layout_height">@dimen/icon_button_size</item>
+        <item name="android:background">?attr/bg_rounded_icon</item>
+        <item name="android:padding">@dimen/space_m</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <!-- ================================================================
+         DRAWER ROWS
+         ================================================================ -->
+    <style name="Drawer.Row" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/drawer_item_height</item>
+        <item name="android:background">@drawable/bg_nav_item_selected</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">@dimen/space_l</item>
+        <item name="android:paddingEnd">@dimen/space_l</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Drawer.RowIcon" parent="">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+    </style>
+
+    <style name="Drawer.RowText" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/space_l</item>
+        <item name="android:textColor">?attr/drawerItemTextColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Drawer.SectionCard" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/space_m</item>
+        <item name="android:layout_marginEnd">@dimen/space_m</item>
+        <item name="android:background">?attr/drawerSectionBackground</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">@dimen/space_s</item>
+        <item name="android:paddingBottom">@dimen/space_s</item>
+    </style>
+
+    <style name="Drawer.SectionLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/space_xl</item>
+        <item name="android:layout_marginTop">@dimen/space_l</item>
+        <item name="android:layout_marginBottom">@dimen/space_xs</item>
+        <item name="android:textColor">?attr/drawerAccentColor</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+</resources>

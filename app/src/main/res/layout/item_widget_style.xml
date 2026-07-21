@@ -14,104 +14,113 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/space_xl"
         android:orientation="vertical">
 
-        <TextView
+        <!-- Section header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="0dp"
-            android:text="Widget Style"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_m"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+            <View
+                android:layout_width="4dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_section_accent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.SectionTitle"
+                    android:text="@string/widget_style" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_style_subtitle"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Card.Romantic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="?attr/bg_card">
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_s">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    style="@style/Field.Column"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        style="@style/Text.FieldLabel"
+                        android:text="@string/background" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Background" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:onClick="@{viewModel.backgroundPicker}"
-                            android:padding="15dp"
-                            android:text="@{viewModel.widgetBackgroundLabel}"
-
-                            app:drawableStart="@{viewModel.widgetBackgroundIcon}"
-                            app:drawableTint="?attr/icon_color"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        style="@style/Field.Romantic"
+                        android:onClick="@{viewModel.backgroundPicker}"
+                        android:text="@{viewModel.widgetBackgroundLabel}"
+                        app:drawableStart="@{viewModel.widgetBackgroundIcon}"
+                        app:drawableTint="?attr/icon_color"
+                        tools:text="Gradient" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Font" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:onClick="@{viewModel.fontPicker}"
-                            android:padding="15dp"
-                            android:text="@{viewModel.fontStyleLabel}"
+                <LinearLayout
+                    style="@style/Field.Column"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                            app:drawableStartCompat="@drawable/ic_edit"
-                            app:drawableTint="?attr/icon_color"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Text.FieldLabel"
+                        android:text="@string/font" />
 
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Field.Romantic"
+                        android:onClick="@{viewModel.fontPicker}"
+                        android:text="@{viewModel.fontStyleLabel}"
+                        app:drawableStartCompat="@drawable/ic_brush"
+                        app:drawableTint="?attr/icon_color"
+                        tools:text="Cursive" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

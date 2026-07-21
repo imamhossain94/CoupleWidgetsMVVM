@@ -38,6 +38,7 @@ import com.newagedevs.couplewidgets.persistence.SharedPref
 import androidx.lifecycle.viewModelScope
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
+import com.newagedevs.couplewidgets.utils.DecoratorCatalog
 import com.newagedevs.couplewidgets.utils.InAppRatingManager
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
@@ -171,16 +172,8 @@ class MainViewModel(
 
     // Widget settings
     fun shapePicker(view: View) {
-        val shapes = listOf(
-            R.drawable.shape_1, R.drawable.shape_2, R.drawable.shape_3,
-            R.drawable.shape_4, R.drawable.shape_5, R.drawable.shape_6,
-            R.drawable.shape_7, R.drawable.shape_8, R.drawable.shape_9,
-            R.drawable.shape_10, R.drawable.shape_11, R.drawable.shape_12
-        )
-        val shapeTitles = listOf(
-            "Circle", "Tag", "Hexagon", "Square", "Heart", "Rounded",
-            "Star", "Diamond", "Arch", "Shield", "Flower", "Blob"
-        )
+        val shapes = DecoratorCatalog.shapes
+        val shapeTitles = DecoratorCatalog.shapeTitles
 
         OptionSheet().show(view.context) {
             title("Select image shape")
@@ -216,16 +209,8 @@ class MainViewModel(
     }
 
     fun symbolPicker(view: View) {
-        val symbols = listOf(
-            R.drawable.symbol_1, R.drawable.symbol_2, R.drawable.symbol_3, R.drawable.symbol_4,
-            R.drawable.symbol_5, R.drawable.symbol_6, R.drawable.symbol_7, R.drawable.symbol_8,
-            R.drawable.symbol_9, R.drawable.symbol_10, R.drawable.symbol_11,
-            R.drawable.symbol_12, R.drawable.symbol_13, R.drawable.symbol_14
-        )
-        val symbolTitles = listOf(
-            "Heart", "Broken", "Battery", "Heart (Duo)", "Signal", "Bottle", "Heart (Bold)", "Like",
-            "Broken Heart", "Two Hearts", "Sparkle", "Infinity", "Ring", "Star"
-        )
+        val symbols = DecoratorCatalog.symbols
+        val symbolTitles = DecoratorCatalog.symbolTitles
 
         OptionSheet().show(view.context) {
             title("Select heart symbol")
@@ -555,10 +540,11 @@ class MainViewModel(
             partnerImage = couple!!.partner?.image
             partnerBirthday = couple!!.partner?.birthday
 
-            shape = couple!!.frame?.vector
+            // Stored resource IDs can go stale across builds — see DecoratorCatalog.
+            shape = DecoratorCatalog.safeShape(couple!!.frame?.vector)
             shapeColor = couple!!.frame?.color
 
-            symbol = couple!!.heart?.vector
+            symbol = DecoratorCatalog.safeSymbol(couple!!.heart?.vector)
             symbolColor = couple!!.heart?.color
 
             nameColor = couple!!.nameColor

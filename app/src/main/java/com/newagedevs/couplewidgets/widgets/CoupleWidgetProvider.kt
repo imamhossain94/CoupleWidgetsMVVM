@@ -20,6 +20,7 @@ import com.newagedevs.couplewidgets.model.Decorator
 import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.persistence.AppDatabase
 import com.newagedevs.couplewidgets.repository.CoupleRepository
+import com.newagedevs.couplewidgets.utils.DecoratorCatalog
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
 import com.newagedevs.couplewidgets.view.ui.main.MainActivity
 import kotlinx.coroutines.*
@@ -193,7 +194,10 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                 joinAll(job1, job2)
 
                 finalCouple.heart?.let { heart ->
-                    views.setImageViewResource(R.id.heart_symbol, heart.vector ?: R.drawable.symbol_1)
+                    views.setImageViewResource(
+                        R.id.heart_symbol,
+                        DecoratorCatalog.safeSymbol(heart.vector)
+                    )
                     views.setInt(R.id.heart_symbol, "setColorFilter", heart.color ?: Color.WHITE)
                 }
 

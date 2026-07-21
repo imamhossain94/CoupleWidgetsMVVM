@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="bg_rounded" format="integer" />
-    <attr name="bg_rounded_icon" format="integer" />
-    <attr name="bg_bottom_curve" format="integer" />
+    <!-- Shape backgrounds -->
+    <attr name="bg_rounded" format="reference" />
+    <attr name="bg_rounded_icon" format="reference" />
+    <attr name="bg_bottom_curve" format="reference" />
+    <attr name="bg_chip" format="reference" />
+
+    <!-- Surfaces -->
+    <attr name="bg_card" format="reference|color" />
+    <attr name="bg_field" format="reference|color" />
+    <attr name="previewCardBackground" format="reference|color" />
+    <attr name="appBackground" format="reference|color" />
+
+    <!-- Text -->
+    <attr name="textPrimaryColor" format="color" />
+    <attr name="textSecondaryColor" format="color" />
+    <attr name="textHintColor" format="color" />
+
+    <!-- Accents -->
     <attr name="icon_color" format="color" />
-    <attr name="bg_card" format="color" />
-    <attr name="previewCardBackground" format="color" />
+    <attr name="accentColor" format="color" />
+    <attr name="strokeColor" format="color" />
 
     <!-- Drawer theming -->
-    <attr name="drawerBackground" format="color" />
+    <attr name="drawerBackground" format="reference|color" />
     <attr name="drawerHeaderBackground" format="reference" />
     <attr name="drawerItemIconTint" format="color" />
     <attr name="drawerItemTextColor" format="color" />
     <attr name="drawerAccentColor" format="color" />
     <attr name="drawerDividerColor" format="color" />
     <attr name="drawerSectionBackground" format="reference" />
-    <attr name="appBackground" format="reference" />
 
 </resources>

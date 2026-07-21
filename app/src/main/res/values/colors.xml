@@ -1,33 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Romantic Palette — Light -->
-    <color name="rose_accent">#E8A0B4</color>
-    <color name="rose_deep">#D4738F</color>
-    <color name="blush">#FAEAF0</color>
-    <color name="rose_gradient_start">#F4C6D7</color>
-    <color name="rose_gradient_end">#FAEAF0</color>
-    <color name="warm_ivory">#FDF6F7</color>
-    <color name="warm_ivory_bg">#FDF6F7</color>
-    <color name="warm_white">#FFFFFF</color>
-    <color name="rose_icon_bg">#FFF0ED</color>
-    <color name="rose_icon_tint">#B87088</color>
-    <color name="rose_text">#3D2B33</color>
-    <color name="rose_text_secondary">#7A5E68</color>
-    <color name="rose_selected_bg">#1AE8A0B4</color>
+    <!-- ============================================================
+         LOVE RAMP — the signature romantic hues.
+         Rose → Orchid → Lavender, warmed by Peach and Apricot.
+         These are theme-independent brand colors.
+         ============================================================ -->
+    <color name="love_rose">#FF5C8A</color>
+    <color name="love_rose_deep">#E8386A</color>
+    <color name="love_rose_light">#FF8FB3</color>
+    <color name="love_blush">#FFC2D6</color>
 
-    <!-- Romantic Palette — Dark -->
-    <color name="wine_accent">#C47A8F</color>
-    <color name="wine_deep">#A85E74</color>
-    <color name="wine_gradient_start">#5C2038</color>
-    <color name="wine_gradient_end">#2D1520</color>
-    <color name="dark_rosewood">#121011</color>
-    <color name="dark_rosewood_card">#241D20</color>
-    <color name="dark_rosewood_surface">#121011</color>
-    <color name="wine_icon_tint">#D4A0B4</color>
-    <color name="wine_text">#F2E0E6</color>
-    <color name="wine_text_secondary">#B89AA5</color>
-    <color name="wine_selected_bg">#1AC47A8F</color>
+    <color name="love_orchid">#C86DD7</color>
+    <color name="love_orchid_deep">#9B4DCA</color>
+    <color name="love_lavender">#A78BFA</color>
+
+    <color name="love_peach">#FFA69E</color>
+    <color name="love_coral">#FF6F91</color>
+    <color name="love_apricot">#FFD3A5</color>
+    <color name="love_gold">#FFC978</color>
+
+    <!-- ============================================================
+         LIGHT THEME — "Morning Blush"
+         ============================================================ -->
+    <color name="blush_bg">#FFF7F9</color>
+    <color name="blush_card">#FFFFFF</color>
+    <color name="blush_field">#FFF0F4</color>
+    <color name="blush_stroke">#FFDCE7</color>
+    <color name="blush_chip">#FFE7EF</color>
+
+    <color name="ink">#3A2430</color>
+    <color name="ink_secondary">#8A6B78</color>
+    <color name="ink_hint">#BFA3AF</color>
+
+    <!-- Soft hero gradient stops (blush → lilac → peach) -->
+    <color name="hero_light_start">#FFE3EC</color>
+    <color name="hero_light_center">#F6DFFB</color>
+    <color name="hero_light_end">#FFF0E6</color>
+
+    <!-- ============================================================
+         DARK THEME — "Midnight Romance"
+         ============================================================ -->
+    <color name="night_bg">#150E16</color>
+    <color name="night_card">#221826</color>
+    <color name="night_field">#2C2032</color>
+    <color name="night_stroke">#3D2C44</color>
+    <color name="night_chip">#33203A</color>
+
+    <color name="moonlight">#F6E9F0</color>
+    <color name="moonlight_secondary">#BCA3B4</color>
+    <color name="moonlight_hint">#8A7285</color>
+
+    <color name="night_rose">#FF8FB3</color>
+    <color name="night_orchid">#C09BEA</color>
+    <color name="night_lavender">#A99BF0</color>
+
+    <!-- Deep hero gradient stops (wine → plum → midnight) -->
+    <color name="hero_dark_start">#3A1B33</color>
+    <color name="hero_dark_center">#2A1633</color>
+    <color name="hero_dark_end">#1C1020</color>
+
+    <!-- Translucent overlays (ripples, selected states, scrims) -->
+    <color name="overlay_rose_08">#14FF5C8A</color>
+    <color name="overlay_rose_16">#29FF5C8A</color>
+    <color name="overlay_orchid_08">#14C86DD7</color>
+    <color name="scrim_dark_40">#66000000</color>
+
 </resources>

@@ -29,8 +29,17 @@ object VectorDrawableParser {
         var viewportWidth: Float? = null
         var viewportHeight: Float? = null
 
+        // The resource may not be an XML vector at all — e.g. a stale resource ID
+        // persisted by an older build now pointing at a PNG. Callers already treat
+        // null as "no border to draw", so degrade instead of throwing.
+        val parser = try {
+            resources.getXml(drawable)
+        } catch (_: Resources.NotFoundException) {
+            return null
+        }
+
         // This is very simple parser, it doesn't support <group> tag, nested tags and other stuff
-        resources.getXml(drawable).use { xml ->
+        parser.use { xml ->
             var event = xml.eventType
 
             while (event != XmlPullParser.END_DOCUMENT) {

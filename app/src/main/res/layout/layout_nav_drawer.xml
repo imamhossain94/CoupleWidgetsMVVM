@@ -10,398 +10,433 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp">
+        android:paddingBottom="@dimen/space_xxl">
 
-        <!-- Section: App -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/Drawer.SectionLabel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="12dp"
-            android:background="?attr/drawerSectionBackground"
-            android:orientation="vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:text="@string/drawer_section_app" />
+
+        <LinearLayout
+            style="@style/Drawer.SectionCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/nav_widgets"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Widgets"
-                    android:src="@drawable/ic_widgets"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_widgets"
+                        android:src="@drawable/ic_widgets"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Widgets"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_widgets" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Section: Connect -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/Drawer.SectionLabel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/drawerSectionBackground"
-            android:orientation="vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:text="@string/drawer_section_connect" />
+
+        <LinearLayout
+            style="@style/Drawer.SectionCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/nav_share"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Share"
-                    android:src="@drawable/ic_share"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_share"
+                        android:src="@drawable/ic_share"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Share"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_share" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_write_us"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Write us"
-                    android:src="@drawable/ic_edit"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_write_us"
+                        android:src="@drawable/ic_edit"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Write us"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_write_us" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_feedback"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Feedback"
-                    android:src="@drawable/ic_feedback"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_feedback"
+                        android:src="@drawable/ic_feedback"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Feedback"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_feedback" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_bug_reports"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Bug reports"
-                    android:src="@drawable/ic_bug"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_bug_reports"
+                        android:src="@drawable/ic_bug"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Bug reports"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_bug_reports" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Section: Explore -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/Drawer.SectionLabel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/drawerSectionBackground"
-            android:orientation="vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:text="@string/drawer_section_explore" />
+
+        <LinearLayout
+            style="@style/Drawer.SectionCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/nav_other_apps"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Other apps"
-                    android:src="@drawable/ic_playstore"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_other_apps"
+                        android:src="@drawable/ic_playstore"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Other apps"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_other_apps" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_rate_us"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Rate us"
-                    android:src="@drawable/ic_star"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_rate_us"
+                        android:src="@drawable/ic_star"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Rate us"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_rate_us" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_source_code"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Source code"
-                    android:src="@drawable/ic_github"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_source_code"
+                        android:src="@drawable/ic_github"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Source code"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_source_code" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Section: About -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/Drawer.SectionLabel"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/drawerSectionBackground"
-            android:orientation="vertical"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp">
+            android:text="@string/drawer_section_about" />
+
+        <LinearLayout
+            style="@style/Drawer.SectionCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/nav_privacy_policy"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Privacy policy"
-                    android:src="@drawable/ic_privacy"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_privacy_policy"
+                        android:src="@drawable/ic_privacy"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Privacy policy"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_privacy_policy" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_privacy_options"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Privacy options"
-                    android:src="@drawable/ic_settings"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_privacy_options"
+                        android:src="@drawable/ic_settings"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Privacy options"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_privacy_options" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_icons_by"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Icons by"
-                    android:src="@drawable/ic_svg"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_icons_by"
+                        android:src="@drawable/ic_svg"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Icons by"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_icons_by" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_version"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Version"
-                    android:src="@drawable/ic_plugin"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_version"
+                        android:src="@drawable/ic_plugin"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Version"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_version" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/nav_exit"
+                style="@style/Drawer.Row"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="@dimen/drawer_item_height">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Exit"
-                    android:src="@drawable/ic_power"
-                    app:tint="?attr/drawerItemIconTint" />
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_exit"
+                        android:src="@drawable/ic_power"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
 
                 <TextView
+                    style="@style/Drawer.RowText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="Exit"
-                    android:textColor="?attr/drawerItemTextColor"
-                    android:textSize="14sp" />
+                    android:text="@string/nav_exit" />
+
             </LinearLayout>
 
         </LinearLayout>

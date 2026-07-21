@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,34 +14,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/space_xl"
         android:orientation="vertical">
 
-        <TextView
+        <!-- Section header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="0dp"
-            android:text="@string/date_and_time"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_m"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+            <View
+                android:layout_width="4dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_section_accent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.SectionTitle"
+                    android:text="@string/date_and_time" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_and_time_subtitle"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Card.Romantic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="?attr/bg_card">
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/space_s">
 
-
+                <!-- Relationship milestones -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,68 +77,58 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Fall in Love" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/fall_in_love" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="Fall in Love"
                             android:text="@{viewModel.fallInLove}"
-                            app:drawableStartCompat="@drawable/ic_calender"
+                            app:drawableStartCompat="@drawable/ic_heart"
                             app:drawableTint="?attr/icon_color"
-                            android:onClick="@{viewModel.datePicker}"
-                            android:tag="Fall in Love"/>
+                            tools:text="1997/12/07" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="In Relation" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@{viewModel.inRelation}"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/in_relation" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="In Relation"
+                            android:text="@{viewModel.inRelation}"
                             app:drawableStartCompat="@drawable/ic_calender"
                             app:drawableTint="?attr/icon_color"
-                            android:onClick="@{viewModel.datePicker}"
-                            android:tag="In Relation"/>
+                            tools:text="1997/12/07" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Birthdays -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,73 +136,60 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Your Birthday" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@{viewModel.yourBirthday}"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/your_birthday" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="Your Birthday"
+                            android:text="@{viewModel.yourBirthday}"
                             app:drawableStartCompat="@drawable/ic_birthday"
                             app:drawableTint="?attr/icon_color"
-                            android:onClick="@{viewModel.datePicker}"
-                            android:tag="Your Birthday"/>
+                            tools:text="1997/12/07" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Partner Birthday" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@{viewModel.partnerBirthday}"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/partner_birthday" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.datePicker}"
+                            android:tag="Partner Birthday"
+                            android:text="@{viewModel.partnerBirthday}"
                             app:drawableStartCompat="@drawable/ic_birthday"
                             app:drawableTint="?attr/icon_color"
-                            android:onClick="@{viewModel.datePicker}"
-                            android:tag="Partner Birthday"/>
+                            tools:text="1997/12/07" />
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

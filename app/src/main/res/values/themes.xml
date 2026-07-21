@@ -1,53 +1,100 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- ================================================================
+         Theme.CoupleWidgets — LIGHT ("Morning Blush")
+         ================================================================ -->
     <style name="Theme.CoupleWidgets" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/rose_deep</item>
+
+        <!-- Primary: rose -->
+        <item name="colorPrimary">@color/love_rose_deep</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryContainer">@color/rose_gradient_start</item>
-        <item name="colorOnPrimaryContainer">@color/rose_text</item>
+        <item name="colorPrimaryContainer">@color/love_blush</item>
+        <item name="colorOnPrimaryContainer">@color/ink</item>
 
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/rose_accent</item>
+        <!-- Secondary: orchid -->
+        <item name="colorSecondary">@color/love_orchid</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondaryContainer">@color/blush</item>
-        <item name="colorOnSecondaryContainer">@color/rose_text</item>
+        <item name="colorSecondaryContainer">@color/blush_chip</item>
+        <item name="colorOnSecondaryContainer">@color/ink</item>
 
-        <!-- Status bar and Navigation bar color (Managed by Edge-to-Edge on API 35+) -->
+        <!-- Tertiary: peach -->
+        <item name="colorTertiary">@color/love_peach</item>
+        <item name="colorOnTertiary">@color/ink</item>
+
+        <!-- Surfaces -->
+        <item name="colorSurface">@color/blush_card</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorSurfaceVariant">@color/blush_field</item>
+        <item name="colorOnSurfaceVariant">@color/ink_secondary</item>
+        <item name="colorOutline">@color/blush_stroke</item>
+        <item name="android:colorBackground">@color/blush_bg</item>
+
+        <!-- Global text colors so every unstyled TextView inherits the palette -->
+        <item name="android:textColorPrimary">@color/ink</item>
+        <item name="android:textColorSecondary">@color/ink_secondary</item>
+        <item name="android:textColorHint">@color/ink_hint</item>
+        <item name="android:textColor">@color/ink</item>
+
+        <!-- System bars (edge-to-edge on API 35+) -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
 
         <!-- App backgrounds -->
-        <item name="android:windowBackground">@color/warm_ivory_bg</item>
-        <item name="backgroundColor">@color/warm_ivory_bg</item>
+        <item name="android:windowBackground">@color/blush_bg</item>
+        <item name="backgroundColor">@color/blush_bg</item>
+        <item name="appBackground">@color/blush_bg</item>
         <item name="bg_rounded">@drawable/bg_rounded_light</item>
         <item name="bg_rounded_icon">@drawable/bg_rounded_icon_light</item>
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_light</item>
-        <item name="icon_color">@color/rose_icon_tint</item>
-        <item name="bg_card">@color/warm_white</item>
-        <item name="previewCardBackground">#EBEBEB</item>
+        <item name="bg_chip">@drawable/bg_icon_chip</item>
+        <item name="bg_card">@color/blush_card</item>
+        <item name="bg_field">@color/blush_field</item>
+        <item name="previewCardBackground">@color/blush_card</item>
 
-        <!-- Drawer theming -->
-        <item name="drawerBackground">@color/warm_ivory</item>
+        <!-- Text tokens -->
+        <item name="textPrimaryColor">@color/ink</item>
+        <item name="textSecondaryColor">@color/ink_secondary</item>
+        <item name="textHintColor">@color/ink_hint</item>
+
+        <!-- Accents -->
+        <item name="icon_color">@color/love_rose_deep</item>
+        <item name="accentColor">@color/love_orchid</item>
+        <item name="strokeColor">@color/blush_stroke</item>
+
+        <!-- Drawer -->
+        <item name="drawerBackground">@color/blush_bg</item>
         <item name="drawerHeaderBackground">@drawable/bg_nav_header_light</item>
-        <item name="drawerItemIconTint">@color/rose_icon_tint</item>
-        <item name="drawerItemTextColor">@color/rose_text</item>
-        <item name="drawerAccentColor">@color/rose_deep</item>
-        <item name="drawerDividerColor">#15D4738F</item>
+        <item name="drawerItemIconTint">@color/love_rose_deep</item>
+        <item name="drawerItemTextColor">@color/ink</item>
+        <item name="drawerAccentColor">@color/love_orchid_deep</item>
+        <item name="drawerDividerColor">@color/blush_stroke</item>
         <item name="drawerSectionBackground">@drawable/bg_drawer_section_light</item>
-        <item name="appBackground">@color/warm_ivory_bg</item>
+
+        <!-- Dialogs pick up the romantic accent too -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.CoupleWidgets.Dialog</item>
+    </style>
+
+    <style name="ThemeOverlay.CoupleWidgets.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/love_rose_deep</item>
+        <item name="colorSurface">@color/blush_card</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CoupleWidgets.Dialog</item>
+    </style>
+
+    <style name="ShapeAppearance.CoupleWidgets.Dialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_l</item>
     </style>
 
     <style name="ImagePicker.NonFullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/warm_ivory_bg</item>
+        <item name="android:statusBarColor">@color/blush_bg</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/warm_ivory_bg</item>
+        <item name="android:navigationBarColor">@color/blush_bg</item>
     </style>
-
 
 </resources>
