@@ -21,7 +21,6 @@ data class Couple(
     // Index into a small fixed style list (not a resource ID) so it stays stable across resource changes.
     val widgetBackground: Int? = 0,
     val fontStyle: Int? = 0,
-    val showMilestone: Boolean? = true,
 ) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

@@ -136,9 +136,6 @@ class MainViewModel(
     @get:Bindable
     var fontStyleLabel: String? by bindingProperty("Default")
 
-    @get:Bindable
-    var showMilestone: Boolean? by bindingProperty(true)
-
     // Nullable: AdMob's interstitial must be discarded after showing and reloaded
     var interstitialAd: InterstitialAd? = null
 
@@ -453,8 +450,7 @@ class MainViewModel(
             fallInLove = fallInLove,
             inRelation = inRelation,
             widgetBackground = widgetBackground,
-            fontStyle = fontStyle,
-            showMilestone = showMilestone
+            fontStyle = fontStyle
         )
 
         // Update widget
@@ -576,7 +572,6 @@ class MainViewModel(
             widgetBackgroundIcon = widgetBackgroundIcons.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundIcons[0]
             fontStyle = couple!!.fontStyle ?: 0
             fontStyleLabel = fontStyleTitles.getOrNull(fontStyle ?: 0) ?: fontStyleTitles[0]
-            showMilestone = couple!!.showMilestone ?: true
         } else {
             resetToDefaultData()
         }
@@ -606,7 +601,6 @@ class MainViewModel(
         widgetBackgroundIcon = widgetBackgroundIcons[0]
         fontStyle = 0
         fontStyleLabel = fontStyleTitles[0]
-        showMilestone = true
     }
 
     private fun hasWidgetOnHomeScreen(context: Context): Boolean {
