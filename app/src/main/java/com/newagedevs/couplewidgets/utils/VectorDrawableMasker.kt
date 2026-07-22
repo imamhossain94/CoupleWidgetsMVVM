@@ -52,40 +52,37 @@ object VectorDrawableMasker {
         bitmap: Bitmap,
         mask: Int,
         stroke: Float,
-        strokePaintColor:Int
+        strokePaintColor: Int
     ): Bitmap {
-        val vectorDrawable = VectorDrawableParser.parsedVectorDrawable(context.resources, mask)
+        val vectorDrawable =
+            VectorDrawableParser.parsedVectorDrawable(context.resources, mask) ?: return bitmap
+        if (vectorDrawable.viewportWidth <= 0f || vectorDrawable.viewportHeight <= 0f) return bitmap
 
-        if (vectorDrawable != null) {
-            var strokeBitmap =
-                Bitmap.createBitmap(
-                    vectorDrawable.viewportWidth.toInt(),
-                    vectorDrawable.viewportHeight.toInt(),
-                    Bitmap.Config.ARGB_8888
-                )
+        // Draw the outline straight onto the full-resolution bitmap by scaling each
+        // path with a matrix. The previous version rendered the stroke on a tiny
+        // (viewport-sized, e.g. 24x24) bitmap and then upscaled it ~10x, which is
+        // what made the border look thick, blurry and jagged.
+        val matrix = Matrix().apply {
+            setScale(
+                bitmap.width / vectorDrawable.viewportWidth,
+                bitmap.height / vectorDrawable.viewportHeight
+            )
+        }
 
-            val strokeCanvas = Canvas(strokeBitmap)
-            val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-            strokePaint.style = Paint.Style.STROKE
-            strokePaint.strokeWidth = stroke
+        val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = stroke
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
+            color = strokePaintColor
+        }
 
-            strokePaint.color = strokePaintColor
-
-            for (path in vectorDrawable.pathData) {
-                val data = SvgPath(path!!)
-                strokeCanvas.drawPath(data.generatePath(), strokePaint)
-            }
-
-            strokeBitmap =
-                Bitmap.createScaledBitmap(strokeBitmap, bitmap.height, bitmap.width, false)
-
-            val clipCanvas = Canvas(bitmap)
-            val clipPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-            clipCanvas.drawBitmap(bitmap, 0f, 0f, clipPaint)
-            clipCanvas.drawBitmap(strokeBitmap, 0f, 0f, clipPaint)
-
-            return bitmap
+        val canvas = Canvas(bitmap)
+        for (pathData in vectorDrawable.pathData) {
+            pathData ?: continue
+            val path = SvgPath(pathData).generatePath()
+            path.transform(matrix)
+            canvas.drawPath(path, strokePaint)
         }
 
         return bitmap

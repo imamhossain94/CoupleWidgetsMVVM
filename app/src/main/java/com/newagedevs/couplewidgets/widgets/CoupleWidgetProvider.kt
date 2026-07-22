@@ -9,13 +9,11 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.dateDifference
 import com.newagedevs.couplewidgets.model.Couple
@@ -35,6 +33,14 @@ import java.util.*
 class CoupleWidgetProvider : AppWidgetProvider() {
 
     private val widgetScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    private companion object {
+        /** Square avatar resolution. Kept modest so two bitmaps plus the rest stay
+         *  well under the RemoteViews transaction size limit. */
+        const val AVATAR_SIZE_PX = 240
+        /** Border stroke width in avatar pixels. */
+        const val BORDER_PX = 6
+    }
 
     private fun database(context: Context) = CoupleRepository(
         AppDatabase.getInstance(context).coupleDao()
@@ -180,10 +186,13 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                 )
                 views.setTextColor(R.id.counter_clock, finalCouple.counterColor)
 
-                // Render images in parallel
-                val job1 = launch { renderCoupleImage(context, views, finalCouple, true) }
-                val job2 = launch { renderCoupleImage(context, views, finalCouple, false) }
-                joinAll(job1, job2)
+                // Build both avatars off the RemoteViews in parallel, then apply them
+                // sequentially. RemoteViews is NOT thread-safe: mutating the same
+                // instance from two coroutines dropped one image and corrupted borders.
+                val youAvatar = async { buildAvatar(context, finalCouple, you = true) }
+                val partnerAvatar = async { buildAvatar(context, finalCouple, you = false) }
+                youAvatar.await()?.let { views.setImageViewBitmap(R.id.your_image, it) }
+                partnerAvatar.await()?.let { views.setImageViewBitmap(R.id.partner_image, it) }
 
                 finalCouple.heart?.let { heart ->
                     views.setImageViewResource(
@@ -198,66 +207,47 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    private suspend fun renderCoupleImage(
-        context: Context,
-        views: RemoteViews,
-        couple: Couple,
-        you: Boolean = true
-    ) {
-
+    /** Loads one person's photo and masks it into the chosen frame shape. */
+    private suspend fun buildAvatar(context: Context, couple: Couple, you: Boolean): Bitmap {
         val source = if (you) couple.you?.image else couple.partner?.image
-        val destination = if (you) R.id.your_image else R.id.partner_image
-
-        val imageDeferred = CompletableDeferred<Bitmap?>()
-
-        Glide.with(context)
-            .asBitmap()
-            .load(source)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onLoadCleared(placeholder: Drawable?) {}
-
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    imageDeferred.complete(resource)
-                }
-
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    Glide.with(context)
-                        .asBitmap()
-                        .load(R.drawable.ic_person)
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onLoadCleared(placeholder: Drawable?) {}
-
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap>?
-                            ) {
-                                imageDeferred.complete(resource)
-                            }
-                        })
-                }
-            })
-
-        val bitmapResources = withContext(Dispatchers.IO) {
-            imageDeferred.await()
-        }
-
-        val image = bitmapResources?.let {
-            VectorDrawableMasker.maskImage(
-                context,
-                it,
-                couple.frame?.vector!!,
-                200,
-                5,
-                couple.frame?.color!!
-            )
-        }
-        views.setImageViewBitmap(destination, image)
-
+        val bitmap = loadBitmap(context, source)
+        return VectorDrawableMasker.maskImage(
+            context,
+            bitmap,
+            couple.frame?.vector ?: DecoratorCatalog.DEFAULT_SHAPE,
+            AVATAR_SIZE_PX,
+            BORDER_PX,
+            couple.frame?.color ?: Color.WHITE
+        )
     }
+
+    /**
+     * Loads a bounded, square bitmap synchronously on the IO dispatcher.
+     *
+     * Uses Glide's blocking [com.bumptech.glide.RequestBuilder.submit] instead of a
+     * CustomTarget + CompletableDeferred: the old callback approach could hang forever
+     * if onLoadCleared fired (the deferred never completed), which stalled the whole
+     * widget update. Any failure — including a null/empty photo — falls back to the
+     * placeholder person icon.
+     */
+    private suspend fun loadBitmap(context: Context, source: Uri?): Bitmap =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                Glide.with(context).asBitmap()
+                    .load(source?.takeIf { it != Uri.EMPTY })
+                    .override(AVATAR_SIZE_PX, AVATAR_SIZE_PX)
+                    .centerCrop()
+                    .submit()
+                    .get()
+            }.getOrElse {
+                Glide.with(context).asBitmap()
+                    .load(R.drawable.ic_person)
+                    .override(AVATAR_SIZE_PX, AVATAR_SIZE_PX)
+                    .fitCenter()
+                    .submit()
+                    .get()
+            }
+        }
 
 
     /**
