@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Font variant — GENERATED from couple_widget_layout.xml. Do not hand-edit;
-  edit the base and regenerate. Family: sans-serif-black
+  GENERATED from couple_widget_layout.xml (family: sans-serif-black). Do not hand-edit.
 
-  Base widget layout. Responsive by construction: the avatars take their height
-  from a weight (so they grow/shrink with the widget) and scale with fitCenter so
-  they never clip, and names are single-line + ellipsized so long names can't
-  overflow. Font variants of this file are GENERATED — see WidgetFontCatalog and
-  the generator note; edit this base and regenerate, don't hand-edit the variants.
+  Base widget layout. Three self-contained groups — [your photo + name],
+  [heart + counter + clock], [partner photo + name] — each a wrap_content column
+  that the parent centers vertically, so all three sit on the same centre line and
+  stay balanced at any widget size. Avatars are bounded by min/max height so they
+  scale with density yet never dominate or disappear. Font variants of this file
+  are GENERATED (see WidgetFontCatalog) — edit this base and regenerate; don't
+  hand-edit the variants.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/couple_widget"
@@ -18,21 +19,26 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
+    <!-- Group: you -->
     <LinearLayout
+        android:id="@+id/group_you"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/your_image"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:maxHeight="140dp"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:maxWidth="96dp"
+            android:maxHeight="96dp"
             android:scaleType="fitCenter" />
 
         <TextView
@@ -40,15 +46,17 @@
             android:fontFamily="sans-serif-black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1" />
     </LinearLayout>
 
+    <!-- Group: counter -->
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="6dp"
         android:gravity="center"
         android:orientation="vertical">
@@ -67,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="2dp"
             android:gravity="center"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -84,21 +93,26 @@
             android:singleLine="true" />
     </LinearLayout>
 
+    <!-- Group: partner -->
     <LinearLayout
+        android:id="@+id/group_partner"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/partner_image"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:maxHeight="140dp"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:maxWidth="96dp"
+            android:maxHeight="96dp"
             android:scaleType="fitCenter" />
 
         <TextView
@@ -106,7 +120,7 @@
             android:fontFamily="sans-serif-black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1" />

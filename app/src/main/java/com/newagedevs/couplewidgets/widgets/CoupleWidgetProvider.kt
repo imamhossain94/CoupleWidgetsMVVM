@@ -11,6 +11,9 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
+import android.util.TypedValue
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -22,6 +25,7 @@ import com.newagedevs.couplewidgets.model.Person
 import com.newagedevs.couplewidgets.persistence.AppDatabase
 import com.newagedevs.couplewidgets.repository.CoupleRepository
 import com.newagedevs.couplewidgets.utils.DecoratorCatalog
+import com.newagedevs.couplewidgets.utils.MilestoneCalculator
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
 import com.newagedevs.couplewidgets.utils.WidgetFontCatalog
 import com.newagedevs.couplewidgets.view.ui.main.MainActivity
@@ -40,6 +44,11 @@ class CoupleWidgetProvider : AppWidgetProvider() {
         const val AVATAR_SIZE_PX = 240
         /** Border stroke width in avatar pixels. */
         const val BORDER_PX = 6
+
+        /** Below this height the avatars won't fit, so we show only the countdown. */
+        const val COMPACT_HEIGHT_DP = 110
+        /** Below this width, "5y 1m 25d" is too wide — switch to a plain day count. */
+        const val COMPACT_TOTALDAYS_WIDTH_DP = 130
     }
 
     private fun database(context: Context) = CoupleRepository(
@@ -73,6 +82,17 @@ class CoupleWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         context?.let { startAlarm(it) }
+    }
+
+    /** Re-render when the user resizes the widget, so the layout adapts to the new size. */
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        renderCoupleWidget(context, appWidgetManager, intArrayOf(appWidgetId))
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -153,6 +173,11 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                     inRelation = defaultDate
                 )
 
+                // Current size, so we can adapt what's shown (see applyResponsiveLayout).
+                val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+                val minWidthDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
+                val minHeightDp = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0)
+
                 val views = RemoteViews(
                     context.packageName,
                     WidgetFontCatalog.layoutFor(finalCouple.fontStyle)
@@ -186,20 +211,29 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                 )
                 views.setTextColor(R.id.counter_clock, finalCouple.counterColor)
 
-                // Build both avatars off the RemoteViews in parallel, then apply them
-                // sequentially. RemoteViews is NOT thread-safe: mutating the same
-                // instance from two coroutines dropped one image and corrupted borders.
-                val youAvatar = async { buildAvatar(context, finalCouple, you = true) }
-                val partnerAvatar = async { buildAvatar(context, finalCouple, you = false) }
-                youAvatar.await()?.let { views.setImageViewBitmap(R.id.your_image, it) }
-                partnerAvatar.await()?.let { views.setImageViewBitmap(R.id.partner_image, it) }
-
                 finalCouple.heart?.let { heart ->
                     views.setImageViewResource(
                         R.id.heart_symbol,
                         DecoratorCatalog.safeSymbol(heart.vector)
                     )
                     views.setInt(R.id.heart_symbol, "setColorFilter", heart.color ?: Color.WHITE)
+                }
+
+                // Adapt to the widget's size: hide the couple and show only the big
+                // countdown when short, scale fonts/heart when there's room.
+                val compact = applyResponsiveLayout(
+                    views, minWidthDp, minHeightDp, finalCouple, defaultDate
+                )
+
+                // Only decode avatars when they're actually shown.
+                if (!compact) {
+                    // Build both avatars off the RemoteViews in parallel, then apply them
+                    // sequentially. RemoteViews is NOT thread-safe: mutating the same
+                    // instance from two coroutines dropped one image and corrupted borders.
+                    val youAvatar = async { buildAvatar(context, finalCouple, you = true) }
+                    val partnerAvatar = async { buildAvatar(context, finalCouple, you = false) }
+                    youAvatar.await()?.let { views.setImageViewBitmap(R.id.your_image, it) }
+                    partnerAvatar.await()?.let { views.setImageViewBitmap(R.id.partner_image, it) }
                 }
 
                 appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -249,6 +283,81 @@ class CoupleWidgetProvider : AppWidgetProvider() {
             }
         }
 
+
+    /**
+     * Adapts the widget to its current size and returns whether it rendered the
+     * compact (countdown-only) layout.
+     *
+     * - **Short widgets** (height below [COMPACT_HEIGHT_DP]) can't fit the photos, so
+     *   the couple, names and clock are hidden and only the counter is shown, sized
+     *   up to fill the space. Very narrow ones swap "5y 1m 25d" for a plain day count.
+     * - **Roomy widgets** show everything, with the name/counter/clock fonts and the
+     *   heart scaled to the width so nothing looks lost on a large widget.
+     *
+     * Font sizing uses setTextViewTextSize (all API levels); the heart is resized via
+     * setViewLayout* which exists only on API 31+, so on older devices it keeps its
+     * layout default — same trade-off as the solid-color tinting.
+     */
+    private fun applyResponsiveLayout(
+        views: RemoteViews,
+        minWidthDp: Int,
+        minHeightDp: Int,
+        couple: Couple,
+        todayDate: String
+    ): Boolean {
+        val sizeKnown = minHeightDp > 0
+        val compact = sizeKnown && minHeightDp < COMPACT_HEIGHT_DP
+
+        if (compact) {
+            // Drop the whole side groups (GONE, so their weight collapses) and let the
+            // countdown take the full width, centered.
+            views.setViewVisibility(R.id.group_you, View.GONE)
+            views.setViewVisibility(R.id.group_partner, View.GONE)
+            views.setViewVisibility(R.id.counter_clock, View.GONE)
+
+            val ultraNarrow = minWidthDp in 1 until COMPACT_TOTALDAYS_WIDTH_DP
+            if (ultraNarrow) {
+                views.setViewVisibility(R.id.heart_symbol, View.GONE)
+                views.setTextViewText(
+                    R.id.counter_date,
+                    "${totalDays(couple.inRelation, todayDate)} days"
+                )
+            } else {
+                views.setViewVisibility(R.id.heart_symbol, View.VISIBLE)
+            }
+
+            // Fill the short widget with the countdown.
+            val size = (minHeightDp * 0.34f).coerceIn(16f, 30f)
+            views.setTextViewTextSize(R.id.counter_date, TypedValue.COMPLEX_UNIT_SP, size)
+            return true
+        }
+
+        // Full layout — everything visible, scaled to the width.
+        views.setViewVisibility(R.id.group_you, View.VISIBLE)
+        views.setViewVisibility(R.id.group_partner, View.VISIBLE)
+        views.setViewVisibility(R.id.heart_symbol, View.VISIBLE)
+        views.setViewVisibility(R.id.counter_clock, View.VISIBLE)
+
+        val scale = if (sizeKnown) (minWidthDp / 260f).coerceIn(0.85f, 1.4f) else 1f
+        views.setTextViewTextSize(R.id.your_name, TypedValue.COMPLEX_UNIT_SP, 13f * scale)
+        views.setTextViewTextSize(R.id.partner_name, TypedValue.COMPLEX_UNIT_SP, 13f * scale)
+        views.setTextViewTextSize(R.id.counter_date, TypedValue.COMPLEX_UNIT_SP, 16f * scale)
+        views.setTextViewTextSize(R.id.counter_clock, TypedValue.COMPLEX_UNIT_SP, 11f * scale)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val heart = 26f * scale
+            views.setViewLayoutWidth(R.id.heart_symbol, heart, TypedValue.COMPLEX_UNIT_DIP)
+            views.setViewLayoutHeight(R.id.heart_symbol, heart, TypedValue.COMPLEX_UNIT_DIP)
+        }
+        return false
+    }
+
+    /** Whole days between [start] and [today] (both yyyy-MM-dd), clamped at zero. */
+    private fun totalDays(start: String?, today: String): Int {
+        val from = MilestoneCalculator.parse(start) ?: return 0
+        val to = MilestoneCalculator.parse(today) ?: return 0
+        return MilestoneCalculator.togetherness(from, to).days.coerceAtLeast(0)
+    }
 
     /**
      * Paints the widget background. Index 0 (None) leaves the freshly-inflated
