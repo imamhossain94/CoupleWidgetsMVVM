@@ -6,10 +6,13 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -22,6 +25,7 @@ import com.newagedevs.couplewidgets.persistence.AppDatabase
 import com.newagedevs.couplewidgets.repository.CoupleRepository
 import com.newagedevs.couplewidgets.utils.DecoratorCatalog
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
+import com.newagedevs.couplewidgets.utils.WidgetFontCatalog
 import com.newagedevs.couplewidgets.view.ui.main.MainActivity
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -32,19 +36,6 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     private val widgetScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    /** RemoteViews has no API to set a custom Typeface, so font styles are separate layout variants. */
-    private fun layoutResourceFor(fontStyle: Int?): Int = when (fontStyle) {
-        1 -> R.layout.couple_widget_layout_serif
-        2 -> R.layout.couple_widget_layout_cursive
-        else -> R.layout.couple_widget_layout
-    }
-
-    private val backgroundResources = listOf(
-        null, // 0: Transparent (default, matches original pre-customization behavior)
-        R.drawable.widget_bg_frosted,
-        R.drawable.widget_bg_solid,
-        R.drawable.widget_bg_gradient,
-    )
     private fun database(context: Context) = CoupleRepository(
         AppDatabase.getInstance(context).coupleDao()
     )
@@ -156,11 +147,12 @@ class CoupleWidgetProvider : AppWidgetProvider() {
                     inRelation = defaultDate
                 )
 
-                val views = RemoteViews(context.packageName, layoutResourceFor(finalCouple.fontStyle))
+                val views = RemoteViews(
+                    context.packageName,
+                    WidgetFontCatalog.layoutFor(finalCouple.fontStyle)
+                )
 
-                backgroundResources.getOrNull(finalCouple.widgetBackground ?: 0)?.let { bgRes ->
-                    views.setInt(R.id.couple_widget, "setBackgroundResource", bgRes)
-                }
+                applyBackground(context, views, finalCouple)
 
                 setUpClickIntent(context, views, appWidgetId, finalCouple.id)
 
@@ -267,6 +259,39 @@ class CoupleWidgetProvider : AppWidgetProvider() {
 
     }
 
+
+    /**
+     * Paints the widget background. Index 0 (None) leaves the freshly-inflated
+     * RemoteViews with no background. Frosted uses a fixed drawable; Solid uses the
+     * rounded drawable tinted with the user's chosen color.
+     *
+     * RemoteViews can only tint a background via setColorStateList (API 31+); on
+     * older devices we fall back to a flat color, which loses the rounded corners.
+     */
+    private fun applyBackground(context: Context, views: RemoteViews, couple: Couple) {
+        when (couple.widgetBackground ?: 0) {
+            1 -> views.setInt(
+                R.id.couple_widget, "setBackgroundResource", R.drawable.widget_bg_frosted
+            )
+            2 -> {
+                val color = couple.widgetBackgroundColor
+                    ?: ContextCompat.getColor(context, R.color.love_rose_deep)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    views.setInt(
+                        R.id.couple_widget, "setBackgroundResource", R.drawable.widget_bg_solid
+                    )
+                    views.setColorStateList(
+                        R.id.couple_widget,
+                        "setBackgroundTintList",
+                        ColorStateList.valueOf(color)
+                    )
+                } else {
+                    views.setInt(R.id.couple_widget, "setBackgroundColor", color)
+                }
+            }
+            // 0 (None): nothing to draw.
+        }
+    }
 
     private fun setUpClickIntent(context: Context, views: RemoteViews, appWidgetId: Int, dbWidgetId: Long) {
         val intent = Intent(context, MainActivity::class.java).apply {

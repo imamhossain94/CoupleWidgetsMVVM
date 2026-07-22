@@ -39,6 +39,7 @@ import androidx.lifecycle.viewModelScope
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
 import com.newagedevs.couplewidgets.utils.DecoratorCatalog
+import com.newagedevs.couplewidgets.utils.WidgetFontCatalog
 import com.newagedevs.couplewidgets.utils.InAppRatingManager
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
@@ -70,9 +71,13 @@ class MainViewModel(
     private val fallDate = "2021-05-27"
     private val relationDate = "2021-05-27"
 
-    private val widgetBackgroundTitles = listOf("None", "Frosted", "Solid", "Gradient")
-    private val widgetBackgroundIcons = listOf(R.drawable.ic_circle, R.drawable.widget_bg_frosted, R.drawable.widget_bg_solid, R.drawable.widget_bg_gradient)
-    private val fontStyleTitles = listOf("Default", "Serif", "Cursive")
+    private val widgetBackgroundTitles = listOf("None", "Frosted", "Solid")
+    private val widgetBackgroundIcons = listOf(R.drawable.ic_circle, R.drawable.widget_bg_frosted, R.drawable.widget_bg_solid)
+    private val fontStyleTitles = WidgetFontCatalog.titles
+
+    /** Index of the "Solid" background, used to reveal the color picker. */
+    private val solidBackgroundIndex = 2
+    private val defaultBackgroundColor = Color.parseColor("#E8386A")
 
     @get:Bindable
     var toast: String? by bindingProperty(null)
@@ -132,6 +137,14 @@ class MainViewModel(
     var widgetBackgroundIcon: Int? by bindingProperty(R.drawable.ic_circle)
 
     @get:Bindable
+    var widgetBackgroundColor: Int? by bindingProperty(Color.parseColor("#E8386A"))
+
+    /** Drives visibility of the solid-color field: true only when "Solid" is chosen. */
+    @get:Bindable
+    var showBackgroundColor: Boolean by bindingProperty(false)
+        private set
+
+    @get:Bindable
     var fontStyle: Int? by bindingProperty(0)
 
     @get:Bindable
@@ -177,6 +190,8 @@ class MainViewModel(
 
         OptionSheet().show(view.context) {
             title("Select image shape")
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
             with(
                 Option(shapes[0], shapeTitles[0]),
                 Option(shapes[1], shapeTitles[1]),
@@ -214,6 +229,8 @@ class MainViewModel(
 
         OptionSheet().show(view.context) {
             title("Select heart symbol")
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
             with(
                 Option(symbols[0], symbolTitles[0]),
                 Option(symbols[1], symbolTitles[1]),
@@ -254,29 +271,26 @@ class MainViewModel(
                 Option(widgetBackgroundIcons[0], widgetBackgroundTitles[0]),
                 Option(widgetBackgroundIcons[1], widgetBackgroundTitles[1]),
                 Option(widgetBackgroundIcons[2], widgetBackgroundTitles[2]),
-                Option(widgetBackgroundIcons[3], widgetBackgroundTitles[3]),
             )
             onPositive { index: Int, _: Option ->
                 widgetBackground = index
                 widgetBackgroundLabel = widgetBackgroundTitles[index]
                 widgetBackgroundIcon = widgetBackgroundIcons[index]
+                showBackgroundColor = index == solidBackgroundIndex
             }
         }
     }
 
     fun fontPicker(view: View) {
+        val fontTitles = WidgetFontCatalog.titles
         OptionSheet().show(view.context) {
             title("Select widget font")
-            with(
-                Option(R.drawable.ic_edit, fontStyleTitles[0]),
-                Option(R.drawable.ic_edit, fontStyleTitles[1]),
-                Option(R.drawable.ic_edit, fontStyleTitles[2]),
-            )
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
+            with(*fontTitles.map { Option(R.drawable.ic_brush, it) }.toTypedArray())
             onPositive { index: Int, _: Option ->
-                val textView = view as TextView
-                textView.text = fontStyleTitles[index]
                 fontStyle = index
-                fontStyleLabel = fontStyleTitles[index]
+                fontStyleLabel = fontTitles[index]
             }
         }
     }
@@ -307,6 +321,9 @@ class MainViewModel(
                     }
                     "Name Color" -> {
                         nameColor = color
+                    }
+                    "Background Color" -> {
+                        widgetBackgroundColor = color
                     }
                 }
 
@@ -435,6 +452,7 @@ class MainViewModel(
             fallInLove = fallInLove,
             inRelation = inRelation,
             widgetBackground = widgetBackground,
+            widgetBackgroundColor = widgetBackgroundColor,
             fontStyle = fontStyle
         )
 
@@ -466,6 +484,10 @@ class MainViewModel(
 
                 couple.appWidgetId = appWidgetId
                 widgetId = mainRepository.setWidget(couple)
+
+                // Sync the change onto every placed home-screen widget so it
+                // updates immediately, not just on the next system refresh.
+                mainRepository.updatePlacedWidgets(couple, widgetId!!, ids)
 
                 if (id != null) {
                     context.sendBroadcast(intent)
@@ -556,6 +578,8 @@ class MainViewModel(
             widgetBackground = couple!!.widgetBackground ?: 0
             widgetBackgroundLabel = widgetBackgroundTitles.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundTitles[0]
             widgetBackgroundIcon = widgetBackgroundIcons.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundIcons[0]
+            widgetBackgroundColor = couple!!.widgetBackgroundColor ?: defaultBackgroundColor
+            showBackgroundColor = (widgetBackground ?: 0) == solidBackgroundIndex
             fontStyle = couple!!.fontStyle ?: 0
             fontStyleLabel = fontStyleTitles.getOrNull(fontStyle ?: 0) ?: fontStyleTitles[0]
         } else {
@@ -585,6 +609,8 @@ class MainViewModel(
         widgetBackground = 0
         widgetBackgroundLabel = widgetBackgroundTitles[0]
         widgetBackgroundIcon = widgetBackgroundIcons[0]
+        widgetBackgroundColor = defaultBackgroundColor
+        showBackgroundColor = false
         fontStyle = 0
         fontStyleLabel = fontStyleTitles[0]
     }

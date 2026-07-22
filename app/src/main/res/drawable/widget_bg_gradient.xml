@@ -8,5 +8,10 @@
         android:angle="45"
         android:type="linear" />
     <corners android:radius="@dimen/radius_l" />
+    <padding
+        android:left="@dimen/space_l"
+        android:top="@dimen/space_m"
+        android:right="@dimen/space_l"
+        android:bottom="@dimen/space_m" />
     <size android:width="24dp" android:height="24dp" />
 </shape>

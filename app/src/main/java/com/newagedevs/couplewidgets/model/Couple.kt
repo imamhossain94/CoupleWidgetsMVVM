@@ -20,6 +20,8 @@ data class Couple(
     var appWidgetId: Int? = null,
     // Index into a small fixed style list (not a resource ID) so it stays stable across resource changes.
     val widgetBackground: Int? = 0,
+    // ARGB color used when widgetBackground is "Solid"; null falls back to the theme default.
+    val widgetBackgroundColor: Int? = null,
     val fontStyle: Int? = 0,
 ) : Parcelable {
     @PrimaryKey(autoGenerate = true)

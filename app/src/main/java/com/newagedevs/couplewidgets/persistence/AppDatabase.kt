@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.model.Memory
 
-@Database(entities = [Couple::class, Memory::class], version = 6, exportSchema = false)
+@Database(entities = [Couple::class, Memory::class], version = 7, exportSchema = false)
 @TypeConverters(PersonConverter::class, DecoratorConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

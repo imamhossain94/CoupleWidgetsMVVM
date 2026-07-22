@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.newagedevs.couplewidgets.view.ui.main.MainViewModel" />
@@ -66,55 +68,88 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="@dimen/space_s">
 
                 <LinearLayout
-                    style="@style/Field.Column"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        style="@style/Field.Column"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Text.FieldLabel"
-                        android:text="@string/background" />
+                        android:layout_weight="1">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/background" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.backgroundPicker}"
+                            android:text="@{viewModel.widgetBackgroundLabel}"
+                            app:drawableStart="@{viewModel.widgetBackgroundIcon}"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="Solid" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/Field.Column"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Field.Romantic"
-                        android:onClick="@{viewModel.backgroundPicker}"
-                        android:text="@{viewModel.widgetBackgroundLabel}"
-                        app:drawableStart="@{viewModel.widgetBackgroundIcon}"
-                        app:drawableTint="?attr/icon_color"
-                        tools:text="Gradient" />
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/font" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.fontPicker}"
+                            android:text="@{viewModel.fontStyleLabel}"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="Cursive" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Background color — only shown when the Solid background is chosen -->
                 <LinearLayout
                     style="@style/Field.Column"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:visibility="@{viewModel.showBackgroundColor ? View.VISIBLE : View.GONE}">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/Text.FieldLabel"
-                        android:text="@string/font" />
+                        android:text="@string/background_color" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/Field.Romantic"
-                        android:onClick="@{viewModel.fontPicker}"
-                        android:text="@{viewModel.fontStyleLabel}"
-                        app:drawableStartCompat="@drawable/ic_brush"
+                        android:onClick="@{viewModel.colorPicker}"
+                        android:tag="Background Color"
+                        android:text="@{'#'+Integer.toHexString(viewModel.widgetBackgroundColor).toUpperCase()}"
+                        app:drawableStartCompat="@drawable/ic_color_palette"
                         app:drawableTint="?attr/icon_color"
-                        tools:text="Cursive" />
+                        tools:text="#E8386A" />
 
                 </LinearLayout>
 

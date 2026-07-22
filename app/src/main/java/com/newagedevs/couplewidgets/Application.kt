@@ -20,6 +20,7 @@ import com.newagedevs.couplewidgets.di.persistenceModule
 import com.newagedevs.couplewidgets.di.repositoryModule
 import com.newagedevs.couplewidgets.di.viewModelModule
 import com.newagedevs.couplewidgets.persistence.SharedPref
+import com.newagedevs.couplewidgets.repository.MainRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -35,6 +36,7 @@ class Application : Application() {
 
     private lateinit var appOpenManager: AppOpenManager
     private val preferences: SharedPref by inject()
+    private val mainRepository: MainRepository by inject()
 
     // Background scope for non-UI tasks
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -52,6 +54,10 @@ class Application : Application() {
         applicationScope.launch {
             setupLogging()
             configureWebView()
+            // Seed a default widget on first launch so the preview and the
+            // Memories screen have data to show immediately.
+            runCatching { mainRepository.ensureDefaultWidget() }
+                .onFailure { Timber.e(it, "Failed to seed default widget") }
         }
 
         // AdMob is initialized only after user consent is gathered (see ConsentManager),

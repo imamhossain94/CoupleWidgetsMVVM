@@ -28,5 +28,16 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
     }
 }
 
+/**
+ * Adds the per-widget solid background color. Purely additive — the new nullable
+ * column defaults to NULL on existing rows, which the renderer reads as "use the
+ * theme default color", so v6 data is untouched.
+ */
+val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `Couple` ADD COLUMN `widgetBackgroundColor` INTEGER")
+    }
+}
+
 /** Every migration the app knows about, applied to both database builders. */
-val ALL_MIGRATIONS = arrayOf(MIGRATION_5_6)
+val ALL_MIGRATIONS = arrayOf(MIGRATION_5_6, MIGRATION_6_7)

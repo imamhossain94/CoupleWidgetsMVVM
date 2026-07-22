@@ -1,8 +1,11 @@
 package com.newagedevs.couplewidgets.binding
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,6 +21,7 @@ import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.extensions.isUriEmpty
 import com.newagedevs.couplewidgets.extensions.px
 import com.newagedevs.couplewidgets.utils.VectorDrawableMasker
+import com.newagedevs.couplewidgets.utils.WidgetFontCatalog
 import com.skydoves.whatif.whatIfNotNull
 import com.skydoves.whatif.whatIfNotNullOrEmpty
 import timber.log.Timber
@@ -49,6 +53,47 @@ object ViewBinding {
     @BindingAdapter(value = ["app:drawableBackground"], requireAll = false)
     fun drawableBackground(view: ImageView, resource: Drawable?) {
         view.setImageDrawable(resource)
+    }
+
+    /**
+     * Applies the chosen widget-background style (None / Frosted / Solid) behind the
+     * couple content in the live preview, mirroring what
+     * [com.newagedevs.couplewidgets.widgets.CoupleWidgetProvider] paints on the real
+     * home-screen widget. Index 0 (None) clears the background. Solid is tinted with
+     * the user's chosen color. Padding and corner radius come from the shape drawables.
+     */
+    @JvmStatic
+    @BindingAdapter(
+        value = ["app:widgetBackgroundStyle", "app:widgetBackgroundColor"],
+        requireAll = false
+    )
+    fun widgetBackgroundStyle(view: View, index: Int?, color: Int?) {
+        when (index) {
+            1 -> {
+                view.setBackgroundResource(R.drawable.widget_bg_frosted)
+                view.backgroundTintList = null
+            }
+            2 -> {
+                view.setBackgroundResource(R.drawable.widget_bg_solid)
+                view.backgroundTintList = color?.let { ColorStateList.valueOf(it) }
+            }
+            else -> {
+                view.setBackgroundResource(0)
+                view.backgroundTintList = null
+            }
+        }
+    }
+
+    /**
+     * Applies a widget font to the preview text. RemoteViews needs layout variants
+     * for this, but the in-app preview is a normal view, so a Typeface built from the
+     * same system family keeps the preview honest. See
+     * [com.newagedevs.couplewidgets.utils.WidgetFontCatalog].
+     */
+    @JvmStatic
+    @BindingAdapter("app:widgetFont")
+    fun widgetFont(view: TextView, index: Int?) {
+        view.typeface = Typeface.create(WidgetFontCatalog.familyFor(index), Typeface.NORMAL)
     }
 
     /**
