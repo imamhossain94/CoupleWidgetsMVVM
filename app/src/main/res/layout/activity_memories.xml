@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.newagedevs.couplewidgets.view.ui.memories.MemoriesViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.newagedevs.couplewidgets.view.adapter.MemoriesAdapter" />
+
+        <variable
+            name="dispatcher"
+            type="androidx.activity.OnBackPressedDispatcherOwner" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/appBackground"
+        app:toast="@{vm.toast}"
+        tools:context=".view.ui.memories.MemoriesActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- ===== Hero: gradient bar + together counter ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/bg_bottom_curve"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/space_xl">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_l"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:layout_marginEnd="@dimen/space_l"
+                    android:baselineAligned="false"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/IconButton.Romantic"
+                        android:layout_width="@dimen/icon_button_size"
+                        android:layout_height="@dimen/icon_button_size"
+                        android:contentDescription="@string/back"
+                        android:onClick="@{() -> dispatcher.onBackPressedDispatcher.onBackPressed()}"
+                        android:src="@drawable/ic_arrow_left"
+                        app:tint="?attr/icon_color" />
+
+                    <TextView
+                        style="@style/Text.ScreenTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
+                        android:layout_marginEnd="@dimen/space_m"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/memories" />
+
+                    <!-- Balances the back button so the title stays centred -->
+                    <View
+                        android:layout_width="@dimen/icon_button_size"
+                        android:layout_height="@dimen/icon_button_size" />
+
+                </LinearLayout>
+
+                <!-- Together-counter card -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_l"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:layout_marginEnd="@dimen/space_l"
+                    android:background="@drawable/bg_preview_frame"
+                    android:padding="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_hero_inner"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_xl">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:contentDescription="@string/memories"
+                            android:src="@drawable/ic_heart"
+                            app:tint="@color/love_rose" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:letterSpacing="0.02"
+                            android:text="@{vm.togetherLabel}"
+                            android:textColor="?attr/textPrimaryColor"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            tools:text="5y 2m 3d" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@{vm.togetherDaysLabel}"
+                            android:textColor="?attr/textSecondaryColor"
+                            android:textSize="13sp"
+                            tools:text="1890 days together" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:layout_marginBottom="@dimen/space_m"
+                            android:background="?attr/strokeColor" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@{vm.nextUpLabel}"
+                            android:textColor="?attr/accentColor"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            tools:text="500 days together · in 44 days" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- ===== Timeline ===== -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/memory_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="96dp"
+                    android:scrollbars="none"
+                    app:adapter="@{adapter}"
+                    app:adapterMemoryList="@{vm.items}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_memory" />
+
+                <include
+                    android:id="@+id/empty_memories"
+                    layout="@layout/item_memories_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{vm.isEmpty ? View.VISIBLE : View.GONE}" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_memory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/space_xl"
+            android:text="@string/add_memory"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/white" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

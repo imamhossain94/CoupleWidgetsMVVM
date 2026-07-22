@@ -51,6 +51,17 @@ object ViewBinding {
         view.setImageDrawable(resource)
     }
 
+    /**
+     * Sets a local vector straight on the ImageView. Unlike `app:resource` this
+     * skips Glide (pointless for a bundled vector) and leaves any `android:tint`
+     * from the layout intact.
+     */
+    @JvmStatic
+    @BindingAdapter("app:iconRes")
+    fun bindIconRes(view: ImageView, resource: Int?) {
+        resource?.takeIf { it != 0 }?.let { view.setImageResource(it) }
+    }
+
 
     @JvmStatic
     @BindingAdapter(value = ["app:resource", "app:tint"], requireAll = false)

@@ -58,6 +58,26 @@ class MainRepository constructor(
         coupleDao.deleteWidgets()
     }
 
+    fun deleteWidget(id: Long) {
+        coupleDao.deleteWidgetById(id)
+
+        // Something must stay active, or the app opens to a blank editor next
+        // launch. Promote the first survivor if we just removed the active one.
+        if (coupleDao.getActiveWidget() == null) {
+            coupleDao.getWidgets().firstOrNull()?.let {
+                coupleDao.updateWidgetActiveStatus(it.id, true)
+            }
+        }
+    }
+
+    /**
+     * Puts a swipe-deleted widget back exactly as it was, id included, so the
+     * home-screen widget it was bound to keeps working after an undo.
+     */
+    fun restoreWidget(couple: Couple) {
+        coupleDao.insertWidget(couple)
+    }
+
     init {
         Timber.d("Injection MainRepository")
     }

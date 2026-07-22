@@ -34,6 +34,7 @@ import com.skydoves.bundler.bundle
 import com.skydoves.bundler.intentOf
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.activity.OnBackPressedCallback
+import com.newagedevs.couplewidgets.view.ui.memories.MemoriesActivity
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.utils.Constants
@@ -163,6 +164,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             drawerAction {
                 viewModel.showInterstitialIfEligible(this) { loadInterstitialAd() }
                 WidgetsActivity.startActivity(this)
+            }
+        }
+        binding.navView.findViewById<View>(R.id.nav_memories).setOnClickListener {
+            drawerAction {
+                MemoriesActivity.startActivity(this)
             }
         }
         binding.navView.findViewById<View>(R.id.nav_share).setOnClickListener {

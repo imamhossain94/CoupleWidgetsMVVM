@@ -47,6 +47,17 @@
             android:exported="false" />
 
         <activity
+            android:name=".view.ui.memories.MemoriesActivity"
+            android:theme="@style/Theme.CoupleWidgets"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.ui.memories.MemoryEditorActivity"
+            android:theme="@style/Theme.CoupleWidgets"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
+
+        <activity
             android:name="com.github.dhaval2404.imagepicker.ImagePickerActivity"
             android:theme="@style/ImagePicker.NonFullscreen"
             tools:replace="android:theme"/>

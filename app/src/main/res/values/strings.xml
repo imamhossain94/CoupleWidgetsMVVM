@@ -82,4 +82,28 @@
     <string name="nav_icons_by">Icons by</string>
     <string name="nav_version">Version</string>
     <string name="nav_exit">Exit</string>
+    <string name="nav_memories">Memories</string>
+
+    <!-- Memories timeline -->
+    <string name="memories">Memories</string>
+    <string name="milestones">Milestones</string>
+    <string name="add_memory">Add memory</string>
+    <string name="no_memories_title">Your story starts here</string>
+    <string name="no_memories_message">Save the dates that matter — your first date, an anniversary, a trip you took together.</string>
+    <string name="memory_deleted">Memory deleted</string>
+    <string name="widget_deleted">Widget deleted</string>
+    <string name="undo">Undo</string>
+
+    <!-- Memory editor -->
+    <string name="new_memory">New memory</string>
+    <string name="edit_memory">Edit memory</string>
+    <string name="delete_memory">Delete this memory</string>
+    <string name="memory_title">Title</string>
+    <string name="memory_title_hint">Our first date</string>
+    <string name="date">Date</string>
+    <string name="icon">Icon</string>
+    <string name="note">Note</string>
+    <string name="note_hint">Something you want to remember…</string>
+    <string name="repeats_yearly">Repeats every year</string>
+    <string name="repeats_yearly_hint">For anniversaries and birthdays</string>
 </resources>

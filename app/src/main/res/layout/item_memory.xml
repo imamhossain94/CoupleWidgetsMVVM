@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Card.Romantic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_l"
+    android:layout_marginTop="@dimen/space_xs"
+    android:layout_marginEnd="@dimen/space_l"
+    android:layout_marginBottom="@dimen/space_xs"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_l">
+
+        <FrameLayout
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_icon_chip">
+
+            <ImageView
+                android:id="@+id/memory_icon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/memories"
+                app:tint="?attr/icon_color"
+                tools:src="@drawable/ic_heart" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/memory_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/textPrimaryColor"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Our first date" />
+
+            <TextView
+                android:id="@+id/memory_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="12sp"
+                tools:text="14 Feb 2020" />
+
+            <TextView
+                android:id="@+id/memory_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="12sp"
+                tools:text="The little cafe by the river" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/memory_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:gravity="end"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="in 12 days" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -52,6 +52,35 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/nav_memories"
+                style="@style/Drawer.Row"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_item_height">
+
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_chip">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/nav_memories"
+                        android:src="@drawable/ic_timeline"
+                        app:tint="?attr/drawerItemIconTint" />
+
+                </FrameLayout>
+
+                <TextView
+                    style="@style/Drawer.RowText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_memories" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView

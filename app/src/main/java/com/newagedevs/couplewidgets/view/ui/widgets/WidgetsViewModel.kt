@@ -29,6 +29,19 @@ class WidgetsViewModel constructor(
     val widgets: List<Couple>? by posterListFlow.asBindingProperty(null)
 
 
+    /**
+     * Removes a single widget. The row is kept by the caller so an undo can put
+     * it back with the same id, which matters because a home-screen widget may
+     * still be bound to it.
+     */
+    fun deleteWidget(couple: Couple) {
+        mainRepository.deleteWidget(couple.id)
+    }
+
+    fun restoreWidget(couple: Couple) {
+        mainRepository.restoreWidget(couple)
+    }
+
     fun deleteAllWidgets(view: View) {
         MaterialAlertDialogBuilder(view.context)
             .setTitle("Confirm Delete")
