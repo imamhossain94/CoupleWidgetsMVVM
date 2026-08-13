@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.newagedevs.couplewidgets.view.ui.main.MainViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/space_xl"
+        android:orientation="vertical">
+
+        <!-- Section header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_m"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_section_accent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.SectionTitle"
+                    android:text="@string/widget_style" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_style_subtitle"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Card.Romantic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_s">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        style="@style/Field.Column"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/background" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.backgroundPicker}"
+                            android:text="@{viewModel.widgetBackgroundLabel}"
+                            app:drawableStart="@{viewModel.widgetBackgroundIcon}"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="Solid" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/Field.Column"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/font" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
+                            android:onClick="@{viewModel.fontPicker}"
+                            android:text="@{viewModel.fontStyleLabel}"
+                            app:drawableStartCompat="@drawable/ic_brush"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="Cursive" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Background color — only shown when the Solid background is chosen -->
+                <LinearLayout
+                    style="@style/Field.Column"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.showBackgroundColor ? View.VISIBLE : View.GONE}">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Text.FieldLabel"
+                        android:text="@string/background_color" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Field.Romantic"
+                        android:onClick="@{viewModel.colorPicker}"
+                        android:tag="Background Color"
+                        android:text="@{'#'+Integer.toHexString(viewModel.widgetBackgroundColor).toUpperCase()}"
+                        app:drawableStartCompat="@drawable/ic_color_palette"
+                        app:drawableTint="?attr/icon_color"
+                        tools:text="#E8386A" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</layout>

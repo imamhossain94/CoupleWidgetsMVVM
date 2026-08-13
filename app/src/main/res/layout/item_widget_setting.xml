@@ -14,33 +14,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:paddingTop="@dimen/space_xl"
         android:orientation="vertical">
 
-        <TextView
+        <!-- Section header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="0dp"
-            android:text="@string/widget_settings"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_m"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+            <View
+                android:layout_width="4dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_section_accent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.SectionTitle"
+                    android:text="@string/widget_settings" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/widget_settings_subtitle"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Card.Romantic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="?attr/bg_card">
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/space_s">
 
+                <!-- Row 1 — image shape + its color -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,71 +77,56 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Image Shape" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/image_shape" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.shapePicker}"
-                            android:padding="15dp"
-                            android:text="Shape"
-                            
+                            android:text="@string/shape"
                             app:drawableStart="@{viewModel.shape}"
-                            android:scaleX="1"
-                            android:scaleY="1"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color" />
 
                     </LinearLayout>
 
-
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Shape Color" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/shape_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Shape Color"
-                            android:padding="15dp"
                             android:text="@{'#'+Integer.toHexString(viewModel.shapeColor).toUpperCase()}"
-                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="#FFFFFF" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Row 2 — symbol + its color -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,69 +134,56 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Symbol Shape" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/symbol_shape" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.symbolPicker}"
-                            android:padding="15dp"
-                            android:text="Symbol"
-                            
+                            android:text="@string/symbol"
                             app:drawableStart="@{viewModel.symbol}"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color" />
 
                     </LinearLayout>
 
-
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Symbol Color" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/symbol_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Symbol Color"
                             android:text="@{'#'+Integer.toHexString(viewModel.symbolColor).toUpperCase()}"
-                            
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="#FF5C8A" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Row 3 — text colors -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -190,64 +191,52 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Name Color" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@{'#'+Integer.toHexString(viewModel.nameColor).toUpperCase()}"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/name_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Name Color"
-                            
+                            android:text="@{'#'+Integer.toHexString(viewModel.nameColor).toUpperCase()}"
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="#FFFFFF" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:maxLines="1"
-                            android:text="Counter Color" />
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
-                            android:padding="15dp"
-                            android:text="@{'#'+Integer.toHexString(viewModel.counterColor).toUpperCase()}"
+                            style="@style/Text.FieldLabel"
+                            android:text="@string/counter_color" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.colorPicker}"
                             android:tag="Counter Color"
-                            
+                            android:text="@{'#'+Integer.toHexString(viewModel.counterColor).toUpperCase()}"
                             app:drawableStartCompat="@drawable/ic_color_palette"
-                            app:drawableTint="?attr/icon_color"/>
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="#FFFFFF" />
 
                     </LinearLayout>
 
@@ -255,7 +244,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

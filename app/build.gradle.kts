@@ -9,16 +9,19 @@ plugins {
 
 android {
     namespace = "com.newagedevs.couplewidgets"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.newagedevs.couplewidgets"
         minSdk = 23
-        targetSdk = 36
-        versionCode = 18
-        versionName = "1.1.8"
+        targetSdk = 37
+        versionCode = 20
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AdMob App ID is injected via secrets-gradle-plugin from local.properties
+        manifestPlaceholders["ADMOB_APP_ID"] = ""
     }
 
     buildFeatures {
@@ -53,13 +56,13 @@ kotlin {
 
 dependencies {
     // android supports
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.appcompat:appcompat:1.7.1")
 
     // architecture components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
     implementation("androidx.room:room-runtime:2.8.4")
     implementation("androidx.room:room-ktx:2.8.4")
     kapt("androidx.room:room-compiler:2.8.4")
@@ -69,16 +72,16 @@ dependencies {
     implementation("com.github.skydoves:bindables:1.2.0")
 
     // koin
-    implementation("io.insert-koin:koin-android:4.2.1")
+    implementation("io.insert-koin:koin-android:4.2.2")
 
     // coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
     // glide
-    implementation("com.github.bumptech.glide:glide:5.0.5")
-    kapt("com.github.bumptech.glide:compiler:5.0.5")
+    implementation("com.github.bumptech.glide:glide:5.0.9")
+    kapt("com.github.bumptech.glide:compiler:5.0.9")
 
     // whatIf
     implementation("com.github.skydoves:whatif:1.2.1")
@@ -99,17 +102,20 @@ dependencies {
     implementation("com.github.yalantis:ucrop:2.2.11")
 
     // gson
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation("com.google.code.gson:gson:2.14.0")
 
     // svg path kotlin
     implementation("com.github.slaviboy:SVGPathKotlin:0.3.0")
 
     // joda-time
-    implementation("joda-time:joda-time:2.14.1")
+    implementation("joda-time:joda-time:2.14.2")
 
-    // Applovin
-    implementation("com.applovin:applovin-sdk:13.6.2")
-    implementation("androidx.lifecycle:lifecycle-process:2.10.0")
+    // Google AdMob
+    implementation("com.google.android.gms:play-services-ads:25.4.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.11.0")
+
+    // Google User Messaging Platform (CMP) — required for GDPR/UK/CH consent
+    implementation("com.google.android.ump:user-messaging-platform:4.0.0")
 
     // Google Play Core (Modular)
     implementation("com.google.android.play:review:2.0.2")

@@ -6,8 +6,11 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "9.1.1" apply false
-    id("com.android.library") version "9.1.1" apply false
+    id("com.android.application") version "9.2.0" apply false
+    id("com.android.library") version "9.2.0" apply false
+    // Kotlin pinned to 2.3.20 — Kotlin 2.4.0 emits metadata version 2.4.0, which
+    // Room 2.8.4's kapt annotation processor (kotlin-metadata-jvm) cannot yet parse.
+    // Bump once Room ships a release compatible with Kotlin 2.4's metadata format.
     id("org.jetbrains.kotlin.android") version "2.3.20" apply false
-    id("com.android.legacy-kapt") version "9.1.1" apply false
+    id("com.android.legacy-kapt") version "9.2.0" apply false
 }

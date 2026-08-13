@@ -1,87 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Base widget layout. Three self-contained groups — [your photo + name],
+  [heart + counter + clock], [partner photo + name] — each a wrap_content column
+  that the parent centers vertically, so all three sit on the same centre line and
+  stay balanced at any widget size. Avatars are bounded by min/max height so they
+  scale with density yet never dominate or disappear. Font variants of this file
+  are GENERATED (see WidgetFontCatalog) — edit this base and regenerate; don't
+  hand-edit the variants.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/couple_widget"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
     android:gravity="center"
-    android:layout_marginHorizontal="28dp"
-    android:layout_marginVertical="0dp"
-    android:baselineAligned="false">
+    android:orientation="horizontal"
+    android:padding="10dp">
 
+    <!-- Group: you -->
     <LinearLayout
+        android:id="@+id/group_you"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
         android:layout_weight="2"
-        android:layout_gravity="center|end"
-        android:gravity="center|end">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/your_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:maxWidth="96dp"
+            android:maxHeight="96dp"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/your_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
             android:gravity="center"
-            android:layout_gravity="center"/>
+            android:maxLines="1" />
     </LinearLayout>
 
+    <!-- Group: counter -->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="6dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/heart_symbol"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/counter_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="18sp"/>
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="16sp" />
 
         <android.widget.TextClock
             android:id="@+id/counter_clock"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:singleLine="true"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0.7"
             android:format12Hour="k'h' mm'm' ss's'"
             android:format24Hour="k'h' mm'm' ss's'"
-            android:alpha="0.7"/>
+            android:gravity="center"
+            android:singleLine="true" />
     </LinearLayout>
 
+    <!-- Group: partner -->
     <LinearLayout
+        android:id="@+id/group_partner"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
         android:layout_weight="2"
-        android:layout_gravity="center|start"
-        android:gravity="center|start">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/partner_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:id="@+id/partner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"/>
+            android:adjustViewBounds="true"
+            android:minWidth="56dp"
+            android:minHeight="56dp"
+            android:maxWidth="96dp"
+            android:maxHeight="96dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/partner_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1" />
     </LinearLayout>
 
 </LinearLayout>

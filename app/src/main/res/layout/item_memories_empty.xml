@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/appBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/space_xxl"
+    android:paddingEnd="@dimen/space_xxl">
+
+    <FrameLayout
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:background="@drawable/bg_icon_chip">
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/no_memories_title"
+            android:src="@drawable/ic_timeline"
+            app:tint="?attr/icon_color" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        android:gravity="center"
+        android:text="@string/no_memories_title"
+        android:textColor="?attr/textPrimaryColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.3"
+        android:text="@string/no_memories_message"
+        android:textColor="?attr/textSecondaryColor"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -12,9 +12,16 @@ class SharedPref(val context: Context) {
     val sharedPref: SharedPreferences = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
 
     private val firstLaunchKey = "${prefix}.firstLaunch"
-    private val adCooldownMillis = 10 * 60 * 1000  // 10 minutes
-    private val lastAdShownTimeKey = "${prefix}.LastAdShownTime"
+
+    // App-open ads are the most interruptive format (unrequested, full-screen on foreground),
+    // so they get a much longer cooldown than interstitials, tracked independently — showing
+    // one no longer resets eligibility for the other.
+    private val appOpenAdCooldownMillis = 45 * 60 * 1000  // 45 minutes
+    private val interstitialAdCooldownMillis = 10 * 60 * 1000  // 10 minutes
+    private val lastAppOpenAdShownTimeKey = "${prefix}.lastAppOpenAdShownTime"
+    private val lastInterstitialAdShownTimeKey = "${prefix}.lastInterstitialAdShownTime"
     private val interstitialClicksKey = "${prefix}.interstitialClicks"
+    private val interstitialClickThreshold = 5
 
     fun isFirstLaunch(): Boolean {
         return sharedPref.getBoolean(firstLaunchKey, true)
@@ -26,34 +33,33 @@ class SharedPref(val context: Context) {
         }
     }
 
-    fun saveLastAdShownTime() {
+    fun recordAppOpenAdShown() {
         sharedPref.edit {
-            putLong(lastAdShownTimeKey, System.currentTimeMillis())
+            putLong(lastAppOpenAdShownTimeKey, System.currentTimeMillis())
         }
     }
 
-    private fun getLastAdShownTime(): Long {
-        return sharedPref.getLong(lastAdShownTimeKey, -1L)  // Default to -1L instead of 0
+    fun recordInterstitialAdShown() {
+        sharedPref.edit {
+            putLong(lastInterstitialAdShownTimeKey, System.currentTimeMillis())
+        }
     }
 
-    fun shouldShowAd(): Boolean {
-        val lastAdShownTime = getLastAdShownTime()
+    fun shouldShowAppOpenAd(): Boolean {
+        val lastShown = sharedPref.getLong(lastAppOpenAdShownTimeKey, -1L)
         val currentTime = System.currentTimeMillis()
-
-        // Ensure that an ad has been shown before checking the cooldown
-        return lastAdShownTime == -1L || (currentTime - lastAdShownTime) > adCooldownMillis
+        return lastShown == -1L || (currentTime - lastShown) > appOpenAdCooldownMillis
     }
 
     fun shouldShowInterstitialAds(): Boolean {
+        val lastShown = sharedPref.getLong(lastInterstitialAdShownTimeKey, -1L)
+        val currentTime = System.currentTimeMillis()
+        val shouldShowBasedOnCooldown = lastShown == -1L || (currentTime - lastShown) > interstitialAdCooldownMillis
+
         // First check if enough clicks have accumulated
         val clicks = sharedPref.getInt(interstitialClicksKey, 0)
         val newClicks = clicks + 1
-
-        // Check if we've reached the click threshold
-        val shouldShowBasedOnClicks = newClicks >= 3
-
-        // Also check if cooldown period has passed
-        val shouldShowBasedOnCooldown = shouldShowAd()
+        val shouldShowBasedOnClicks = newClicks >= interstitialClickThreshold
 
         return if (shouldShowBasedOnClicks && shouldShowBasedOnCooldown) {
             // Reset click counter
@@ -68,13 +74,5 @@ class SharedPref(val context: Context) {
             }
             false
         }
-    }
-
-    /**
-     * Record that an ad was shown and update the cooldown timer.
-     * Call this after successfully showing any ad (interstitial or app open).
-     */
-    fun recordAdShown() {
-        saveLastAdShownTime()
     }
 }

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Couple Widgets</string>
     <string name="database">CoupleWidgets.db</string>
-    <string name="menu">menu</string>
-    <string name="couple_widgets">COUPLE WIDGETS</string>
+    <string name="menu">Menu</string>
+    <string name="couple_widgets">Couple Widgets</string>
     <string name="system_wallpaper">system_wallpaper</string>
     <string name="frame">frame</string>
     <string name="_1997_12_07">1997/12/07</string>
@@ -13,17 +13,98 @@
     <string name="couple_name_color">Couple name color</string>
     <string name="counter_clock_text_color">Counter clock text color</string>
     <string name="image_shape_border_color">Image shape border color</string>
-    <string name="widget_settings">WIDGET SETTINGS</string>
+    <string name="widget_settings">Widget Settings</string>
     <string name="choose_image">Choose image</string>
     <string name="partner_image">Partner image</string>
     <string name="your_image">Your image</string>
-    <string name="couple_details">COUPLE DETAILS</string>
+    <string name="couple_details">Couple Details</string>
     <string name="your_name">Your name</string>
     <string name="partner_name">Partner name</string>
     <string name="single">Single</string>
     <string name="imam">Imam</string>
     <string name="relationship_start_date">Relationship start date</string>
     <string name="your_birthday">Your birthday</string>
-    <string name="date_and_time">DATE AND TIME</string>
+    <string name="date_and_time">Dates &amp; Milestones</string>
     <string name="nickname">nickname</string>
+
+    <!-- Hero app bar -->
+    <string name="tagline">Made with love, for you two</string>
+    <string name="save">Save</string>
+    <string name="save_widget">Save widget</string>
+    <string name="live_preview">Live preview</string>
+    <string name="back">Back</string>
+
+    <!-- Section subtitles -->
+    <string name="widget_settings_subtitle">Shapes, symbols and colors</string>
+    <string name="widget_style_subtitle">Backdrop and lettering</string>
+    <string name="couple_details_subtitle">Your names and photos</string>
+    <string name="date_and_time_subtitle">The days that matter most</string>
+
+    <!-- Widget settings -->
+    <string name="widget_style">Widget Style</string>
+    <string name="image_shape">Image shape</string>
+    <string name="shape">Shape</string>
+    <string name="shape_color">Shape color</string>
+    <string name="symbol_shape">Symbol</string>
+    <string name="symbol">Symbol</string>
+    <string name="symbol_color">Symbol color</string>
+    <string name="name_color">Name color</string>
+    <string name="counter_color">Counter color</string>
+    <string name="background">Background</string>
+    <string name="background_color">Background color</string>
+    <string name="font">Font</string>
+
+    <!-- Dates -->
+    <string name="fall_in_love">Fell in love</string>
+    <string name="in_relation">In a relationship</string>
+    <string name="partner_birthday">Partner birthday</string>
+
+    <!-- Widgets screen -->
+    <string name="all_widgets">All Widgets</string>
+    <string name="delete_all">Delete all</string>
+    <string name="no_widgets_title">No widgets yet</string>
+    <string name="no_widgets_message">Add a Couple Widget to your home screen and it will show up right here.</string>
+
+    <!-- Drawer -->
+    <string name="drawer_section_app">App</string>
+    <string name="drawer_section_connect">Connect</string>
+    <string name="drawer_section_explore">Explore</string>
+    <string name="drawer_section_about">About</string>
+    <string name="nav_widgets">Widgets</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_write_us">Write us</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="nav_bug_reports">Bug reports</string>
+    <string name="nav_other_apps">Other apps</string>
+    <string name="nav_rate_us">Rate us</string>
+    <string name="nav_source_code">Source code</string>
+    <string name="nav_privacy_policy">Privacy policy</string>
+    <string name="nav_privacy_options">Privacy options</string>
+    <string name="nav_icons_by">Icons by</string>
+    <string name="nav_version">Version</string>
+    <string name="nav_exit">Exit</string>
+    <string name="nav_memories">Memories</string>
+
+    <!-- Memories timeline -->
+    <string name="memories">Memories</string>
+    <string name="milestones">Milestones</string>
+    <string name="add_memory">Add memory</string>
+    <string name="no_memories_title">Your story starts here</string>
+    <string name="no_memories_message">Save the dates that matter — your first date, an anniversary, a trip you took together.</string>
+    <string name="memory_deleted">Memory deleted</string>
+    <string name="widget_deleted">Widget deleted</string>
+    <string name="undo">Undo</string>
+
+    <!-- Memory editor -->
+    <string name="new_memory">New memory</string>
+    <string name="edit_memory">Edit memory</string>
+    <string name="delete_memory">Delete this memory</string>
+    <string name="memory_title">Title</string>
+    <string name="memory_title_hint">Our first date</string>
+    <string name="date">Date</string>
+    <string name="icon">Icon</string>
+    <string name="note">Note</string>
+    <string name="note_hint">Something you want to remember…</string>
+    <string name="repeats_yearly">Repeats every year</string>
+    <string name="repeats_yearly_hint">For anniversaries and birthdays</string>
 </resources>

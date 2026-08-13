@@ -27,6 +27,10 @@
             android:icon="@drawable/ic_privacy"
             android:title="Privacy policy" />
         <item
+            android:id="@+id/nav_privacy_options"
+            android:icon="@drawable/ic_settings"
+            android:title="Privacy options" />
+        <item
             android:id="@+id/nav_other_apps"
             android:icon="@drawable/ic_playstore"
             android:title="Other apps" />

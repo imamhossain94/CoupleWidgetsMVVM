@@ -9,34 +9,37 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.applovin.mediation.MaxAd
-import com.applovin.mediation.MaxAdListener
-import com.applovin.mediation.MaxAdViewAdListener
-import com.applovin.mediation.MaxError
-import com.applovin.mediation.ads.MaxAdView
-import com.applovin.mediation.ads.MaxInterstitialAd
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.newagedevs.couplewidgets.BuildConfig
 import com.newagedevs.couplewidgets.R
 import com.newagedevs.couplewidgets.databinding.ActivityMainBinding
 import com.newagedevs.couplewidgets.model.Couple
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
-import com. skydoves.bindables.BindingActivity
+import com.skydoves.bindables.BindingActivity
 import com.skydoves.bundler.bundle
 import com.skydoves.bundler.intentOf
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.activity.OnBackPressedCallback
+import com.newagedevs.couplewidgets.view.ui.memories.MemoriesActivity
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
 import com.newagedevs.couplewidgets.extensions.*
 import com.newagedevs.couplewidgets.utils.Constants
 import androidx.core.view.GravityCompat
+import com.newagedevs.couplewidgets.utils.ConsentManager
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper
 import com.newagedevs.couplewidgets.utils.InAppUpdateHelper.Companion.REQUEST_CODE_UPDATE
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -58,6 +61,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private var retryAttempt = 0.0
     private lateinit var inAppUpdateHelper: InAppUpdateHelper
+    private lateinit var consentManager: ConsentManager
+    private var adsInitialized = false
+
+    // AdMob Banner
+    private var bannerAdView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,8 +86,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             insets
         }
 
-        createBannerAd()
-        createInterstitialAd()
+        initializeConsentAndAds()
+        animateContentEntrance()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -101,6 +109,47 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setupNavigationDrawer()
     }
 
+    /** Subtle fade + rise-in for the two main sections on first load. */
+    private fun animateContentEntrance() {
+        listOf(binding.previewCard, binding.settingsContainer).forEachIndexed { index, view ->
+            view.alpha = 0f
+            view.translationY = 40f
+            view.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setStartDelay(index * 80L)
+                .setDuration(350L)
+                .start()
+        }
+    }
+
+    // ----------------------------------------------------------------
+    // Consent (UMP/TCF CMP) — must be gathered before any ad is requested
+    // https://developers.google.com/admob/android/privacy
+    // ----------------------------------------------------------------
+    private fun initializeConsentAndAds() {
+        consentManager = ConsentManager(this)
+
+        consentManager.gatherConsent { canRequestAds ->
+            if (canRequestAds) initializeAds()
+        }
+
+        // Consent obtained in a previous session lets us request ads immediately
+        // while requestConsentInfoUpdate() runs in parallel.
+        if (consentManager.canRequestAds) {
+            initializeAds()
+        }
+    }
+
+    private fun initializeAds() {
+        if (adsInitialized) return
+        adsInitialized = true
+
+        (application as com.newagedevs.couplewidgets.Application).initializeMobileAdsSdk()
+        createBannerAd()
+        loadInterstitialAd()
+    }
+
     private fun setupNavigationDrawer() {
         binding.menuButton.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -113,11 +162,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding.navView.findViewById<View>(R.id.nav_widgets).setOnClickListener {
             drawerAction {
-                if (viewModel.interstitialAd.isReady && viewModel.preference.shouldShowInterstitialAds()) {
-                    viewModel.interstitialAd.showAd(this)
-                    viewModel.preference.recordAdShown()
-                }
+                viewModel.showInterstitialIfEligible(this) { loadInterstitialAd() }
                 WidgetsActivity.startActivity(this)
+            }
+        }
+        binding.navView.findViewById<View>(R.id.nav_memories).setOnClickListener {
+            drawerAction {
+                MemoriesActivity.startActivity(this)
             }
         }
         binding.navView.findViewById<View>(R.id.nav_share).setOnClickListener {
@@ -134,6 +185,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
         binding.navView.findViewById<View>(R.id.nav_privacy_policy).setOnClickListener {
             drawerAction { openWebPage(this, Constants.privacyPolicyUrl) { viewModel.toast = it } }
+        }
+        binding.navView.findViewById<View>(R.id.nav_privacy_options).setOnClickListener {
+            drawerAction {
+                if (::consentManager.isInitialized && consentManager.isPrivacyOptionsRequired) {
+                    consentManager.showPrivacyOptionsForm { formError ->
+                        formError?.let { viewModel.toast = it.message }
+                    }
+                } else {
+                    viewModel.toast = "Privacy options aren't required in your region"
+                }
+            }
         }
         binding.navView.findViewById<View>(R.id.nav_other_apps).setOnClickListener {
             drawerAction { openAppStore(this, Constants.publisherName) { viewModel.toast = it } }
@@ -160,91 +222,119 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onResume() {
         super.onResume()
         inAppUpdateHelper.onResume()
+        bannerAdView?.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        bannerAdView?.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bannerAdView?.destroy()
+        bannerAdView = null
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        
+
         val newWidgetId = intent.extras?.getLong("widgetId", -1L)
             ?.takeIf { it != -1L }
         val newAppWidgetId = intent.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
             ?.takeIf { it != AppWidgetManager.INVALID_APPWIDGET_ID }
-            
+
         viewModel.refreshData(newWidgetId, newAppWidgetId)
     }
 
     // ----------------------------------------------------------------
+    // Banner Ad — uses anchored adaptive banner for best fill rate
+    // ----------------------------------------------------------------
     private fun createBannerAd() {
-        val bannerId = BuildConfig.AD_UNIT_BANNER
-        val adView = MaxAdView(bannerId).apply {
-            setListener(bannerAdsListener)
-            layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                resources.getDimensionPixelSize(R.dimen.banner_height)
+        val adView = AdView(this).apply {
+            adUnitId = if (BuildConfig.DEBUG) {
+                "ca-app-pub-3940256099942544/6300978111" // Demo Banner
+            } else {
+                BuildConfig.AD_UNIT_BANNER
+            }
+            // Adaptive banner: fills the screen width for optimal fill/revenue
+            setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                this@MainActivity,
+                getAdaptiveBannerWidth()
+            ))
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
+
+        adView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                binding.adsContainer.visibility = View.VISIBLE
+            }
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                Timber.w("Banner ad failed to load: ${error.message}")
+                binding.adsContainer.visibility = View.GONE
+            }
+            override fun onAdClosed() {
+                binding.adsContainer.visibility = View.GONE
+            }
+        }
+
+        bannerAdView = adView
         binding.adsContainer.addView(adView)
-        adView.loadAd()
+        adView.loadAd(AdRequest.Builder().build())
     }
 
-    private val bannerAdsListener = object : MaxAdViewAdListener {
-        override fun onAdLoaded(p0: MaxAd) {
-            binding.adsContainer.visibility = View.VISIBLE
-        }
-
-        override fun onAdDisplayed(p0: MaxAd) {
-            binding.adsContainer.visibility = View.VISIBLE
-        }
-
-        override fun onAdHidden(p0: MaxAd) {
-            binding.adsContainer.visibility = View.GONE
-        }
-
-        override fun onAdClicked(p0: MaxAd) { }
-
-        override fun onAdLoadFailed(p0: String, p1: MaxError) {
-            binding.adsContainer.visibility = View.GONE
-        }
-
-        override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
-            binding.adsContainer.visibility = View.GONE
-        }
-
-        override fun onAdExpanded(p0: MaxAd) { }
-
-        override fun onAdCollapsed(p0: MaxAd) { }
+    /** Returns the usable width in dp for the adaptive banner. */
+    private fun getAdaptiveBannerWidth(): Int {
+        val displayMetrics = resources.displayMetrics
+        val density = displayMetrics.density
+        val adWidthPixels = displayMetrics.widthPixels.toFloat()
+        return (adWidthPixels / density).toInt()
     }
+
     // ----------------------------------------------------------------
-    private fun createInterstitialAd() {
-        val interstitialId = BuildConfig.AD_UNIT_INTERSTITIAL
-        viewModel.interstitialAd = MaxInterstitialAd(interstitialId)
-        viewModel.interstitialAd.setListener(interstitialAdsListener)
-        viewModel.interstitialAd.loadAd()
-    }
+    // Interstitial Ad — load + show pattern following AdMob guidelines
+    // ----------------------------------------------------------------
+    internal fun loadInterstitialAd() {
+        InterstitialAd.load(
+            this,
+            if (BuildConfig.DEBUG) "ca-app-pub-3940256099942544/1033173712" // Demo Interstitial
+            else BuildConfig.AD_UNIT_INTERSTITIAL,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    Timber.d("Interstitial ad loaded")
+                    retryAttempt = 0.0
+                    viewModel.interstitialAd = ad
 
-    private val interstitialAdsListener = object : MaxAdListener {
-        override fun onAdLoaded(maxAd: MaxAd) {
-            retryAttempt = 0.0
-        }
+                    // Set callback so we can reload after the ad is dismissed/failed
+                    ad.fullScreenContentCallback = object : FullScreenContentCallback() {
+                        override fun onAdDismissedFullScreenContent() {
+                            viewModel.interstitialAd = null
+                            loadInterstitialAd()
+                        }
+                        override fun onAdFailedToShowFullScreenContent(adError: com.google.android.gms.ads.AdError) {
+                            Timber.w("Interstitial failed to show: ${adError.message}")
+                            viewModel.interstitialAd = null
+                            loadInterstitialAd()
+                        }
+                    }
+                }
 
-        override fun onAdLoadFailed(adUnitId: String, error: MaxError) {
-            retryAttempt++
-            val delayMillis = TimeUnit.SECONDS.toMillis( 2.0.pow(6.0.coerceAtMost(retryAttempt)).toLong() )
-            Handler(Looper.getMainLooper()).postDelayed( { viewModel.interstitialAd.loadAd()  }, delayMillis )
-        }
-
-        override fun onAdDisplayFailed(ad: MaxAd, error: MaxError) {
-            viewModel.interstitialAd.loadAd()
-        }
-
-        override fun onAdDisplayed(maxAd: MaxAd) { }
-
-        override fun onAdClicked(maxAd: MaxAd) { }
-
-        override fun onAdHidden(maxAd: MaxAd) {
-            viewModel.interstitialAd.loadAd()
-        }
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    Timber.w("Interstitial failed to load: ${error.message}")
+                    viewModel.interstitialAd = null
+                    retryAttempt++
+                    val delayMillis = TimeUnit.SECONDS.toMillis(
+                        2.0.pow(6.0.coerceAtMost(retryAttempt)).toLong()
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({ loadInterstitialAd() }, delayMillis)
+                }
+            }
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -253,7 +343,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
     }
 
     @Deprecated("Deprecated in Java")
@@ -264,24 +353,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             REQUEST_CODE_UPDATE -> {
                 if (resultCode != RESULT_OK) {
                     Timber.e("Update flow failed! Result code: $resultCode")
-                    // If an immediate update is cancelled or fails,
-                    // you can decide to exit the app or try again.
                 }
             }
         }
 
         when (resultCode) {
             RESULT_OK -> {
-
                 val uri: Uri = data?.data!!
-
                 when (requestCode) {
-                    1094 -> {
-                        viewModel.yourImage = uri
-                    }
-                    1095 -> {
-                        viewModel.partnerImage = uri
-                    }
+                    1094 -> { viewModel.yourImage = uri }
+                    1095 -> { viewModel.partnerImage = uri }
                 }
             }
             ImagePicker.RESULT_ERROR -> {

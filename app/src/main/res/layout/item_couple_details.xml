@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,33 +14,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:paddingTop="@dimen/space_xl"
         android:orientation="vertical">
 
-        <TextView
+        <!-- Section header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="0dp"
-            android:text="@string/couple_details"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_m"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
+            <View
+                android:layout_width="4dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_section_accent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_m"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.SectionTitle"
+                    android:text="@string/couple_details" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/couple_details_subtitle"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Card.Romantic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="?attr/bg_card">
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/space_s">
 
+                <!-- Names -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,67 +77,59 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
                             android:text="@string/your_name" />
 
                         <EditText
                             android:id="@+id/et_your_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
+                            style="@style/Field.Romantic"
+                            android:autofillHints="name"
                             android:drawableStart="@drawable/ic_edit"
-                            android:drawablePadding="15dp"
                             android:drawableTint="?attr/icon_color"
                             android:hint="@string/nickname"
                             android:inputType="textVisiblePassword"
-                            android:padding="15dp"
-                            android:text="@={viewModel.yourName}"
-                            android:textColorHint="#717171" />
+                            android:text="@={viewModel.yourName}" />
 
                     </LinearLayout>
 
-
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
                             android:text="@string/partner_name" />
 
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawableStart="@drawable/ic_edit"
-                            android:drawablePadding="15dp"
+                            style="@style/Field.Romantic"
+                            android:autofillHints="name"
+                            android:drawableStart="@drawable/ic_heart"
                             android:drawableTint="?attr/icon_color"
                             android:hint="@string/nickname"
                             android:inputType="textVisiblePassword"
-                            android:padding="15dp"
-                            android:text="@={viewModel.partnerName}"
-                            android:textColorHint="#717171" />
+                            android:text="@={viewModel.partnerName}" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Photos -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,27 +137,22 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
                             android:text="@string/your_image" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.imagePicker}"
-                            android:padding="15dp"
                             android:tag="@string/your_image"
                             android:text="@string/choose_image"
                             app:drawableStartCompat="@drawable/ic_picture"
@@ -143,29 +160,23 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
+                        style="@style/Field.Column"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                        android:layout_weight="1">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content"
+                            style="@style/Text.FieldLabel"
                             android:text="@string/partner_image" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/bg_rounded"
-                            android:drawablePadding="15dp"
-                            android:gravity="center|start"
+                            style="@style/Field.Romantic"
                             android:onClick="@{viewModel.imagePicker}"
-                            android:padding="15dp"
                             android:tag="partner_image"
                             android:text="@string/choose_image"
                             app:drawableStartCompat="@drawable/ic_picture"
@@ -177,7 +188,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

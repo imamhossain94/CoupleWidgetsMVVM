@@ -25,56 +25,56 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor"
+        android:background="?attr/appBackground"
         android:orientation="vertical"
         app:toast="@{vm.toast}"
         tools:context=".view.ui.widgets.WidgetsActivity">
 
+        <!-- Gradient hero app bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/bg_bottom_curve"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/space_l">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/space_l"
+                android:layout_marginTop="@dimen/space_m"
+                android:layout_marginEnd="@dimen/space_l"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/bg_rounded_icon"
-                    android:contentDescription="@string/menu"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_arrow_left"
+                    style="@style/IconButton.Romantic"
+                    android:layout_width="@dimen/icon_button_size"
+                    android:layout_height="@dimen/icon_button_size"
+                    android:contentDescription="@string/back"
                     android:onClick="@{() -> dispatcher.onBackPressedDispatcher.onBackPressed()}"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:tint="?attr/icon_color"/>
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="?attr/icon_color" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/Text.ScreenTitle"
+                    android:layout_marginStart="@dimen/space_m"
+                    android:layout_marginEnd="@dimen/space_m"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="All Widgets"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="@string/all_widgets" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/bg_rounded_icon"
-                    android:contentDescription="@string/menu"
-                    android:padding="15dp"
-                    android:src="@drawable/ic_delete"
-                    android:clickable="true"
-                    android:focusable="true"
+                    style="@style/IconButton.Romantic"
+                    android:layout_width="@dimen/icon_button_size"
+                    android:layout_height="@dimen/icon_button_size"
+                    android:contentDescription="@string/delete_all"
                     android:onClick="@{vm.deleteAllWidgets}"
-                    app:tint="?attr/icon_color"/>
+                    android:src="@drawable/ic_delete"
+                    app:tint="?attr/icon_color" />
 
             </LinearLayout>
 
@@ -88,18 +88,21 @@
                 android:id="@+id/widget_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:clipToPadding="false"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/space_m"
+                android:paddingBottom="@dimen/space_xxl"
+                android:scrollbars="none"
                 app:adapter="@{adapter}"
                 app:adapterWidgetsList="@{vm.widgets}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_widget" />
 
             <include
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:id="@+id/empty_widget"
                 layout="@layout/item_not_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:visibility="@{vm.widgets.isEmpty() ? View.VISIBLE : View.INVISIBLE}" />
 
         </FrameLayout>

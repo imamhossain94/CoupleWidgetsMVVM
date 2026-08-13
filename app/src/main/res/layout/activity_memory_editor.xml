@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.newagedevs.couplewidgets.view.ui.memories.MemoryEditorViewModel" />
+
+        <variable
+            name="dispatcher"
+            type="androidx.activity.OnBackPressedDispatcherOwner" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/appBackground"
+        android:orientation="vertical"
+        app:toast="@{vm.toast}"
+        tools:context=".view.ui.memories.MemoryEditorActivity">
+
+        <!-- ===== Hero app bar ===== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/bg_bottom_curve"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_l"
+                android:layout_marginTop="@dimen/space_m"
+                android:layout_marginEnd="@dimen/space_l"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/IconButton.Romantic"
+                    android:layout_width="@dimen/icon_button_size"
+                    android:layout_height="@dimen/icon_button_size"
+                    android:contentDescription="@string/back"
+                    android:onClick="@{() -> dispatcher.onBackPressedDispatcher.onBackPressed()}"
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="?attr/icon_color" />
+
+                <TextView
+                    style="@style/Text.ScreenTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_m"
+                    android:layout_marginEnd="@dimen/space_m"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@{vm.isEditing ? @string/edit_memory : @string/new_memory}"
+                    tools:text="New memory" />
+
+                <TextView
+                    android:id="@+id/save_memory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/icon_button_size"
+                    android:background="@drawable/bg_gradient_cta"
+                    android:clickable="true"
+                    android:contentDescription="@string/save"
+                    android:drawablePadding="@dimen/space_s"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/space_l"
+                    android:paddingEnd="@dimen/space_xl"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_check"
+                    app:drawableTint="@color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/space_xxl">
+
+                <!-- Icon preview -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/space_xl">
+
+                    <FrameLayout
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:background="@drawable/bg_icon_chip">
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/icon"
+                            android:tint="?attr/icon_color"
+                            app:iconRes="@{vm.iconRes}"
+                            tools:src="@drawable/ic_heart" />
+
+                    </FrameLayout>
+
+                </FrameLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Card.Romantic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_l"
+                    android:layout_marginTop="@dimen/space_xl"
+                    android:layout_marginEnd="@dimen/space_l">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_l">
+
+                        <TextView
+                            style="@style/Text.FieldLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/memory_title" />
+
+                        <EditText
+                            android:id="@+id/et_title"
+                            style="@style/Field.Romantic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="name"
+                            android:drawableStart="@drawable/ic_edit"
+                            android:drawableTint="?attr/icon_color"
+                            android:hint="@string/memory_title_hint"
+                            android:inputType="textCapSentences"
+                            android:text="@={vm.title}" />
+
+                        <TextView
+                            style="@style/Text.FieldLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:text="@string/date" />
+
+                        <TextView
+                            android:id="@+id/field_date"
+                            style="@style/Field.Romantic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.date}"
+                            app:drawableStartCompat="@drawable/ic_calender"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="2020-02-14" />
+
+                        <TextView
+                            style="@style/Text.FieldLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:text="@string/icon" />
+
+                        <TextView
+                            android:id="@+id/field_icon"
+                            style="@style/Field.Romantic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.iconLabel}"
+                            app:drawableStart="@{vm.iconRes}"
+                            app:drawableTint="?attr/icon_color"
+                            tools:text="Love" />
+
+                        <TextView
+                            style="@style/Text.FieldLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:text="@string/note" />
+
+                        <EditText
+                            android:id="@+id/et_note"
+                            style="@style/Field.Romantic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints=""
+                            android:gravity="top|start"
+                            android:hint="@string/note_hint"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLines="4"
+                            android:minLines="2"
+                            android:text="@={vm.note}" />
+
+                        <!-- Repeat yearly -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_l"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/repeats_yearly"
+                                    android:textColor="?attr/textPrimaryColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/repeats_yearly_hint"
+                                    android:textColor="?attr/textSecondaryColor"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switch_repeat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="@={vm.repeatsYearly}" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Delete, only when editing an existing memory -->
+                <TextView
+                    android:id="@+id/delete_memory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_l"
+                    android:layout_marginTop="@dimen/space_xl"
+                    android:layout_marginEnd="@dimen/space_l"
+                    android:background="?attr/bg_rounded"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/space_m"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/space_l"
+                    android:paddingBottom="@dimen/space_l"
+                    android:text="@string/delete_memory"
+                    android:textColor="@color/love_rose_deep"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="@{vm.isEditing ? View.VISIBLE : View.GONE}"
+                    app:drawableStartCompat="@drawable/ic_delete"
+                    app:drawableTint="@color/love_rose_deep" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</layout>

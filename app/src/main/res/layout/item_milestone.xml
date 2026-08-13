@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_l"
+    android:layout_marginEnd="@dimen/space_l"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/space_m"
+    android:paddingBottom="@dimen/space_m">
+
+    <FrameLayout
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_icon_chip">
+
+        <ImageView
+            android:id="@+id/milestone_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/milestones"
+            app:tint="?attr/accentColor"
+            tools:src="@drawable/ic_sparkle" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_l"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/milestone_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?attr/textPrimaryColor"
+            android:textSize="14sp"
+            tools:text="500 days together" />
+
+        <TextView
+            android:id="@+id/milestone_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:textColor="?attr/textSecondaryColor"
+            android:textSize="11sp"
+            tools:text="2 Aug 2026" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/milestone_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_s"
+        android:textColor="?attr/textSecondaryColor"
+        android:textSize="12sp"
+        tools:text="in 44 days" />
+
+</LinearLayout>

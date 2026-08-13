@@ -6,12 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.newagedevs.couplewidgets.model.Couple
+import com.newagedevs.couplewidgets.model.Memory
 
-@Database(entities = [Couple::class], version = 3, exportSchema = false)
+@Database(entities = [Couple::class, Memory::class], version = 7, exportSchema = false)
 @TypeConverters(PersonConverter::class, DecoratorConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun coupleDao(): CoupleDao
+
+    abstract fun memoryDao(): MemoryDao
 
     companion object {
         @Volatile
@@ -23,7 +26,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     context.getString(com.newagedevs.couplewidgets.R.string.database)
-                ).fallbackToDestructiveMigration()
+                ).addMigrations(*ALL_MIGRATIONS)
+                    .fallbackToDestructiveMigration()
                     .build()
                     .also { instance = it }
             }

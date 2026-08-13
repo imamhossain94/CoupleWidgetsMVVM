@@ -56,6 +56,9 @@ class WidgetsAdapter() : RecyclerView.Adapter<WidgetsAdapter.WidgetsViewHolder>(
         notifyDataSetChanged()
     }
 
+    /** The widget at [position], or null if the list has already moved on. */
+    fun itemAt(position: Int): Couple? = items.getOrNull(position)
+
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: WidgetsViewHolder, position: Int) {

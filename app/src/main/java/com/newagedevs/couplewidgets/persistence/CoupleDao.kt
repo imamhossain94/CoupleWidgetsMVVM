@@ -45,6 +45,12 @@ interface CoupleDao {
     @Query("DELETE FROM Couple")
     fun deleteWidgets()
 
+    @Query("DELETE FROM Couple WHERE id = :id_")
+    fun deleteWidgetById(id_: Long)
+
+    @Query("SELECT COUNT(*) FROM Couple")
+    fun countWidgets(): Int
+
 
     // UPDATE Widgets
     @Update

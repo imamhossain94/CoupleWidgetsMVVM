@@ -3,7 +3,7 @@ package com.newagedevs.couplewidgets.view.ui.main
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.app.PendingIntent
+
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Bindable
-import com.applovin.mediation.ads.MaxInterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
@@ -38,6 +38,8 @@ import com.newagedevs.couplewidgets.persistence.SharedPref
 import androidx.lifecycle.viewModelScope
 import com.newagedevs.couplewidgets.repository.MainRepository
 import com.newagedevs.couplewidgets.utils.Constants
+import com.newagedevs.couplewidgets.utils.DecoratorCatalog
+import com.newagedevs.couplewidgets.utils.WidgetFontCatalog
 import com.newagedevs.couplewidgets.utils.InAppRatingManager
 import com.newagedevs.couplewidgets.view.ui.CustomSheet
 import com.newagedevs.couplewidgets.view.ui.widgets.WidgetsActivity
@@ -68,6 +70,14 @@ class MainViewModel(
     private val ufmDate = "2004-10-21"
     private val fallDate = "2021-05-27"
     private val relationDate = "2021-05-27"
+
+    private val widgetBackgroundTitles = listOf("None", "Frosted", "Solid")
+    private val widgetBackgroundIcons = listOf(R.drawable.ic_circle, R.drawable.widget_bg_frosted, R.drawable.widget_bg_solid)
+    private val fontStyleTitles = WidgetFontCatalog.titles
+
+    /** Index of the "Solid" background, used to reveal the color picker. */
+    private val solidBackgroundIndex = 2
+    private val defaultBackgroundColor = Color.parseColor("#E8386A")
 
     @get:Bindable
     var toast: String? by bindingProperty(null)
@@ -117,7 +127,47 @@ class MainViewModel(
     @get:Bindable
     var counterDate: String? by bindingProperty(defaultDate)
 
-    lateinit var interstitialAd: MaxInterstitialAd
+    @get:Bindable
+    var widgetBackground: Int? by bindingProperty(0)
+
+    @get:Bindable
+    var widgetBackgroundLabel: String? by bindingProperty("None")
+
+    @get:Bindable
+    var widgetBackgroundIcon: Int? by bindingProperty(R.drawable.ic_circle)
+
+    @get:Bindable
+    var widgetBackgroundColor: Int? by bindingProperty(Color.parseColor("#E8386A"))
+
+    /** Drives visibility of the solid-color field: true only when "Solid" is chosen. */
+    @get:Bindable
+    var showBackgroundColor: Boolean by bindingProperty(false)
+        private set
+
+    @get:Bindable
+    var fontStyle: Int? by bindingProperty(0)
+
+    @get:Bindable
+    var fontStyleLabel: String? by bindingProperty("Default")
+
+    // Nullable: AdMob's interstitial must be discarded after showing and reloaded
+    var interstitialAd: InterstitialAd? = null
+
+    /**
+     * Single place for the gate -> show -> record -> reload sequence, used by both the
+     * nav-to-widgets click (MainActivity) and the create-widget flow (submitData below) so
+     * ad-cadence tuning only needs to happen here.
+     */
+    fun showInterstitialIfEligible(activity: Activity, onShown: () -> Unit = {}): Boolean {
+        val ad = interstitialAd ?: return false
+        if (!preference.shouldShowInterstitialAds()) return false
+
+        ad.show(activity)
+        interstitialAd = null
+        preference.recordInterstitialAdShown()
+        onShown()
+        return true
+    }
 
     init {
         viewModelScope.launch {
@@ -135,16 +185,13 @@ class MainViewModel(
 
     // Widget settings
     fun shapePicker(view: View) {
-        val shapes = listOf(
-            R.drawable.shape_1, R.drawable.shape_2, R.drawable.shape_3,
-            R.drawable.shape_4, R.drawable.shape_5, R.drawable.shape_6
-        )
-        val shapeTitles = listOf(
-            "Circle", "Tag", "Hexagon", "Square", "Heart", "Rounded"
-        )
+        val shapes = DecoratorCatalog.shapes
+        val shapeTitles = DecoratorCatalog.shapeTitles
 
         OptionSheet().show(view.context) {
             title("Select image shape")
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
             with(
                 Option(shapes[0], shapeTitles[0]),
                 Option(shapes[1], shapeTitles[1]),
@@ -152,6 +199,12 @@ class MainViewModel(
                 Option(shapes[3], shapeTitles[3]),
                 Option(shapes[4], shapeTitles[4]),
                 Option(shapes[5], shapeTitles[5]),
+                Option(shapes[6], shapeTitles[6]),
+                Option(shapes[7], shapeTitles[7]),
+                Option(shapes[8], shapeTitles[8]),
+                Option(shapes[9], shapeTitles[9]),
+                Option(shapes[10], shapeTitles[10]),
+                Option(shapes[11], shapeTitles[11]),
             )
             onPositive { index: Int, _: Option ->
 
@@ -171,16 +224,13 @@ class MainViewModel(
     }
 
     fun symbolPicker(view: View) {
-        val symbols = listOf(
-            R.drawable.symbol_1, R.drawable.symbol_2, R.drawable.symbol_3, R.drawable.symbol_4,
-            R.drawable.symbol_5, R.drawable.symbol_6, R.drawable.symbol_7, R.drawable.symbol_8
-        )
-        val symbolTitles = listOf(
-            "Heart", "Broken", "Battery", "Heart", "Signal", "Bottle", "Heart", "Like"
-        )
+        val symbols = DecoratorCatalog.symbols
+        val symbolTitles = DecoratorCatalog.symbolTitles
 
         OptionSheet().show(view.context) {
             title("Select heart symbol")
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
             with(
                 Option(symbols[0], symbolTitles[0]),
                 Option(symbols[1], symbolTitles[1]),
@@ -190,6 +240,12 @@ class MainViewModel(
                 Option(symbols[5], symbolTitles[5]),
                 Option(symbols[6], symbolTitles[6]),
                 Option(symbols[7], symbolTitles[7]),
+                Option(symbols[8], symbolTitles[8]),
+                Option(symbols[9], symbolTitles[9]),
+                Option(symbols[10], symbolTitles[10]),
+                Option(symbols[11], symbolTitles[11]),
+                Option(symbols[12], symbolTitles[12]),
+                Option(symbols[13], symbolTitles[13]),
             )
             onPositive { index: Int, _: Option ->
 
@@ -206,6 +262,37 @@ class MainViewModel(
         }
 
 
+    }
+
+    fun backgroundPicker(view: View) {
+        OptionSheet().show(view.context) {
+            title("Select widget background")
+            with(
+                Option(widgetBackgroundIcons[0], widgetBackgroundTitles[0]),
+                Option(widgetBackgroundIcons[1], widgetBackgroundTitles[1]),
+                Option(widgetBackgroundIcons[2], widgetBackgroundTitles[2]),
+            )
+            onPositive { index: Int, _: Option ->
+                widgetBackground = index
+                widgetBackgroundLabel = widgetBackgroundTitles[index]
+                widgetBackgroundIcon = widgetBackgroundIcons[index]
+                showBackgroundColor = index == solidBackgroundIndex
+            }
+        }
+    }
+
+    fun fontPicker(view: View) {
+        val fontTitles = WidgetFontCatalog.titles
+        OptionSheet().show(view.context) {
+            title("Select widget font")
+            displayMode(DisplayMode.GRID_VERTICAL)
+            columns(3)
+            with(*fontTitles.map { Option(R.drawable.ic_brush, it) }.toTypedArray())
+            onPositive { index: Int, _: Option ->
+                fontStyle = index
+                fontStyleLabel = fontTitles[index]
+            }
+        }
     }
 
     fun colorPicker(view: View) {
@@ -234,6 +321,9 @@ class MainViewModel(
                     }
                     "Name Color" -> {
                         nameColor = color
+                    }
+                    "Background Color" -> {
+                        widgetBackgroundColor = color
                     }
                 }
 
@@ -342,6 +432,15 @@ class MainViewModel(
 
     fun submitData(view: View) {
 
+        // Small tap-feedback pulse on the save button.
+        view.animate()
+            .scaleX(1.2f).scaleY(1.2f)
+            .setDuration(120L)
+            .withEndAction {
+                view.animate().scaleX(1f).scaleY(1f).setDuration(120L).start()
+            }
+            .start()
+
         val couple = Couple(
             active = true,
             frame = Decorator(shape, shapeColor),
@@ -351,7 +450,10 @@ class MainViewModel(
             you = Person(yourName, yourBirthday, yourImage),
             partner = Person(partnerName, partnerBirthday, partnerImage),
             fallInLove = fallInLove,
-            inRelation = inRelation
+            inRelation = inRelation,
+            widgetBackground = widgetBackground,
+            widgetBackgroundColor = widgetBackgroundColor,
+            fontStyle = fontStyle
         )
 
         // Update widget
@@ -383,6 +485,10 @@ class MainViewModel(
                 couple.appWidgetId = appWidgetId
                 widgetId = mainRepository.setWidget(couple)
 
+                // Sync the change onto every placed home-screen widget so it
+                // updates immediately, not just on the next system refresh.
+                mainRepository.updatePlacedWidgets(couple, widgetId!!, ids)
+
                 if (id != null) {
                     context.sendBroadcast(intent)
                     activity.setResult(RESULT_OK, intent)
@@ -410,12 +516,7 @@ class MainViewModel(
                     context.sendBroadcast(intent)
                 }
 
-                // Check if we should show ad
-                val shouldShowAd = interstitialAd.isReady && preference.shouldShowInterstitialAds()
-                if (shouldShowAd) {
-                    interstitialAd.showAd(view.context as Activity)
-                    preference.recordAdShown()
-                }
+                val shouldShowAd = showInterstitialIfEligible(activity)
 
                 // If no widget on home screen, guide user to add one
                 if (!hasWidgetOnHomeScreen(context) && !shouldShowAd) {
@@ -461,10 +562,11 @@ class MainViewModel(
             partnerImage = couple!!.partner?.image
             partnerBirthday = couple!!.partner?.birthday
 
-            shape = couple!!.frame?.vector
+            // Stored resource IDs can go stale across builds — see DecoratorCatalog.
+            shape = DecoratorCatalog.safeShape(couple!!.frame?.vector)
             shapeColor = couple!!.frame?.color
 
-            symbol = couple!!.heart?.vector
+            symbol = DecoratorCatalog.safeSymbol(couple!!.heart?.vector)
             symbolColor = couple!!.heart?.color
 
             nameColor = couple!!.nameColor
@@ -472,6 +574,14 @@ class MainViewModel(
 
             fallInLove = couple!!.fallInLove
             inRelation = couple!!.inRelation
+
+            widgetBackground = couple!!.widgetBackground ?: 0
+            widgetBackgroundLabel = widgetBackgroundTitles.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundTitles[0]
+            widgetBackgroundIcon = widgetBackgroundIcons.getOrNull(widgetBackground ?: 0) ?: widgetBackgroundIcons[0]
+            widgetBackgroundColor = couple!!.widgetBackgroundColor ?: defaultBackgroundColor
+            showBackgroundColor = (widgetBackground ?: 0) == solidBackgroundIndex
+            fontStyle = couple!!.fontStyle ?: 0
+            fontStyleLabel = fontStyleTitles.getOrNull(fontStyle ?: 0) ?: fontStyleTitles[0]
         } else {
             resetToDefaultData()
         }
@@ -496,6 +606,13 @@ class MainViewModel(
         counterColor = Color.WHITE
         fallInLove = fallDate
         inRelation = relationDate
+        widgetBackground = 0
+        widgetBackgroundLabel = widgetBackgroundTitles[0]
+        widgetBackgroundIcon = widgetBackgroundIcons[0]
+        widgetBackgroundColor = defaultBackgroundColor
+        showBackgroundColor = false
+        fontStyle = 0
+        fontStyleLabel = fontStyleTitles[0]
     }
 
     private fun hasWidgetOnHomeScreen(context: Context): Boolean {
@@ -508,45 +625,32 @@ class MainViewModel(
 
     private fun guideUserToAddWidget(activity: Activity) {
         val appWidgetManager = AppWidgetManager.getInstance(activity)
-        
-        // Check if programmatic widget pinning is supported (Android 8.0+)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            if (appWidgetManager.isRequestPinAppWidgetSupported) {
-                // Create component name for our widget
-                val widgetProvider = ComponentName(activity, CoupleWidgetProvider::class.java)
-                
-                // Create a callback intent that will be triggered when widget is pinned
-                val successCallback = Intent(activity, MainActivity::class.java).let { intent ->
-                    PendingIntent.getActivity(
-                        activity,
-                        0,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    )
-                }
-                
-                // Request to pin the widget
-                val pinned = appWidgetManager.requestPinAppWidget(widgetProvider, null, successCallback)
-                
-                if (pinned) {
-                    toast = "Widget configured! Select placement on home screen"
-                } else {
-                    toast = "Widget configured! Add it manually from widget menu"
-                    // Fallback: minimize app
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        activity.moveTaskToBack(true)
-                    }, 1500)
-                }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O &&
+            appWidgetManager.isRequestPinAppWidgetSupported) {
+
+            val widgetProvider = ComponentName(activity, CoupleWidgetProvider::class.java)
+
+            // Pass null for successCallback — we do NOT re-launch the app after pinning.
+            // Instead we minimize so the user sees the home screen and can position the widget.
+            val pinned = appWidgetManager.requestPinAppWidget(widgetProvider, null, null)
+
+            if (pinned) {
+                // System pin dialog is now showing — minimize after a short delay
+                // so when the user taps "Add", they land directly on the home screen
+                toast = "Almost done! Tap 'Add' to place the widget on your home screen"
+                Handler(Looper.getMainLooper()).postDelayed({
+                    activity.moveTaskToBack(true)
+                }, 800)
             } else {
-                // Device doesn't support programmatic pinning
-                toast = "Widget configured! Now add it to your home screen"
+                toast = "Widget saved! Add it to your home screen from the widget menu"
                 Handler(Looper.getMainLooper()).postDelayed({
                     activity.moveTaskToBack(true)
                 }, 1500)
             }
         } else {
-            // Android version below 8.0 - fallback to minimizing
-            toast = "Widget configured! Now add it to your home screen"
+            // Android < 8.0 or device doesn't support pin request
+            toast = "Widget saved! Long-press your home screen to add the widget"
             Handler(Looper.getMainLooper()).postDelayed({
                 activity.moveTaskToBack(true)
             }, 1500)

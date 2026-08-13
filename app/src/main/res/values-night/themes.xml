@@ -1,50 +1,94 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- ================================================================
+         Theme.CoupleWidgets — DARK ("Midnight Romance")
+         ================================================================ -->
     <style name="Theme.CoupleWidgets" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/wine_accent</item>
-        <item name="colorOnPrimary">@color/dark_rosewood</item>
-        <item name="colorPrimaryContainer">@color/wine_gradient_start</item>
-        <item name="colorOnPrimaryContainer">@color/wine_text</item>
 
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/wine_deep</item>
-        <item name="colorOnSecondary">@color/wine_text</item>
-        <item name="colorSecondaryContainer">@color/dark_rosewood_card</item>
-        <item name="colorOnSecondaryContainer">@color/wine_text</item>
+        <!-- Primary: soft rose that glows on dark -->
+        <item name="colorPrimary">@color/night_rose</item>
+        <item name="colorOnPrimary">@color/night_bg</item>
+        <item name="colorPrimaryContainer">#4A2038</item>
+        <item name="colorOnPrimaryContainer">@color/moonlight</item>
 
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/dark_rosewood</item>
+        <!-- Secondary: orchid -->
+        <item name="colorSecondary">@color/night_orchid</item>
+        <item name="colorOnSecondary">@color/night_bg</item>
+        <item name="colorSecondaryContainer">@color/night_chip</item>
+        <item name="colorOnSecondaryContainer">@color/moonlight</item>
+
+        <!-- Tertiary: lavender -->
+        <item name="colorTertiary">@color/night_lavender</item>
+        <item name="colorOnTertiary">@color/night_bg</item>
+
+        <!-- Surfaces -->
+        <item name="colorSurface">@color/night_card</item>
+        <item name="colorOnSurface">@color/moonlight</item>
+        <item name="colorSurfaceVariant">@color/night_field</item>
+        <item name="colorOnSurfaceVariant">@color/moonlight_secondary</item>
+        <item name="colorOutline">@color/night_stroke</item>
+        <item name="android:colorBackground">@color/night_bg</item>
+
+        <!-- Global text colors -->
+        <item name="android:textColorPrimary">@color/moonlight</item>
+        <item name="android:textColorSecondary">@color/moonlight_secondary</item>
+        <item name="android:textColorHint">@color/moonlight_hint</item>
+        <item name="android:textColor">@color/moonlight</item>
+
+        <!-- System bars -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
 
         <!-- App backgrounds -->
-        <item name="android:windowBackground">@color/dark_rosewood</item>
-        <item name="backgroundColor">@color/dark_rosewood</item>
+        <item name="android:windowBackground">@color/night_bg</item>
+        <item name="backgroundColor">@color/night_bg</item>
+        <item name="appBackground">@color/night_bg</item>
         <item name="bg_rounded">@drawable/bg_rounded_dark</item>
         <item name="bg_rounded_icon">@drawable/bg_rounded_icon_dark</item>
         <item name="bg_bottom_curve">@drawable/bg_bottom_curve_dark</item>
-        <item name="icon_color">@color/wine_icon_tint</item>
-        <item name="bg_card">@color/dark_rosewood_card</item>
+        <item name="bg_chip">@drawable/bg_icon_chip</item>
+        <item name="bg_card">@color/night_card</item>
+        <item name="bg_field">@color/night_field</item>
+        <item name="previewCardBackground">@color/night_card</item>
 
-        <!-- Drawer theming -->
-        <item name="drawerBackground">@color/dark_rosewood_surface</item>
+        <!-- Text tokens -->
+        <item name="textPrimaryColor">@color/moonlight</item>
+        <item name="textSecondaryColor">@color/moonlight_secondary</item>
+        <item name="textHintColor">@color/moonlight_hint</item>
+
+        <!-- Accents -->
+        <item name="icon_color">@color/night_rose</item>
+        <item name="accentColor">@color/night_orchid</item>
+        <item name="strokeColor">@color/night_stroke</item>
+
+        <!-- Drawer -->
+        <item name="drawerBackground">@color/night_bg</item>
         <item name="drawerHeaderBackground">@drawable/bg_nav_header_dark</item>
-        <item name="drawerItemIconTint">@color/wine_icon_tint</item>
-        <item name="drawerItemTextColor">@color/wine_text</item>
-        <item name="drawerAccentColor">@color/wine_accent</item>
-        <item name="drawerDividerColor">#15C47A8F</item>
+        <item name="drawerItemIconTint">@color/night_rose</item>
+        <item name="drawerItemTextColor">@color/moonlight</item>
+        <item name="drawerAccentColor">@color/night_lavender</item>
+        <item name="drawerDividerColor">@color/night_stroke</item>
         <item name="drawerSectionBackground">@drawable/bg_drawer_section_dark</item>
-        <item name="appBackground">@color/dark_rosewood</item>
 
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.CoupleWidgets.Dialog</item>
+    </style>
+
+    <style name="ThemeOverlay.CoupleWidgets.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/night_rose</item>
+        <item name="colorSurface">@color/night_card</item>
+        <item name="colorOnSurface">@color/moonlight</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CoupleWidgets.Dialog</item>
     </style>
 
     <style name="ImagePicker.NonFullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/dark_rosewood</item>
+        <item name="android:statusBarColor">@color/night_bg</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:navigationBarColor">@color/dark_rosewood</item>
+        <item name="android:navigationBarColor">@color/night_bg</item>
     </style>
 
 </resources>
