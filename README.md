@@ -14,7 +14,7 @@ App has 4x1 reconfigurable widget and integrating persisted data in the database
 <br>
 
 <p align="center">
-<img src="/previews/preview.png" width="100%" title="Widgets">
+<img src="previews/preview.png" width="100%" title="Widgets">
 </p>
 
 
@@ -29,14 +29,17 @@ Please visit this repository <a href="https://github.com/imamhossain94/CoupleWid
 
 ## Screenshots
 
-|          Home          |          Menu          |          Shape           |          Symbol           |
-|:----------------------:|:----------------------:|:------------------------:|:-------------------------:|
-| ![](previews/home.jpg) | ![](previews/menu.jpg) | ![](previews/shapes.jpg) | ![](previews/symbols.jpg) |
+| Home | Menu | Memory |
+|:---:|:---:|:---:|
+| ![](previews/home.png) | ![](previews/menu.png) | ![](previews/memory.png) |
 
+| Shape | Symbol | Colors |
+|:---:|:---:|:---:|
+| ![](previews/shapes.png) | ![](previews/symbols.png) | ![](previews/colors.png) |
 
-|          Colors          |          Calender          |           Crop Image           |          Widget          |
-|:------------------------:|:--------------------------:|:------------------------------:|:------------------------:|
-| ![](previews/colors.jpg) | ![](previews/calender.jpg) | ![](previews/image_picker.jpg) | ![](previews/widget.jpg) |
+| Calender | Crop Image | Widget |
+|:---:|:---:|:---:|
+| ![](previews/calender.png) | ![](previews/image_picker.jpg) | ![](previews/widget.jpg) |
 
 ## 💻 Installation steps
 
